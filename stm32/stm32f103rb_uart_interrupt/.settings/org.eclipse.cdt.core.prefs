@@ -1,0 +1,7 @@
+#Sat Sep 24 21:14:35 PHT 2011
+eclipse.preferences.version=1
+environment/project/0.1875309615/CROSS_COMPILE/delimiter=\:
+environment/project/0.1875309615/CROSS_COMPILE/operation=append
+environment/project/0.1875309615/CROSS_COMPILE/value=arm-none-eabi-
+environment/project/0.1875309615/append=true
+environment/project/0.1875309615/appendContributed=true
