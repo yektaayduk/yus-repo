@@ -9,7 +9,12 @@ CP = arm-none-eabi-objcopy
 
 LKR_SCRIPT = stm32_flash.ld
 
-CFLAGS  = -c -fno-common -O0 -g -mcpu=cortex-m3 -mthumb
+FAMILY = STM32F10X_MD
+INCLUDES = -I./Libraries/CMSIS/CM3/DeviceSupport/ST/STM32F10x/ \
+			-I./Libraries/CMSIS/CM3/CoreSupport/ \
+			-I./Libraries/STM32F10x_StdPeriph_Driver/inc
+
+CFLAGS  = -c -fno-common -O0 -g -mcpu=cortex-m3 -mthumb -D$(FAMILY) $(INCLUDES)
 LFLAGS  = -nostartfiles -T$(LKR_SCRIPT)
 CPFLAGS = -Obinary
 
