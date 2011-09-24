@@ -13,12 +13,19 @@
 void UART1_init(void);
 void uart_putc(uint8_t c);
 void uart_puts(uint8_t *s);
+uint8_t uart_getc(void);
 
 int main()
 {
 	UART1_init();
 
-	uart_puts("hello\r\n");
+	uart_puts("hello stm32!\r\n");
+
+	while(1)
+	{
+		// loop back test
+		uart_putc( uart_getc() );
+	}
 
 	return 0;
 }
@@ -69,4 +76,12 @@ void uart_putc(uint8_t c)
 void uart_puts(uint8_t *s)
 {
 	while(*s) uart_putc(*s++);
+}
+
+uint8_t uart_getc(void)
+{
+	// wait until a character is received
+	while(USART_GetFlagStatus(UART1, USART_FLAG_RXNE) == RESET);
+	// get the character from the data register
+	return (USART_ReceiveData(UART1) & 0xFF);
 }
