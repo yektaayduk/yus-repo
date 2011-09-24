@@ -11,17 +11,14 @@
 #define UART1_TxPin		GPIO_Pin_9
 
 void UART1_init(void);
-void uart1_putc(uint8_t c);
+void uart_putc(uint8_t c);
+void uart_puts(uint8_t *s);
 
 int main()
 {
 	UART1_init();
 
-	uart_putc('h');
-	uart_putc('e');
-	uart_putc('l');
-	uart_putc('l');
-	uart_putc('o');
+	uart_puts("hello\r\n");
 
 	return 0;
 }
@@ -67,4 +64,9 @@ void uart_putc(uint8_t c)
 	USART_SendData(UART1, c);
 	// wait until TXE=1 (data has been moved to the shift register)
 	while(USART_GetFlagStatus(UART1, USART_FLAG_TXE) == RESET);
+}
+
+void uart_puts(uint8_t *s)
+{
+	while(*s) uart_putc(*s++);
 }
