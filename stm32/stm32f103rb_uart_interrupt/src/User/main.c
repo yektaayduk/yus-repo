@@ -5,6 +5,10 @@
 
 #include "stm32f10x.h"
 
+#define UART1_GPIO		GPIOA
+#define UART1_RxPin		GPIO_Pin_10
+#define UART1_TxPin		GPIO_Pin_9
+
 void uart_init(void);
 
 int main()
@@ -25,7 +29,15 @@ void uart_init()
 			RCC_APB2Periph_AFIO,	// turn on alternate function
 			ENABLE);
 
-	// TODO: GPIO Configuration - configure RX and TX pins
+	/* Configure RX pin as input floating */
+	GPIO_InitStructure.GPIO_Pin = UART1_RxPin;
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;
+	GPIO_Init(UART1_GPIO, &GPIO_InitStructure);
+	/* Configure TX pin as alternate function push-pull */
+	GPIO_InitStructure.GPIO_Pin = UART1_TxPin;
+	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
+	GPIO_Init(UART1_GPIO, &GPIO_InitStructure);
 
 	// TODO: USART Configuration - serial port settings
 
