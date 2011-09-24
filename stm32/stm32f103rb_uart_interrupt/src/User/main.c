@@ -17,6 +17,9 @@ int main()
 {
 	uart_init();
 
+	while(1)
+	{
+	}
 	return 0;
 }
 
@@ -60,5 +63,10 @@ void uart_init()
 	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
 	NVIC_Init(&NVIC_InitStructure);
 
-	// TODO: finally, enable uart peripheral
+	/* Enable uart receive interrupt */
+	USART_ITConfig(UART1, USART_IT_RXNE, ENABLE);
+	// TODO: enable transmit interrupt
+
+	/* enable uart peripheral */
+	USART_Cmd(UART1, ENABLE);
 }
