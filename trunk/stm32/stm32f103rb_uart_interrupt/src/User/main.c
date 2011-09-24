@@ -6,6 +6,7 @@
 #include "stm32f10x.h"
 
 #define UART1			USART1
+#define UART1_IRQn		USART1_IRQn
 #define UART1_GPIO		GPIOA
 #define UART1_RxPin		GPIO_Pin_10
 #define UART1_TxPin		GPIO_Pin_9
@@ -23,6 +24,7 @@ void uart_init()
 {
 	GPIO_InitTypeDef GPIO_InitStructure;
 	USART_InitTypeDef USART_InitStructure;
+	NVIC_InitTypeDef NVIC_InitStructure;
 
 	/* enable clocks on peripherals */
 	RCC_APB2PeriphClockCmd(
@@ -50,7 +52,13 @@ void uart_init()
 	USART_InitStructure.USART_Mode = USART_Mode_Rx | USART_Mode_Tx;
 	USART_Init(UART1, &USART_InitStructure);
 
-	// TODO: NVIC Configuration - enable uart interrupt
+	/* Configure the NVIC Preemption Priority Bits */
+	NVIC_PriorityGroupConfig(NVIC_PriorityGroup_0);
+	/* Enable the USARTz Interrupt */
+	NVIC_InitStructure.NVIC_IRQChannel = UART1_IRQn;
+	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 1;
+	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
+	NVIC_Init(&NVIC_InitStructure);
 
 	// TODO: finally, enable uart peripheral
 }
