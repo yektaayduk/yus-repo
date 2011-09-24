@@ -143,6 +143,11 @@ void SysTick_Handler(void)
 /*  file (startup_stm32f10x_xx.s).                                            */
 /******************************************************************************/
 
+void USART1_IRQHandler(void)
+{
+
+}
+
 /**
   * @brief  This function handles PPP interrupt request.
   * @param  None
