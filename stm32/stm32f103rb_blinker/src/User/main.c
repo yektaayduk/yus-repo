@@ -4,29 +4,32 @@
  *******************************/
 
 #include "stm32f10x.h"
-#include "stm32f10x_gpio.h"
 
 /* led connected to a gpio pin */
-#define LED_PIN      9          // pin 9
-#define OUTPUT_MODE (GPIO_Mode_Out_PP|GPIO_Speed_50MHz) // push-pull + 50MHz
+#define LED_PIN    GPIO_Pin_9
+#define LED_PORT   GPIOB
 
 /* user functions */
 void delay(unsigned long count);
 
 int main()
 {
+    GPIO_InitTypeDef GPIO_InitStructure;
+
     /* enable clock on GPIOB peripheral */
-    RCC->APB2ENR = RCC_APB2ENR_IOPBEN;
-    
+    RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB, ENABLE);
+
     /* set pin output mode */
-    //GPIOB->CRL |= OUTPUT_MODE << ((LED_PIN) << 2); // if pins 0 to 7
-    GPIOB->CRH |= OUTPUT_MODE << ((LED_PIN-8) << 2); // if pins 8 to 15
+    GPIO_InitStructure.GPIO_Pin = LED_PIN;
+    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+    GPIO_Init(LED_PORT, &GPIO_InitStructure);
 
     while(1)
     {
-        GPIOB->BSRR = 1<<LED_PIN;  // set pin high
+        GPIO_SetBits(LED_PORT, LED_PIN);	// set pin high
         delay(200000);
-        GPIOB->BRR  = 1<<LED_PIN;  // set pin low
+        GPIO_ResetBits(LED_PORT, LED_PIN);	// set pin low
         delay(200000);
     }
     return 0;
