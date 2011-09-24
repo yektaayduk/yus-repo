@@ -5,6 +5,7 @@
 
 #include "stm32f10x.h"
 
+#define UART1			USART1
 #define UART1_GPIO		GPIOA
 #define UART1_RxPin		GPIO_Pin_10
 #define UART1_TxPin		GPIO_Pin_9
@@ -21,6 +22,7 @@ int main()
 void uart_init()
 {
 	GPIO_InitTypeDef GPIO_InitStructure;
+	USART_InitTypeDef USART_InitStructure;
 
 	/* enable clocks on peripherals */
 	RCC_APB2PeriphClockCmd(
@@ -39,7 +41,14 @@ void uart_init()
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
 	GPIO_Init(UART1_GPIO, &GPIO_InitStructure);
 
-	// TODO: USART Configuration - serial port settings
+	/* configure serial port settings */
+	USART_InitStructure.USART_BaudRate = 115200;
+	USART_InitStructure.USART_WordLength = USART_WordLength_8b;
+	USART_InitStructure.USART_StopBits = USART_StopBits_1;
+	USART_InitStructure.USART_Parity = USART_Parity_No;
+	USART_InitStructure.USART_HardwareFlowControl = USART_HardwareFlowControl_None;
+	USART_InitStructure.USART_Mode = USART_Mode_Rx | USART_Mode_Tx;
+	USART_Init(UART1, &USART_InitStructure);
 
 	// TODO: NVIC Configuration - enable uart interrupt
 
