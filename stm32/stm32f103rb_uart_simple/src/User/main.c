@@ -50,5 +50,6 @@ void UART1_init()
 	USART_InitStructure.USART_Mode = USART_Mode_Rx | USART_Mode_Tx;
 	USART_Init(UART1, &USART_InitStructure);
 
-	// 4. finally, enable USART peripheral
+	/* enable UART1 peripheral */
+	USART_Cmd(UART1, ENABLE);
 }
