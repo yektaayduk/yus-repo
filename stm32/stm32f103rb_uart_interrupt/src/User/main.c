@@ -16,14 +16,20 @@ int main()
 
 void uart_init()
 {
-	// TODO's
-	// 1. RCC Configuration - enable peripheral clocks
+	GPIO_InitTypeDef GPIO_InitStructure;
 
-	// 2. GPIO Configuration - configure RX and TX pins
+	/* enable clocks on peripherals */
+	RCC_APB2PeriphClockCmd(
+			RCC_APB2Periph_GPIOA |	// turn on GPIOA (for RX and TX pins)
+			RCC_APB2Periph_USART1 |	// turn on USART1
+			RCC_APB2Periph_AFIO,	// turn on alternate function
+			ENABLE);
 
-	// 3. USART Configuration - serial port settings
+	// TODO: GPIO Configuration - configure RX and TX pins
 
-	// 4. NVIC Configuration - enable uart interrupt
+	// TODO: USART Configuration - serial port settings
 
-	// 5. finally, enable uart peripheral
+	// TODO: NVIC Configuration - enable uart interrupt
+
+	// TODO: finally, enable uart peripheral
 }
