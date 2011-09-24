@@ -11,10 +11,17 @@
 #define UART1_TxPin		GPIO_Pin_9
 
 void UART1_init(void);
+void uart1_putc(uint8_t c);
 
 int main()
 {
 	UART1_init();
+
+	uart_putc('h');
+	uart_putc('e');
+	uart_putc('l');
+	uart_putc('l');
+	uart_putc('o');
 
 	return 0;
 }
@@ -52,4 +59,12 @@ void UART1_init()
 
 	/* enable UART1 peripheral */
 	USART_Cmd(UART1, ENABLE);
+}
+
+void uart_putc(uint8_t c)
+{
+	// place the character to the data register
+	USART_SendData(UART1, c);
+	// wait until TXE=1 (data has been moved to the shift register)
+	while(USART_GetFlagStatus(UART1, USART_FLAG_TXE) == RESET);
 }
