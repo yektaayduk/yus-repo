@@ -6,22 +6,12 @@
 #include "stm32f10x.h"
 #include "stm32f10x_gpio.h"
 
-#define SRAM_SIZE       20*1024     // 20K RAM
-
 /* led connected to a gpio pin */
 #define LED_PIN      9          // pin 9
 #define OUTPUT_MODE (GPIO_Mode_Out_PP|GPIO_Speed_50MHz) // push-pull + 50MHz
 
 /* user functions */
-int main(void);
 void delay(unsigned long count);
-
-/* vector table */
-unsigned int *vector_table[] __attribute__((section(".vector_table"))) =
-{
-    (unsigned int *)(SRAM_BASE+SRAM_SIZE),   // end of SRAM
-    (unsigned int *) main                    // entry point
-};
 
 int main()
 {
@@ -46,4 +36,3 @@ void delay(unsigned long count)
 {
     while(count--);
 }
-

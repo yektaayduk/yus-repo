@@ -4,6 +4,7 @@
 ###############################
 
 CC = arm-none-eabi-gcc
+AS = arm-none-eabi-as
 LD = arm-none-eabi-ld
 CP = arm-none-eabi-objcopy
 
@@ -15,6 +16,7 @@ INCLUDES = -I./Libraries/CMSIS/CM3/DeviceSupport/ST/STM32F10x/ \
 			-I./Libraries/STM32F10x_StdPeriph_Driver/inc
 
 CFLAGS  = -c -fno-common -O0 -g -mcpu=cortex-m3 -mthumb -D$(FAMILY) $(INCLUDES)
+AFLAGS  = -mcpu=cortex-m3 -mthumb 
 LFLAGS  = -nostartfiles -T$(LKR_SCRIPT)
 CPFLAGS = -Obinary
 
@@ -23,8 +25,11 @@ all: main.bin
 main.o: main.c
 	$(CC) $(CFLAGS) -o main.o main.c
 
-main.elf: main.o
-	$(LD) $(LFLAGS) -o main.elf main.o
+startup.o: startup.s
+	$(AS) $(AFLAGS) -o startup.o startup.s
+
+main.elf: main.o startup.o
+	$(LD) $(LFLAGS) -o main.elf main.o startup.o
 
 main.bin: main.elf
 	$(CP) $(CPFLAGS) main.elf main.bin
