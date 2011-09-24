@@ -16,8 +16,12 @@ int main()
 
 void UART1_init()
 {
-	// TODO
-	// 1. RCC configuration - enable clocks on peripherals
+	/* enable clocks on peripherals */
+	RCC_APB2PeriphClockCmd(
+			RCC_APB2Periph_GPIOA |	// turn on GPIOA
+			RCC_APB2Periph_USART1 |	// turn on USART1
+			RCC_APB2Periph_AFIO,	// turn on alternate function
+			ENABLE);
 
 	// 2. GPIO configuration - configure RX and TX pin modes
 
