@@ -47,7 +47,7 @@ PERIPHERALS = #uncomment below the library/peripheral(s) to be used
 # PERIPHERALS += stm32f10x_tim
  PERIPHERALS += stm32f10x_usart
 # PERIPHERALS += stm32f10x_wwdg
-# PERIPHERALS += misc
+ PERIPHERALS += misc
 
 PERIPH_DIR = $(STLIB_DIR)/STM32F10x_StdPeriph_Driver
 CM3_DIR = $(STLIB_DIR)/CMSIS/CM3
