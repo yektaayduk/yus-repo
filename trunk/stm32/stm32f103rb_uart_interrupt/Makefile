@@ -1,12 +1,12 @@
 
-#################################
-#  project: STM32F10X Template
+#############################################
+#  project: STM32F10X Interrupt-Driven UART
 #     file: Makefile
-#################################
+#############################################
 
-PROJECT = STM32_Template
+PROJECT = STM32_Interrupt_UART
 
-CROSS_COMPILE = arm-none-eabi-
+CROSS_COMPILE ?= arm-none-eabi-
 
 #--- sub-directories ---#
 USER_DIR = ./src/User
@@ -45,7 +45,7 @@ PERIPHERALS = #uncomment below the library/peripheral(s) to be used
 # PERIPHERALS += stm32f10x_sdio
 # PERIPHERALS += stm32f10x_spi
 # PERIPHERALS += stm32f10x_tim
-# PERIPHERALS += stm32f10x_usart
+ PERIPHERALS += stm32f10x_usart
 # PERIPHERALS += stm32f10x_wwdg
 # PERIPHERALS += misc
 
