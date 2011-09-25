@@ -11,12 +11,16 @@ CROSS_COMPILE ?= arm-none-eabi-
 #--- sub-directories ---#
 USER_DIR = ./src/User
 STLIB_DIR = ./src/Libraries
+XUART_DIR = ./src/xuart
 OUTPUT_DIR = ./out
 
 #--- user sources ---#
-USER_SOURCES = main.c system_stm32f10x.c uart.c
+USER_SOURCES = main.c system_stm32f10x.c
 USER_SRCS = $(USER_SOURCES:%.c=$(USER_DIR)/%.c) #add user *.c files manually
 #USER_SRCS = $(wildcard $(USER_DIR)/*.c) #or, compile all *.c in user dir
+
+XUART_SOURCES = uart.c
+XUART_SRCS = $(XUART_SOURCES:%.c=$(XUART_DIR)/%.c)
 
 #--- startup code & linker script ---#
 LKR_SCRIPT = ./src/stm32_flash_md.ld
@@ -56,6 +60,7 @@ CM3_DEVICE_DIR = $(CM3_DIR)/DeviceSupport/ST/STM32F10x
 
 STARTUP_OBJ = $(STARTUP:%.s=%.o)
 USER_OBJS = $(USER_SRCS:%.c=%.o)
+XUART_OBJS = $(XUART_SRCS:%.c=%.o)
 
 CM3_SRC = $(CM3_CORE_DIR)/core_cm3.c
 CM3_OBJ = #$(CM3_SRC:%.c=%.o) #unused
@@ -73,7 +78,7 @@ SZ = $(CROSS_COMPILE)size
 
 OPT = 0 #optimize: 0, 1, 2, 3, or s
 
-INCLUDES = -I. -I$(USER_DIR) -I$(PERIPH_DIR)/inc \
+INCLUDES = -I. -I$(USER_DIR) -I$(XUART_DIR) -I$(PERIPH_DIR)/inc \
 		-I$(CM3_CORE_DIR) -I$(CM3_DEVICE_DIR)
 
 #--- Toolchain flags ---#
@@ -86,7 +91,7 @@ CPFLAGS = -Obinary
 ODFLAGS = -S
 
 #--- toolchain outputs ---#
-OBJECTS = $(STARTUP_OBJ) $(USER_OBJS) $(CM3_OBJ) $(PERIPH_OBJS)
+OBJECTS = $(STARTUP_OBJ) $(USER_OBJS) $(CM3_OBJ) $(PERIPH_OBJS) $(XUART_OBJS)
 ELF_FILE = $(OUTPUT_DIR)/$(PROJECT).elf
 BIN_FILE = $(OUTPUT_DIR)/$(PROJECT).bin
 LST_FILE = $(OUTPUT_DIR)/$(PROJECT).lst
