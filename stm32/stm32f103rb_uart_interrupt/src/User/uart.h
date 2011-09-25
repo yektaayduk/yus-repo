@@ -15,5 +15,7 @@
 void uart_init(void);
 void uart_putc(uint8_t c);
 void uart_puts(uint8_t *s);
+uint8_t uart_isrx(void);
+uint8_t uart_getc(void);
 
 #endif /* __UART_H__ */
