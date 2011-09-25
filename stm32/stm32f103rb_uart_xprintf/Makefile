@@ -1,10 +1,10 @@
 
 #############################################
-#  project: STM32F10X Interrupt-Driven UART
+#  project: STM32F10X xprintf UART
 #     file: Makefile
 #############################################
 
-PROJECT = STM32_Interrupt_UART
+PROJECT = STM32_xUART
 
 CROSS_COMPILE ?= arm-none-eabi-
 

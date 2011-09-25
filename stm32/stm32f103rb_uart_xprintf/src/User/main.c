@@ -1,5 +1,5 @@
 /********************************************
- * project: STM32F10X Interrupt-Driven UART
+ * project: STM32F10X xprintf UART
  *    file: main.c
  ********************************************/
 
