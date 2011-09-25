@@ -8,9 +8,9 @@
 
 int main()
 {
-	uart_init();
+	xuart_init();
 
-	uart_puts("hello stm32!\r\n");
+	xprintf("hello stm%d!\r\n", 32);
 
 	while(1)
 	{

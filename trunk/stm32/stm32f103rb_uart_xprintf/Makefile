@@ -76,7 +76,7 @@ CP = $(CROSS_COMPILE)objcopy
 OD = $(CROSS_COMPILE)objdump
 SZ = $(CROSS_COMPILE)size
 
-OPT = 0 #optimize: 0, 1, 2, 3, or s
+OPT = s #optimize: 0, 1, 2, 3, or s
 
 INCLUDES = -I. -I$(USER_DIR) -I$(XUART_DIR) -I$(PERIPH_DIR)/inc \
 		-I$(CM3_CORE_DIR) -I$(CM3_DEVICE_DIR)
