@@ -143,17 +143,6 @@ void SysTick_Handler(void)
 /*  file (startup_stm32f10x_xx.s).                                            */
 /******************************************************************************/
 
-void USART1_IRQHandler(void)
-{
-	uint16_t c;
-	if(USART_GetITStatus(USART1, USART_IT_RXNE) != RESET)
-	{
-		// initial loopback test
-		c = USART_ReceiveData( USART1 );
-		USART_SendData( USART1, c );
-	}
-}
-
 /**
   * @brief  This function handles PPP interrupt request.
   * @param  None
