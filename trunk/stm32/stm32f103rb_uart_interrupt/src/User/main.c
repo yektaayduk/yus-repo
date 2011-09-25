@@ -11,6 +11,13 @@
 #define UART1_RxPin		GPIO_Pin_10
 #define UART1_TxPin		GPIO_Pin_9
 
+#define	BUFFER_SIZE		128	/* (power of 2) */
+#define	BUFFER_MASK		(BUFFER_SIZE-1)
+static volatile struct {
+	uint16_t	inptr, outptr;		/* in/out index */
+	uint8_t		buff[BUFFER_SIZE];	/* receive/transmit buffer */
+} TxFifo, RxFifo;
+
 void uart_init(void);
 
 int main()
@@ -62,6 +69,9 @@ void uart_init()
 	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 1;
 	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
 	NVIC_Init(&NVIC_InitStructure);
+
+	/* clear FIFO buffers */
+	TxFifo.inptr = TxFifo.outptr = RxFifo.inptr = RxFifo.outptr = 0;
 
 	/* Enable uart receive interrupt */
 	USART_ITConfig(UART1, USART_IT_RXNE, ENABLE);
