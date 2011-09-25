@@ -13,5 +13,7 @@
 #define UART1_ISR		USART1_IRQHandler
 
 void uart_init(void);
+void uart_putc(uint8_t c);
+void uart_puts(uint8_t *s);
 
 #endif /* __UART_H__ */
