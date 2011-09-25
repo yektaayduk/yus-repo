@@ -10,6 +10,8 @@ int main()
 {
 	uart_init();
 
+	uart_puts("hello stm32!\r\n");
+
 	while(1)
 	{
 	}
