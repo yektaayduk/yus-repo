@@ -14,6 +14,10 @@ int main()
 
 	while(1)
 	{
+		if(uart_isrx()){
+			uart_putc( uart_getc() ); // loopback
+		}
+		/* do other tasks here */
 	}
 	return 0;
 }

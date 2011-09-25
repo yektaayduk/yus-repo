@@ -11,12 +11,15 @@ volatile uint8_t TxRun;		/* TX running flag */
 
 void UART1_ISR(void)
 {
-	uint16_t c;
+	uint16_t temp;
 	if(USART_GetITStatus(UART1, USART_IT_RXNE) != RESET)
 	{
-		// initial loopback test
-		c = USART_ReceiveData( UART1 );
-		USART_SendData( UART1, c );
+		// byte read and save to buffer
+		RxFifo.buff[RxFifo.inptr] = USART_ReceiveData( UART1 ) & 0xFF;
+		temp = (RxFifo.inptr+1) & UART_BUFF_MASK;
+		if(temp != RxFifo.outptr){	// avoid buffer overrun
+			RxFifo.inptr = temp;
+		}
 	}
 	if(USART_GetITStatus(UART1, USART_IT_TXE) != RESET)
 	{
@@ -24,7 +27,7 @@ void UART1_ISR(void)
 		USART_SendData( UART1, TxFifo.buff[TxFifo.outptr++] );
 		TxFifo.outptr &= UART_BUFF_MASK; // circular FIFO
 		if(TxFifo.outptr==TxFifo.inptr){ // if buffer empty
-			USART_ITConfig(UART1, USART_IT_TXE, DISABLE); // disable TF interrupt
+			USART_ITConfig(UART1, USART_IT_TXE, DISABLE); // disable TX interrupt
 			TxRun = DISABLE; // clear the flag
 		}
 	}
@@ -102,4 +105,25 @@ void uart_putc(uint8_t c)
 void uart_puts(uint8_t *s)
 {
 	while(*s) uart_putc(*s++);
+}
+
+uint8_t uart_isrx(void)
+{
+	// checks if a character is present in the RX buffer
+	return (RxFifo.inptr != RxFifo.outptr);
+}
+
+uint8_t uart_getc(void)
+{
+	uint8_t c;
+
+	// wait until a character is present
+	while (uart_isrx()==0)	continue;
+
+	// get a character from RX buffer
+	c = RxFifo.buff[RxFifo.outptr];
+	// increment out index
+	RxFifo.outptr = (RxFifo.outptr+1)&UART_BUFF_MASK;
+
+	return c;
 }
