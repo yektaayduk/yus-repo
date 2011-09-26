@@ -5,8 +5,8 @@
 #include "uart.h"
 #include "xprintf.h"
 
-#define xuart_init() \
-				uart_init(); \
+#define xuart_init(baud) \
+				uart_init(baud); \
 				xdev_out(uart_putc); \
 				xdev_in(uart_getc)
 

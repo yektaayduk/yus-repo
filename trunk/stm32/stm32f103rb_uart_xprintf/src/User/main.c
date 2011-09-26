@@ -8,7 +8,7 @@
 
 int main()
 {
-	xuart_init();
+	xuart_init(115200);
 
 	xprintf("hello stm%d!\r\n", 32);
 
