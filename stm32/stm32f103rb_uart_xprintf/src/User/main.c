@@ -8,16 +8,18 @@
 
 int main()
 {
+	char buff[50];
+
 	xuart_init(115200);
 
 	xprintf("hello stm%d!\r\n", 32);
 
 	while(1)
 	{
-		if(uart_isrx()){
-			uart_putc( uart_getc() ); // loopback
-		}
-		/* do other tasks here */
+		xprintf("what's your name?: ");
+		xgets(buff, 50);
+		if(buff[0])
+			xprintf("hi there, %s!\n", buff);
 	}
 	return 0;
 }
