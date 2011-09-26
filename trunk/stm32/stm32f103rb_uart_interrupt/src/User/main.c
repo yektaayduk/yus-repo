@@ -8,7 +8,7 @@
 
 int main()
 {
-	uart_init();
+	uart_init(115200);
 
 	uart_puts("hello stm32!\r\n");
 

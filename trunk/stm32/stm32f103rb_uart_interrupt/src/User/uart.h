@@ -12,7 +12,7 @@
 
 #define UART1_ISR		USART1_IRQHandler
 
-void uart_init(void);
+void uart_init(uint32_t baud);
 void uart_putc(uint8_t c);
 void uart_puts(uint8_t *s);
 uint8_t uart_isrx(void);
