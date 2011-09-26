@@ -33,7 +33,7 @@ void UART1_ISR(void)
 	}
 }
 
-void uart_init()
+void uart_init(uint32_t baud)
 {
 	GPIO_InitTypeDef GPIO_InitStructure;
 	USART_InitTypeDef USART_InitStructure;
@@ -57,7 +57,7 @@ void uart_init()
 	GPIO_Init(UART1_GPIO, &GPIO_InitStructure);
 
 	/* configure serial port settings */
-	USART_InitStructure.USART_BaudRate = 115200;
+	USART_InitStructure.USART_BaudRate = baud;
 	USART_InitStructure.USART_WordLength = USART_WordLength_8b;
 	USART_InitStructure.USART_StopBits = USART_StopBits_1;
 	USART_InitStructure.USART_Parity = USART_Parity_No;
