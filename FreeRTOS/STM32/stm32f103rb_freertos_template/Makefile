@@ -9,8 +9,10 @@ PROJECT = STM32_FreeRTOS_Template
 CROSS_COMPILE ?= arm-none-eabi-
 
 #--- sub-directories ---#
-USER_DIR = ./src/User
-STLIB_DIR = ./src/Libraries
+SRC_DIR = ./src
+USER_DIR = $(SRC_DIR)/User
+STLIB_DIR = $(SRC_DIR)/Libraries
+FREERTOS_DIR = $(SRC_DIR)/FreeRTOS
 OUTPUT_DIR = ./out
 
 #--- user sources ---#
@@ -74,7 +76,8 @@ SZ = $(CROSS_COMPILE)size
 OPT = 0 #optimize: 0, 1, 2, 3, or s
 
 INCLUDES = -I. -I$(USER_DIR) -I$(PERIPH_DIR)/inc \
-		-I$(CM3_CORE_DIR) -I$(CM3_DEVICE_DIR)
+		-I$(CM3_CORE_DIR) -I$(CM3_DEVICE_DIR) \
+		-I$(FREERTOS_DIR) -I$(FREERTOS_DIR)/include -I$(FREERTOS_DIR)/portable/GCC/ARM_CM3
 
 #--- Toolchain flags ---#
 COMMON_FLAGS = -mcpu=cortex-m3 -mthumb# -march=armv7-m
