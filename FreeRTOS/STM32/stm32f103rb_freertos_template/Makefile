@@ -78,7 +78,8 @@ PERIPH_OBJS = $(PERIPH_SRCS:%.c=%.o)
 #--- ToolChain section ---#
 CC = $(CROSS_COMPILE)gcc
 AS = $(CROSS_COMPILE)as
-LD = $(CROSS_COMPILE)ld
+#LD = $(CROSS_COMPILE)ld
+LD = $(CROSS_COMPILE)gcc # linker tool workaround
 CP = $(CROSS_COMPILE)objcopy
 OD = $(CROSS_COMPILE)objdump
 SZ = $(CROSS_COMPILE)size
@@ -94,7 +95,7 @@ COMMON_FLAGS = -mcpu=cortex-m3 -mthumb# -march=armv7-m
 CFLAGS  = $(COMMON_FLAGS) -O$(OPT) -c -g -fno-common -DUSE_STDPERIPH_DRIVER -D$(DEVICE) $(INCLUDES)
 CFLAGS += -nostdlib -ffunction-sections -fdata-sections -Wl,--gc-sections
 AFLAGS  = $(COMMON_FLAGS)
-LFLAGS  = -nostartfiles -T$(LKR_SCRIPT)
+LFLAGS  = $(COMMON_FLAGS) -nostartfiles -T$(LKR_SCRIPT)
 CPFLAGS = -Obinary
 ODFLAGS = -S
 
