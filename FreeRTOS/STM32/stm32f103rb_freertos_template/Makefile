@@ -16,7 +16,7 @@ FREERTOS_DIR = $(SRC_DIR)/FreeRTOS
 OUTPUT_DIR = ./out
 
 #--- user sources ---#
-USER_SOURCES = main.c system_stm32f10x.c
+USER_SOURCES = main.c system_stm32f10x.c syscalls.c
 USER_SRCS = $(USER_SOURCES:%.c=$(USER_DIR)/%.c) #add user *.c files manually
 #USER_SRCS = $(wildcard $(USER_DIR)/*.c) #or, compile all *.c in user dir
 
