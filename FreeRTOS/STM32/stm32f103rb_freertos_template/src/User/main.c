@@ -13,12 +13,14 @@
 /* user functions */
 void delay(unsigned long count);
 
+static void prvSetupHardware( void );
+
 int main()
 {
     GPIO_InitTypeDef GPIO_InitStructure;
 
-    /* enable clock on GPIOB peripheral */
-    RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB, ENABLE);
+    /* initialize hardware */
+    prvSetupHardware();
 
     /* set pin output mode */
     GPIO_InitStructure.GPIO_Pin = LED_PIN;
@@ -28,9 +30,9 @@ int main()
 
     while(1)
     {
-        GPIO_SetBits(LED_PORT, LED_PIN);	// set pin high
+        GPIO_SetBits(LED_PORT, LED_PIN);    // set pin high
         delay(700000);
-        GPIO_ResetBits(LED_PORT, LED_PIN);	// set pin low
+        GPIO_ResetBits(LED_PORT, LED_PIN);    // set pin low
         delay(700000);
     }
     return 0;
@@ -40,3 +42,19 @@ void delay(unsigned long count)
 {
     while(count--);
 }
+
+static void prvSetupHardware( void )
+{
+    /* Enable GPIOA, GPIOB, GPIOC and AFIO clocks */
+    RCC_APB2PeriphClockCmd(    RCC_APB2Periph_GPIOA | RCC_APB2Periph_GPIOB
+            | RCC_APB2Periph_GPIOC | RCC_APB2Periph_AFIO, ENABLE );
+
+    /* Set the Vector Table base address at 0x08000000 */
+    NVIC_SetVectorTable( NVIC_VectTab_FLASH, 0x0 );
+
+    NVIC_PriorityGroupConfig( NVIC_PriorityGroup_4 );
+
+    /* Configure HCLK clock as SysTick clock source. */
+    SysTick_CLKSourceConfig( SysTick_CLKSource_HCLK );
+}
+
