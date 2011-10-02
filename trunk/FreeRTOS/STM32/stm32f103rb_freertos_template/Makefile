@@ -20,6 +20,15 @@ USER_SOURCES = main.c system_stm32f10x.c
 USER_SRCS = $(USER_SOURCES:%.c=$(USER_DIR)/%.c) #add user *.c files manually
 #USER_SRCS = $(wildcard $(USER_DIR)/*.c) #or, compile all *.c in user dir
 
+#--- FreeRTOS sources ---#
+FREERTOS_SRCS  = $(FREERTOS_DIR)/list.c
+FREERTOS_SRCS += $(FREERTOS_DIR)/queue.c
+FREERTOS_SRCS += $(FREERTOS_DIR)/tasks.c
+FREERTOS_SRCS += $(FREERTOS_DIR)/portable/GCC/ARM_CM3/port.c
+FREERTOS_SRCS += $(FREERTOS_DIR)/portable/MemMang/heap_2.c
+#FREERTOS_SRCS += $(FREERTOS_DIR)/croutine.c
+#FREERTOS_SRCS += $(FREERTOS_DIR)/timers.c
+
 #--- startup code & linker script ---#
 LKR_SCRIPT = ./src/stm32_flash_md.ld
 STARTUP = ./src/startup_stm32f10x_md.s
@@ -58,6 +67,7 @@ CM3_DEVICE_DIR = $(CM3_DIR)/DeviceSupport/ST/STM32F10x
 
 STARTUP_OBJ = $(STARTUP:%.s=%.o)
 USER_OBJS = $(USER_SRCS:%.c=%.o)
+FREERTOS_OBJS = $(FREERTOS_SRCS:%.c=%.o)
 
 CM3_SRC = $(CM3_CORE_DIR)/core_cm3.c
 CM3_OBJ = #$(CM3_SRC:%.c=%.o) #unused
