@@ -12,10 +12,9 @@
 #define LED_PORT   GPIOB
 
 #define LED_TASK_PRIORITY    ( tskIDLE_PRIORITY + 2 )
+#define LED_DELAY			(( portTickType ) 200 / portTICK_RATE_MS ) // 200ms
 
 /* user functions */
-void delay(unsigned long count);
-
 static void prvSetupHardware( void );
 static void prvLedTask( void *pvParameters );
 
@@ -44,11 +43,6 @@ int main()
     return 0;
 }
 
-void delay(unsigned long count)
-{
-    while(count--);
-}
-
 static void prvSetupHardware( void )
 {
     /* Enable GPIOA, GPIOB, GPIOC and AFIO clocks */
@@ -67,6 +61,7 @@ static void prvSetupHardware( void )
 static void prvLedTask( void *pvParameters )
 {
     GPIO_InitTypeDef GPIO_InitStructure;
+    portTickType xLastExecutionTime;
 
     /* set pin output mode */
     GPIO_InitStructure.GPIO_Pin = LED_PIN;
@@ -74,12 +69,15 @@ static void prvLedTask( void *pvParameters )
     GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
     GPIO_Init(LED_PORT, &GPIO_InitStructure);
 
+    /* Initialise the xLastExecutionTime variable on task entry. */
+    xLastExecutionTime = xTaskGetTickCount();
+
     for( ;; )
     {
         GPIO_SetBits(LED_PORT, LED_PIN);    // set pin high
-        delay(700000);
-        GPIO_ResetBits(LED_PORT, LED_PIN);    // set pin low
-        delay(700000);
+        vTaskDelayUntil( &xLastExecutionTime, LED_DELAY );
+        GPIO_ResetBits(LED_PORT, LED_PIN);  // set pin low
+        vTaskDelayUntil( &xLastExecutionTime, LED_DELAY );
     }
 }
 
