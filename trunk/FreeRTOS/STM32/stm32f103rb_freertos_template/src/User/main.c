@@ -4,6 +4,7 @@
  ******************************************/
 
 #include "stm32f10x.h"
+#include "FreeRTOS.h"
 
 /* led connected to a gpio pin */
 #define LED_PIN    GPIO_Pin_9
