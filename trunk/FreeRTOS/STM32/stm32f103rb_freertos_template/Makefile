@@ -1,12 +1,12 @@
 
-#################################
-# project: STM32F10X LED Blinker
-#    file: Makefile
-#################################
+###########################################
+#  project: STM32F103RB FreeRTOS Template
+#     file: Makefile
+###########################################
 
-PROJECT = STM32_Blinker
+PROJECT = STM32_FreeRTOS_Template
 
-CROSS_COMPILE = arm-none-eabi-
+CROSS_COMPILE ?= arm-none-eabi-
 
 #--- sub-directories ---#
 USER_DIR = ./src/User

@@ -1,7 +1,7 @@
-/*******************************
- * project: STM32 LED Blinker
+/******************************************
+ * project: STM32F103RB FreeRTOS Template
  *    file: main.c
- *******************************/
+ ******************************************/
 
 #include "stm32f10x.h"
 
@@ -28,9 +28,9 @@ int main()
     while(1)
     {
         GPIO_SetBits(LED_PORT, LED_PIN);	// set pin high
-        delay(200000);
+        delay(700000);
         GPIO_ResetBits(LED_PORT, LED_PIN);	// set pin low
-        delay(200000);
+        delay(700000);
     }
     return 0;
 }
