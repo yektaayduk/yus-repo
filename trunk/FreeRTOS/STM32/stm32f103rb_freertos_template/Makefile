@@ -83,6 +83,7 @@ LD = $(CROSS_COMPILE)gcc # linker tool workaround
 CP = $(CROSS_COMPILE)objcopy
 OD = $(CROSS_COMPILE)objdump
 SZ = $(CROSS_COMPILE)size
+NM = $(CROSS_COMPILE)nm
 
 OPT = 0 #optimize: 0, 1, 2, 3, or s
 
@@ -98,12 +99,14 @@ AFLAGS  = $(COMMON_FLAGS)
 LFLAGS  = $(COMMON_FLAGS) -nostartfiles -T$(LKR_SCRIPT)
 CPFLAGS = -Obinary
 ODFLAGS = -S
+NMFLAGS = -n
 
 #--- toolchain outputs ---#
 OBJECTS = $(STARTUP_OBJ) $(USER_OBJS) $(CM3_OBJ) $(PERIPH_OBJS) $(FREERTOS_OBJS)
 ELF_FILE = $(OUTPUT_DIR)/$(PROJECT).elf
 BIN_FILE = $(OUTPUT_DIR)/$(PROJECT).bin
 LST_FILE = $(OUTPUT_DIR)/$(PROJECT).lst
+MAP_FILE = $(OUTPUT_DIR)/$(PROJECT).map
 
 #--- remove files ---#
 RM = rm -rf 
@@ -116,7 +119,9 @@ FLASHLOADER_CMD = python stm32loader.py -p $(SERIALPORT) -e -w -v $(BIN_FILE)
 
 #----- rules for make -----#
 all: $(BIN_FILE)
-	@echo build finished.	
+	@echo optimize level = $(OPT) with code size:
+	$(SZ) $(ELF_FILE)
+	@echo build finished.
 
 .c.o:
 	@echo compiling: $(^F)
@@ -131,16 +136,16 @@ $(ELF_FILE): $(OBJECTS)
 	$(LD) $(LFLAGS) $^ -o $@
 
 $(BIN_FILE): $(ELF_FILE)
-	@echo creating binary: $@
+	@echo creating binary image: $@
 	$(CP) $(CPFLAGS) $< $@
 	@echo creating code listing: $(LST_FILE)
 	$(OD) $(ODFLAGS) $< > $(LST_FILE)
-	@echo optimize level = $(OPT) with code size:
-	$(SZ) $<
+	@echo creating system mapping: $(MAP_FILE)
+	$(NM) $(NMFLAGS) $< > $(MAP_FILE)
 
 clean:
 	@echo removing temporary files...
-	$(RM) $(OBJECTS) $(ELF_FILE) $(BIN_FILE) $(LST_FILE)
+	$(RM) $(OBJECTS) $(ELF_FILE) $(BIN_FILE) $(LST_FILE) $(MAP_FILE)
 
 program:
 	@echo flashing device...
