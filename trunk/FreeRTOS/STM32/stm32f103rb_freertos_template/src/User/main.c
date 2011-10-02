@@ -14,27 +14,15 @@
 void delay(unsigned long count);
 
 static void prvSetupHardware( void );
+static void prvLedTask( void *pvParameters );
 
 int main()
 {
-    GPIO_InitTypeDef GPIO_InitStructure;
-
     /* initialize hardware */
     prvSetupHardware();
 
-    /* set pin output mode */
-    GPIO_InitStructure.GPIO_Pin = LED_PIN;
-    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
-    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-    GPIO_Init(LED_PORT, &GPIO_InitStructure);
+    prvLedTask(NULL);
 
-    while(1)
-    {
-        GPIO_SetBits(LED_PORT, LED_PIN);    // set pin high
-        delay(700000);
-        GPIO_ResetBits(LED_PORT, LED_PIN);    // set pin low
-        delay(700000);
-    }
     return 0;
 }
 
@@ -56,5 +44,24 @@ static void prvSetupHardware( void )
 
     /* Configure HCLK clock as SysTick clock source. */
     SysTick_CLKSourceConfig( SysTick_CLKSource_HCLK );
+}
+
+static void prvLedTask( void *pvParameters )
+{
+    GPIO_InitTypeDef GPIO_InitStructure;
+
+    /* set pin output mode */
+    GPIO_InitStructure.GPIO_Pin = LED_PIN;
+    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+    GPIO_Init(LED_PORT, &GPIO_InitStructure);
+
+    for( ;; )
+    {
+        GPIO_SetBits(LED_PORT, LED_PIN);    // set pin high
+        delay(700000);
+        GPIO_ResetBits(LED_PORT, LED_PIN);    // set pin low
+        delay(700000);
+    }
 }
 
