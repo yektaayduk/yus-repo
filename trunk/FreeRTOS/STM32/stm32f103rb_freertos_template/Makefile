@@ -58,7 +58,7 @@ PERIPHERALS = #uncomment below the library/peripheral(s) to be used
 # PERIPHERALS += stm32f10x_tim
 # PERIPHERALS += stm32f10x_usart
 # PERIPHERALS += stm32f10x_wwdg
-# PERIPHERALS += misc
+ PERIPHERALS += misc
 
 PERIPH_DIR = $(STLIB_DIR)/STM32F10x_StdPeriph_Driver
 CM3_DIR = $(STLIB_DIR)/CMSIS/CM3
@@ -70,7 +70,7 @@ USER_OBJS = $(USER_SRCS:%.c=%.o)
 FREERTOS_OBJS = $(FREERTOS_SRCS:%.c=%.o)
 
 CM3_SRC = $(CM3_CORE_DIR)/core_cm3.c
-CM3_OBJ = #$(CM3_SRC:%.c=%.o) #unused
+CM3_OBJ = $(CM3_SRC:%.c=%.o)
 
 PERIPH_SRCS = $(PERIPHERALS:%=$(PERIPH_DIR)/src/%.c)
 PERIPH_OBJS = $(PERIPH_SRCS:%.c=%.o)
