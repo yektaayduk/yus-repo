@@ -5,10 +5,13 @@
 
 #include "stm32f10x.h"
 #include "FreeRTOS.h"
+#include "task.h"
 
 /* led connected to a gpio pin */
 #define LED_PIN    GPIO_Pin_9
 #define LED_PORT   GPIOB
+
+#define LED_TASK_PRIORITY    ( tskIDLE_PRIORITY + 2 )
 
 /* user functions */
 void delay(unsigned long count);
@@ -21,8 +24,23 @@ int main()
     /* initialize hardware */
     prvSetupHardware();
 
-    prvLedTask(NULL);
+    /* create the example led task */
+    xTaskCreate(                           /* Create a new task and add it to the list of tasks that are ready to run */
+            prvLedTask,                    /* Pointer to the task entry function */
+           (signed portCHAR*)"LED Blinker",/* A descriptive name for the task */
+            configMINIMAL_STACK_SIZE,      /* The size of the task stack specified as the number of variables the stack can hold */
+            NULL,                          /* Pointer that will be used as the parameter for the task being created */
+            LED_TASK_PRIORITY,             /* The priority at which the task should run */
+            NULL                           /* Used to pass back a handle by which the created task can be referenced */
+            );                             /* returns pdPASS (1) if successful */
 
+    /* create other tasks here */
+    // other xTaskCreate()'s
+
+    /* start the scheduler. */
+    vTaskStartScheduler();  /* Starts the real time kernel tick processing  */
+
+    /* should not get here */
     return 0;
 }
 
