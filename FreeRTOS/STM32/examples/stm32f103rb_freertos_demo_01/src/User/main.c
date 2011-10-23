@@ -6,17 +6,21 @@
 #include "stm32f10x.h"
 #include "FreeRTOS.h"
 #include "task.h"
+#include "xuart.h"
 
 /* led connected to a gpio pin */
 #define LED_PIN    GPIO_Pin_9
 #define LED_PORT   GPIOB
 
-#define LED_TASK_PRIORITY    ( tskIDLE_PRIORITY + 2 )
-#define LED_DELAY			(( portTickType ) 200 / portTICK_RATE_MS ) // 200ms
+#define LED_TASK_PRIORITY     ( tskIDLE_PRIORITY + 2 )
+#define UART_TASK_PRIORITY    ( tskIDLE_PRIORITY + 1 )
+
+#define LED_DELAY            (( portTickType ) 200 / portTICK_RATE_MS ) // 200ms
 
 /* user functions */
 static void prvSetupHardware( void );
 static void prvLedTask( void *pvParameters );
+static void prvUartTask( void *pvParameters );
 
 int main()
 {
@@ -33,8 +37,14 @@ int main()
             NULL                           /* Used to pass back a handle by which the created task can be referenced */
             );                             /* returns pdPASS (1) if successful */
 
-    /* create other tasks here */
-    // other xTaskCreate()'s
+    /* create uart task */
+    xTaskCreate(
+            prvUartTask,
+           (signed portCHAR*)"xUART test",
+            configMINIMAL_STACK_SIZE + 64,
+            NULL,
+            UART_TASK_PRIORITY,
+            NULL );
 
     /* start the scheduler. */
     vTaskStartScheduler();  /* Starts the real time kernel tick processing  */
@@ -56,6 +66,10 @@ static void prvSetupHardware( void )
 
     /* Configure HCLK clock as SysTick clock source. */
     SysTick_CLKSourceConfig( SysTick_CLKSource_HCLK );
+
+    /* Enable UART1 w/ 115200 baud */
+    xuart_init(115200);
+    xprintf("hello stm%d!\r\n", 32);
 }
 
 static void prvLedTask( void *pvParameters )
@@ -78,6 +92,19 @@ static void prvLedTask( void *pvParameters )
         vTaskDelayUntil( &xLastExecutionTime, LED_DELAY );
         GPIO_ResetBits(LED_PORT, LED_PIN);  // set pin low
         vTaskDelayUntil( &xLastExecutionTime, LED_DELAY );
+    }
+}
+
+static void prvUartTask( void *pvParameters )
+{
+    char buff[50];
+
+    for( ;; )
+    {
+        xprintf("what's your name?: ");
+        xgets(buff, 50);
+        if(buff[0])
+            xprintf("hi there, %s!\n", buff);
     }
 }
 
