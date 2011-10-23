@@ -1,6 +1,6 @@
 
 ###########################################
-#  project: STM32F103RB FreeRTOS Template
+#  project: STM32F103RB FreeRTOS Demo 01
 #     file: Makefile
 ###########################################
 

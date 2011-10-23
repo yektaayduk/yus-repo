@@ -1,5 +1,5 @@
 
-FreeRTOS template - using GNU tools
+STM32F103RB FreeRTOS Demo 01 - using GNU tools
 
 tested with CodeSourcery CodeBench Lite (arm-none-eabi)
 
