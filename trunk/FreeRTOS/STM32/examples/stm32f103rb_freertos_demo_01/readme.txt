@@ -3,7 +3,8 @@ STM32F103RB FreeRTOS Demo 01 - using GNU tools
 
 tested with CodeSourcery CodeBench Lite (arm-none-eabi)
 
-demo: STM32F103RB LED Blinker on pin 9 of GPIOB
+demo: LED Blinker on pin 9 of GPIOB
+      xUART on USART1
 
 ---------------------------------------------------------
 

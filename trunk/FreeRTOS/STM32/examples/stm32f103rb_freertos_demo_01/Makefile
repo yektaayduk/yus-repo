@@ -91,11 +91,12 @@ OD = $(CROSS_COMPILE)objdump
 SZ = $(CROSS_COMPILE)size
 NM = $(CROSS_COMPILE)nm
 
-OPT = 0 #optimize: 0, 1, 2, 3, or s
+OPT = s #optimize: 0, 1, 2, 3, or s
 
 INCLUDES = -I. -I$(USER_DIR) -I$(PERIPH_DIR)/inc \
 		-I$(CM3_CORE_DIR) -I$(CM3_DEVICE_DIR) \
-		-I$(FREERTOS_DIR) -I$(FREERTOS_DIR)/include -I$(FREERTOS_DIR)/portable/GCC/ARM_CM3
+		-I$(FREERTOS_DIR) -I$(FREERTOS_DIR)/include -I$(FREERTOS_DIR)/portable/GCC/ARM_CM3 \
+		-I$(XUART_DIR)
 
 #--- Toolchain flags ---#
 COMMON_FLAGS = -mcpu=cortex-m3 -mthumb# -march=armv7-m
