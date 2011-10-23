@@ -13,6 +13,7 @@ SRC_DIR = ./src
 USER_DIR = $(SRC_DIR)/User
 STLIB_DIR = $(SRC_DIR)/Libraries
 FREERTOS_DIR = $(SRC_DIR)/FreeRTOS
+XUART_DIR = $(SRC_DIR)/xuart
 OUTPUT_DIR = ./out
 
 #--- user sources ---#
@@ -28,6 +29,10 @@ FREERTOS_SRCS += $(FREERTOS_DIR)/portable/GCC/ARM_CM3/port.c
 FREERTOS_SRCS += $(FREERTOS_DIR)/portable/MemMang/heap_2.c
 #FREERTOS_SRCS += $(FREERTOS_DIR)/croutine.c
 #FREERTOS_SRCS += $(FREERTOS_DIR)/timers.c
+
+#--- xUART sources ---#
+XUART_SOURCES = uart.c xprintf.c
+XUART_SRCS = $(XUART_SOURCES:%.c=$(XUART_DIR)/%.c)
 
 #--- startup code & linker script ---#
 LKR_SCRIPT = ./src/stm32_flash_md.ld
@@ -56,7 +61,7 @@ PERIPHERALS = #uncomment below the library/peripheral(s) to be used
 # PERIPHERALS += stm32f10x_sdio
 # PERIPHERALS += stm32f10x_spi
 # PERIPHERALS += stm32f10x_tim
-# PERIPHERALS += stm32f10x_usart
+ PERIPHERALS += stm32f10x_usart
 # PERIPHERALS += stm32f10x_wwdg
  PERIPHERALS += misc
 
@@ -68,6 +73,7 @@ CM3_DEVICE_DIR = $(CM3_DIR)/DeviceSupport/ST/STM32F10x
 STARTUP_OBJ = $(STARTUP:%.s=%.o)
 USER_OBJS = $(USER_SRCS:%.c=%.o)
 FREERTOS_OBJS = $(FREERTOS_SRCS:%.c=%.o)
+XUART_OBJS = $(XUART_SRCS:%.c=%.o)
 
 CM3_SRC = $(CM3_CORE_DIR)/core_cm3.c
 CM3_OBJ = $(CM3_SRC:%.c=%.o)
@@ -102,7 +108,8 @@ ODFLAGS = -S
 NMFLAGS = -n
 
 #--- toolchain outputs ---#
-OBJECTS = $(STARTUP_OBJ) $(USER_OBJS) $(CM3_OBJ) $(PERIPH_OBJS) $(FREERTOS_OBJS)
+OBJECTS  = $(STARTUP_OBJ) $(CM3_OBJ) $(PERIPH_OBJS)
+OBJECTS += $(USER_OBJS) $(FREERTOS_OBJS) $(XUART_OBJS)
 ELF_FILE = $(OUTPUT_DIR)/$(PROJECT).elf
 BIN_FILE = $(OUTPUT_DIR)/$(PROJECT).bin
 LST_FILE = $(OUTPUT_DIR)/$(PROJECT).lst
