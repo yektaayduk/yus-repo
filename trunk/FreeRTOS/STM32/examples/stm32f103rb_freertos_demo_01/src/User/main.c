@@ -21,15 +21,18 @@
 #define LED_TASK_PRIORITY     ( tskIDLE_PRIORITY + 2 )
 #define UART_TASK_PRIORITY    ( tskIDLE_PRIORITY + 1 )
 #define BUTTON_TASK_PRIORITY  ( tskIDLE_PRIORITY + 3 )
+#define PRINT_TASK_PRIORITY   ( tskIDLE_PRIORITY + 3 )
 
 #define LED_DELAY            (( portTickType ) 200 / portTICK_RATE_MS ) // 200ms
 #define BUTTON_DELAY         (( portTickType ) 50 / portTICK_RATE_MS ) // 50ms
+#define PRINT_DELAY          (( portTickType ) 200 / portTICK_RATE_MS ) // 200ms
 
 /* user functions */
 static void prvSetupHardware( void );
 static void prvLedTask( void *pvParameters );
 static void prvUartTask( void *pvParameters );
 static void prvButtonTask( void *pvParameters );
+static void prvPrintTask( void *pvParameters );
 
 int main()
 {
@@ -63,6 +66,15 @@ int main()
             NULL,
             BUTTON_TASK_PRIORITY,
             NULL );
+
+    /* create printf task */
+	xTaskCreate(
+			prvPrintTask,
+		   (signed portCHAR*)"Print test",
+			configMINIMAL_STACK_SIZE,
+			NULL,
+			PRINT_TASK_PRIORITY,
+			NULL );
 
     /* start the scheduler. */
     vTaskStartScheduler();  /* Starts the real time kernel tick processing  */
@@ -155,4 +167,26 @@ static void prvButtonTask( void *pvParameters )
 	}
 }
 
+static void prvPrintTask( void *pvParameters )
+{
+    GPIO_InitTypeDef GPIO_InitStructure;
+    portTickType xLastExecutionTime;
+
+    /* input mode for push button 1*/
+    GPIO_InitStructure.GPIO_Pin = PB1;
+    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPU;
+    GPIO_Init(PB_PORT, &GPIO_InitStructure);
+
+    xLastExecutionTime = xTaskGetTickCount();
+
+    for( ;; )
+	{
+    	vTaskDelayUntil( &xLastExecutionTime, PRINT_DELAY >> 3 );
+    	// if PB1 is pressed, print some messages
+		if( GPIO_ReadInputDataBit(PB_PORT, PB1) == Bit_RESET){
+			xprintf("\n you pressed me! \n");
+			vTaskDelayUntil( &xLastExecutionTime, PRINT_DELAY );
+		}
+	}
+}
 
