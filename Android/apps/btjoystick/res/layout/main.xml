@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+	    
+	<com.MobileAnarchy.Android.Widgets.Joystick.DualJoystickView
+		android:id="@+id/dualjoystickView"
+		android:layout_gravity="center_horizontal" android:layout_marginTop="10dip"
+		android:layout_width="fill_parent" android:layout_height="175dip"
+		android:layout_marginLeft="5dip" android:layout_marginRight="5dip"/>
+
+	<LinearLayout
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_gravity="center_horizontal" >
+			<TextView android:id="@+id/txt_dataL"
+				android:text="( 0, 0 )"
+				android:layout_width="120dip" android:layout_height="wrap_content"
+				android:textAppearance="?android:attr/textAppearanceMedium"
+				android:gravity="left" />
+			<Button android:id="@+id/button_connect"
+				android:text="@string/button_connect"		
+				android:layout_width="100dip" android:layout_height="wrap_content"
+				android:layout_gravity="center_horizontal" />
+			<TextView android:id="@+id/txt_dataR"
+				android:text="( 0, 0 )"
+				android:layout_width="120dip" android:layout_height="wrap_content"
+				android:textAppearance="?android:attr/textAppearanceMedium"
+				android:gravity="right" />
+		</LinearLayout>
+	
+	<TextView android:id="@+id/txt_status"
+		android:text="(status)"
+		android:layout_width="wrap_content" android:layout_height="wrap_content"
+		android:textAppearance="?android:attr/textAppearanceMedium" />
+		
+</LinearLayout>
