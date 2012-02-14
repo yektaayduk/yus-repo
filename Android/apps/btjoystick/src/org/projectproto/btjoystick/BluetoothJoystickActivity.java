@@ -32,7 +32,11 @@ import android.widget.Toast;
 
 public class BluetoothJoystickActivity extends Activity {
 	
-    // Message types sent from the BluetoothRfcommClient Handler
+	// debug / logs
+    private final boolean D = false;
+    private static final String TAG = BluetoothJoystickActivity.class.getSimpleName();
+    
+	// Message types sent from the BluetoothRfcommClient Handler
     public static final int MESSAGE_STATE_CHANGE = 1;
     public static final int MESSAGE_READ = 2;
     public static final int MESSAGE_WRITE = 3;
@@ -72,9 +76,7 @@ public class BluetoothJoystickActivity extends Activity {
  	private static final long UpdatePeriod = 200; // in milliseconds 	
  	private static final byte  DATA_START = 0x55;
 	
-	private static final String TAG = BluetoothJoystickActivity.class.getSimpleName();
- 	
-    /** Called when the activity is first created. */
+ 	/** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -225,8 +227,10 @@ public class BluetoothJoystickActivity extends Activity {
 	    	if( angleL >= 36 )	angleL = (byte)(angleL-36);
 	    	if( angleR >= 36 )	angleR = (byte)(angleR-36);
 	    	
-	    	Log.d(TAG, String.format("%d, %d, %d, %d, %d",
-	    			DATA_START, radiusL, angleL, radiusR, angleR ) );
+	    	if (D) {
+	    		Log.d(TAG, String.format("%d, %d, %d, %d, %d",
+	    				DATA_START, radiusL, angleL, radiusR, angleR ) );
+	    	}
 	    	
 	    	sendMessage( new String(new byte[] {
 	    			DATA_START, radiusL, angleL, radiusR, angleR } ) );
