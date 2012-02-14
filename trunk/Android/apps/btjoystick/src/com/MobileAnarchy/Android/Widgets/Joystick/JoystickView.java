@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.os.Handler;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.HapticFeedbackConstants;
@@ -426,7 +425,8 @@ public class JoystickView extends View {
 				this.reportY = touchY;
 				
 //				Log.d(TAG, String.format("moveListener.OnMoved(%d,%d)", (int)userX, (int)userY));
-				moveListener.OnMoved(userX, userY);
+				//moveListener.OnMoved(userX, userY);
+				moveListener.OnMoved(cartX, cartY);
 			}
 		}
 	}
