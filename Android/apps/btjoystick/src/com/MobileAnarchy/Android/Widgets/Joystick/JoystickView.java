@@ -16,11 +16,8 @@ public class JoystickView extends View {
 	// =========================================
 	// Private Members
 	// =========================================
-	private final boolean D = false;
+	private final boolean D = true;
 	String TAG = "JoystickView";
-	
-	private Paint dbgPaint1;
-	private Paint dbgPaint2;
 	
 	// joystick model
 	private Paint bgPaint;
@@ -72,7 +69,7 @@ public class JoystickView extends View {
 	private int cX, cY;
 
 	//Size of the view in view coordinates
-	private int dimX, dimY;
+	private int dimX;//, dimY;
 
 	//Cartesian coordinates of last touch point - joystick center is (0,0)
 	private int cartX, cartY;
@@ -114,16 +111,6 @@ public class JoystickView extends View {
 	private void initJoystickView() {
 		setFocusable(true);
 
-		dbgPaint1 = new Paint(Paint.ANTI_ALIAS_FLAG);
-		dbgPaint1.setColor(Color.RED);
-		dbgPaint1.setStrokeWidth(1);
-		dbgPaint1.setStyle(Paint.Style.STROKE);
-		
-		dbgPaint2 = new Paint(Paint.ANTI_ALIAS_FLAG);
-		dbgPaint2.setColor(Color.GREEN);
-		dbgPaint2.setStrokeWidth(1);
-		dbgPaint2.setStyle(Paint.Style.STROKE);
-		
 		bgPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 		bgPaint.setColor(Color.GRAY);
 		bgPaint.setStrokeWidth(1);
@@ -258,7 +245,7 @@ public class JoystickView extends View {
 		int d = Math.min(getMeasuredWidth(), getMeasuredHeight());
 
 		dimX = d;
-		dimY = d;
+		//dimY = d;
 
 		cX = d / 2;
 		cY = d / 2;
@@ -300,23 +287,8 @@ public class JoystickView extends View {
 		canvas.drawCircle(handleX, handleY, handleRadius, handlePaint);
 
 		if (D) {
-			canvas.drawRect(1, 1, getMeasuredWidth()-1, getMeasuredHeight()-1, dbgPaint1);
-			
-			canvas.drawCircle(handleX, handleY, 3, dbgPaint1);
-			
-			if ( movementConstraint == CONSTRAIN_CIRCLE ) {
-				canvas.drawCircle(cX, cY, this.movementRadius, dbgPaint1);
-			}
-			else {
-				canvas.drawRect(cX-movementRadius, cY-movementRadius, cX+movementRadius, cY+movementRadius, dbgPaint1);
-			}
-			
-			//Origin to touch point
-			canvas.drawLine(cX, cY, handleX, handleY, dbgPaint2);
-			
-			int baseY = (int) (touchY < 0 ? cY + handleRadius : cY - handleRadius);
-			canvas.drawText(String.format("%s (%.0f,%.0f)", TAG, touchX, touchY), handleX-20, baseY-7, dbgPaint2);
-			canvas.drawText("("+ String.format("%.0f, %.1f", radial, angle * 57.2957795) + (char) 0x00B0 + ")", handleX-20, baseY+15, dbgPaint2);
+			Log.d(TAG, String.format("(%.0f, %.0f)", touchX, touchY));
+			Log.d(TAG, String.format("(%.0f, %.0f\u00B0)", radial, angle * 180.0 / Math.PI));
 		}
 
 //		Log.d(TAG, String.format("touch(%f,%f)", touchX, touchY));
