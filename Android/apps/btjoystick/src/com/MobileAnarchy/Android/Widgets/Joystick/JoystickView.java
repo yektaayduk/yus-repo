@@ -22,8 +22,11 @@ public class JoystickView extends View {
 	private Paint dbgPaint1;
 	private Paint dbgPaint2;
 	
+	// joystick model
 	private Paint bgPaint;
 	private Paint handlePaint;
+	private Paint stickPaint;
+	private Paint basePaint;
 	
 	private int innerPadding;
 	private int bgRadius;
@@ -130,6 +133,16 @@ public class JoystickView extends View {
 		handlePaint.setColor(Color.DKGRAY);
 		handlePaint.setStrokeWidth(1);
 		handlePaint.setStyle(Paint.Style.FILL_AND_STROKE);
+		
+		stickPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+		stickPaint.setColor(Color.rgb(0x30, 0x30, 0x40));
+		stickPaint.setStrokeWidth(15);
+		stickPaint.setStyle(Paint.Style.FILL_AND_STROKE);
+		
+		basePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+		basePaint.setColor(Color.rgb(0x40, 0x40, 0x20));
+		basePaint.setStrokeWidth(1);
+		basePaint.setStyle(Paint.Style.FILL_AND_STROKE);
 
 		innerPadding = 10;
 		
@@ -141,6 +154,10 @@ public class JoystickView extends View {
 		setAutoReturnToCenter(true);
 	}
 
+	public void setHandleColor(int color) {
+		this.handlePaint.setColor(color);
+	}
+	
 	public void setAutoReturnToCenter(boolean autoReturnToCenter) {
 		this.autoReturnToCenter = autoReturnToCenter;
 	}
@@ -247,7 +264,8 @@ public class JoystickView extends View {
 		cY = d / 2;
 		
 		bgRadius = dimX/2 - innerPadding;
-		handleRadius = (int)(d * 0.25);
+		//handleRadius = (int)(d * 0.25);
+		handleRadius = (int)(d * 0.22);
 		handleInnerBoundaries = handleRadius;
 		movementRadius = Math.min(cX, cY) - handleInnerBoundaries;
 	}
@@ -277,6 +295,8 @@ public class JoystickView extends View {
 		// Draw the handle
 		handleX = touchX + cX;
 		handleY = touchY + cY;
+		canvas.drawCircle(cX, cY, handleRadius>>1, basePaint);
+		canvas.drawLine(cX, cY, handleX, handleY, stickPaint);
 		canvas.drawCircle(handleX, handleY, handleRadius, handlePaint);
 
 		if (D) {

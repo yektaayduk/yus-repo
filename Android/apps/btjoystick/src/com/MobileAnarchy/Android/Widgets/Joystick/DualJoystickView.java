@@ -38,6 +38,8 @@ public class DualJoystickView extends LinearLayout {
 
 	private void initDualJoystickView() {
 		setOrientation(LinearLayout.HORIZONTAL);
+		stickL.setHandleColor(Color.rgb(0x70, 0x20, 0x20));
+		stickR.setHandleColor(Color.rgb(0x20, 0x50, 0x30));
 		
 		if ( D ) {
 			dbgPaint1 = new Paint(Paint.ANTI_ALIAS_FLAG);
