@@ -16,7 +16,7 @@ public class JoystickView extends View {
 	// =========================================
 	// Private Members
 	// =========================================
-	private final boolean D = true;
+	private final boolean D = false;
 	String TAG = "JoystickView";
 	
 	// joystick model
