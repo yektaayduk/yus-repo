@@ -26,6 +26,17 @@
 #define SIZE_LEGC_TASK	  200
 #define SIZE_LEGD_TASK	  200
 
+typedef enum{
+	STEADY = 0,
+	FORWARD,
+	BACKWARD,
+	LEFTWARD,
+	RIGHTWARD,
+	LEFT_TURN,
+	RIGHT_TURN
+}direction_t;
+
+extern volatile direction_t g_QuadDirection;
 
 void taskLegA(void *param);
 void taskLegB(void *param);

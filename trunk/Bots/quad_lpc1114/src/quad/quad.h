@@ -43,10 +43,10 @@ extern const uint16_t pwm_values[180];
 
 /* leg assembly compensation */
 // pivot normals to CoG
-#define AN	95
-#define BN	95
-#define CN	90
-#define DN	105
+#define AN	100
+#define BN	100
+#define CN	95
+#define DN	120 //105
 
 // lift horizontal
 #define AH	85
@@ -59,6 +59,17 @@ extern const uint16_t pwm_values[180];
 #define BS	110
 #define CS	120
 #define DS	130
+
+// move directions
+#define PIVOT_OFFSET	5
+#define A_FW	(AN-PIVOT_OFFSET) // forward
+#define A_BW	(AN+PIVOT_OFFSET) // backward
+#define B_FW	(BN-PIVOT_OFFSET)
+#define B_BW	(BN+PIVOT_OFFSET)
+#define C_FW	(CN+PIVOT_OFFSET)
+#define C_BW	(CN-PIVOT_OFFSET)
+#define D_FW	(DN+PIVOT_OFFSET)
+#define D_BW	(DN-PIVOT_OFFSET)
 
 /* steps table */
 #define POSITION_TOTAL	64
