@@ -9,9 +9,9 @@
 #include "quadtasks.h"
 
 /* led blinker tasks */
-#define PRIORITY_BLINK_TASK  2	/* Priority of Blink task */
-#define SIZE_BLINK_TASK	  100	/* Stack size of Blink task */
-OS_STK stkBlink[SIZE_BLINK_TASK];	/* Stack of Blink task */
+#define PRIORITY_BLINK_TASK			2	/* Priority of Blink task */
+#define SIZE_BLINK_TASK				100	/* Stack size of Blink task */
+OS_STK stkBlink[SIZE_BLINK_TASK];		/* Stack of Blink task */
 void taskBlink(void *param);
 
 
