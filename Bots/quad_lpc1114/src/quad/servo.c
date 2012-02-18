@@ -1,5 +1,6 @@
 
 #include "LPC11xx.h"
+#include "CoOS.h"
 #include "servo.h"
 
 volatile uint16_t servo_pwm[NSERVOS];
@@ -77,6 +78,7 @@ void servos_init(void)
 
 void TIMER32_0_IRQHandler(void)
 {
+	//CoEnterISR();
 	if ( LPC_TMR32B0->IR & 0x01 )
 	{
 		// max duty reached
@@ -110,5 +112,6 @@ void TIMER32_0_IRQHandler(void)
 
 		LPC_TMR32B0->IR = 1;				/* clear interrupt flag */
 	}
+	//CoExitISR();
 }
 
