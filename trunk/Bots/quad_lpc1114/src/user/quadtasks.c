@@ -39,9 +39,10 @@ void taskLegA(void *param)
 			case LEFT_TURN:
 				setLegA( A_BW+pivots[POSITION_TOTAL-pos-1], AH+lifts[pos], AS+knees[pos] );
 				break;
-			case STEADY:
-			default:
+			case CENTER:
 				setLegA( AN+pivots[POSITION_TOTAL>>1], AH+lifts[POSITION_TOTAL>>1], AS+knees[POSITION_TOTAL>>1] );
+				break;
+			default:
 				break;
 			}
 
@@ -74,9 +75,10 @@ void taskLegB(void *param)
 			case LEFT_TURN:
 				setLegB( B_BW+pivots[POSITION_TOTAL-pos-1], BH+lifts[pos], BS+knees[pos] );
 				break;
-			case STEADY:
-			default:
+			case CENTER:
 				setLegB( BN+pivots[POSITION_TOTAL>>1], BH+lifts[POSITION_TOTAL>>1], BS+knees[POSITION_TOTAL>>1] );
+				break;
+			default:
 				break;
 			}
 
@@ -109,9 +111,10 @@ void taskLegC(void *param)
 			case RIGHT_TURN:
 				setLegC( C_BW+pivots[pos], CH+lifts[pos], CS+knees[pos] );
 				break;
-			case STEADY:
-			default:
+			case CENTER:
 				setLegC( CN+pivots[POSITION_TOTAL>>1], CH+lifts[POSITION_TOTAL>>1], CS+knees[POSITION_TOTAL>>1] );
+				break;
+			default:
 				break;
 			}
 
@@ -144,9 +147,10 @@ void taskLegD(void *param)
 			case RIGHT_TURN:
 				setLegD( D_BW+pivots[pos], DH+lifts[pos], DS+knees[pos] );
 				break;
-			case STEADY:
-			default:
+			case CENTER:
 				setLegD( DN+pivots[POSITION_TOTAL>>1], DH+lifts[POSITION_TOTAL>>1], DS+knees[POSITION_TOTAL>>1] );
+				break;
+			default:
 				break;
 			}
 
@@ -168,7 +172,7 @@ void CreateQuadTasks(void)
 	g_flagNextC = CoCreateFlag(TRUE, FALSE);
 	g_flagNextD = CoCreateFlag(TRUE, FALSE);
 
-	g_QuadDirection = STEADY;
+	g_QuadDirection = CENTER; // REMAIN;
 
 	CoCreateTask( taskLegA,
 				  (void *)0,
