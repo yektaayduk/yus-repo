@@ -9,24 +9,26 @@
 #include "quad.h"
 
 #define PRIORITY_BLINK_TASK  2		/* Priority of Blink task */
-#define PRIORITY_PRINT_TASK  2		/* Priority of Blink task */
-#define PRIORITY_SERVOTEST_TASK  3
+#define PRIORITY_LEGA_TASK  3
+#define PRIORITY_LEGB_TASK  3
 
 #define SIZE_BLINK_TASK	  100    /* Stack size of Blink task */
-#define SIZE_PRINT_TASK	  200    /* Stack size of Blink task */
-#define SIZE_SERVOTEST_TASK	  200
+#define SIZE_LEGA_TASK	  200
+#define SIZE_LEGB_TASK	  200
 
 OS_STK stkBlink[SIZE_BLINK_TASK];	/* Stack of Blink task */
-OS_STK stkPrint[SIZE_PRINT_TASK];	/* Stack of Blink task */
-OS_STK stkServoTest[SIZE_SERVOTEST_TASK];
+OS_STK stkLegA[SIZE_LEGA_TASK];
+OS_STK stkLegB[SIZE_LEGB_TASK];
 
 void taskBlink(void *param);
-void taskPrint(void *param);
-void taskServoTest(void *param);
+void taskLegA(void *param);
+void taskLegB(void *param);
 
 int main(void)
 {
 	quad_init();
+	xuart_init(115200);
+
 	CoInitOS();
 
 	/* Create Blink Task */
@@ -36,21 +38,20 @@ int main(void)
 			      &stkBlink[SIZE_BLINK_TASK-1],
 			      SIZE_BLINK_TASK );
 
-#if 0
-	/* Create Print Task */
-	CoCreateTask( taskPrint,
+#if 1
+	CoCreateTask( taskLegA,
 				  (void *)0,
-				  PRIORITY_PRINT_TASK,
-				  &stkPrint[SIZE_PRINT_TASK-1],
-				  SIZE_PRINT_TASK );
+				  PRIORITY_LEGA_TASK,
+				  &stkLegA[SIZE_LEGA_TASK-1],
+				  SIZE_LEGA_TASK );
 #endif
 
 #if 1
-	CoCreateTask( taskServoTest,
+	CoCreateTask( taskLegB,
 				  (void *)0,
-				  PRIORITY_SERVOTEST_TASK,
-				  &stkPrint[SIZE_SERVOTEST_TASK-1],
-				  SIZE_SERVOTEST_TASK );
+				  PRIORITY_LEGB_TASK,
+				  &stkLegB[SIZE_LEGB_TASK-1],
+				  SIZE_LEGB_TASK );
 #endif
 
 	CoStartOS();
@@ -69,44 +70,41 @@ void taskBlink(void *param)
 	for(;;) {
 		/* Turn On Led */
 		GPIOSetValue( LED_PORT, LED_BIT, LED_ON );
-		CoTickDelay(10);	/* Delay 100ms */
+		CoTickDelay(50);	/* Delay 500ms */
 
 		/* Turn Off Led */
 		GPIOSetValue( LED_PORT, LED_BIT, LED_OFF );
-		CoTickDelay(10);	/* Delay 100ms */
-	}
-}
-
-void taskPrint(void *param)
-{
-	static uint32_t cnt = 0;
-	xuart_init(115200);
-
-	for(;;) {
-		printf("hello, world! (%ld) \n", ++cnt);
 		CoTickDelay(50);	/* Delay 500ms */
 	}
 }
 
-void taskServoTest(void *param)
+void taskLegA(void *param)
 {
-	uint16_t angle;
-
+	CoTickDelay(200);
 	for(;;) {
-		for(angle=30; angle<150; angle++){
-			setLeg(LEG_A, INITIAL_ANGLE, INITIAL_ANGLE, angle);
-			setLeg(LEG_B, INITIAL_ANGLE, INITIAL_ANGLE, angle);
-			setLeg(LEG_C, INITIAL_ANGLE, INITIAL_ANGLE, angle);
-			setLeg(LEG_D, INITIAL_ANGLE, INITIAL_ANGLE, angle);
-			CoTickDelay(2);
-		}
-		for(angle=150; angle>30; angle--){
-			setLeg(LEG_A, INITIAL_ANGLE, INITIAL_ANGLE, angle);
-			setLeg(LEG_B, INITIAL_ANGLE, INITIAL_ANGLE, angle);
-			setLeg(LEG_C, INITIAL_ANGLE, INITIAL_ANGLE, angle);
-			setLeg(LEG_D, INITIAL_ANGLE, INITIAL_ANGLE, angle);
-			CoTickDelay(2);
-		}
+		setLeg(LEG_A, AN, AF, AS-20);
+		CoTickDelay(100);
+		setLeg(LEG_A, AN+35, AF, AS-30);
+		CoTickDelay(100);
+		setLeg(LEG_A, AN, AF+30, AS+40);
+		CoTickDelay(100);
+		setLeg(LEG_A, AN-35, AF, AS-30);
+		CoTickDelay(100);
+	}
+}
+
+void taskLegB(void *param)
+{
+	CoTickDelay(100);
+	for(;;) {
+		setLeg(LEG_B, BN+35, BF, BS-30);
+		CoTickDelay(100);
+		setLeg(LEG_B, BN, BF+30, BS+40);
+		CoTickDelay(100);
+		setLeg(LEG_B, BN-35, BF, BS-30);
+		CoTickDelay(100);
+		setLeg(LEG_B, BN, BF, BS-20);
+		CoTickDelay(100);
 	}
 }
 

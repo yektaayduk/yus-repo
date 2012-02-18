@@ -11,6 +11,7 @@
 /
 /-------------------------------------------------------------------------*/
 
+#include "CoOS.h"
 #include "xuart.h"
 
 #define UART_BUFF_MASK	(UART_BUFF_SIZE	- 1)
@@ -25,6 +26,7 @@ void UART_IRQHandler (void)
 	uint8_t iir, d;
 	int i, cnt;
 
+	CoEnterISR();
 	for (;;) {
 		iir = LPC_UART->IIR;			/* Get interrupt ID */
 		if (iir & 1) break;		/* Exit if there is no interrupt */
@@ -65,6 +67,7 @@ void UART_IRQHandler (void)
 			break;
 		}
 	}
+	CoExitISR();
 }
 
 
