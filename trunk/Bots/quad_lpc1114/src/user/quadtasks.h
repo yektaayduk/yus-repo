@@ -15,10 +15,10 @@
 #define LEG_FINAL_POS	(POSITION_TOTAL-LEG_INTERVAL_1)
 
 /* tasks priorities */
-#define PRIORITY_LEGA_TASK  3
-#define PRIORITY_LEGB_TASK  3
-#define PRIORITY_LEGC_TASK  3
-#define PRIORITY_LEGD_TASK  3
+#define PRIORITY_LEGA_TASK  5
+#define PRIORITY_LEGB_TASK  5
+#define PRIORITY_LEGC_TASK  5
+#define PRIORITY_LEGD_TASK  5
 
 /* tasks stack sizes */
 #define SIZE_LEGA_TASK	  200
