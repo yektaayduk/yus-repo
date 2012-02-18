@@ -8,11 +8,17 @@
 #include "xuart.h"
 #include "quadtasks.h"
 
-/* led blinker tasks */
-#define PRIORITY_BLINK_TASK			2	/* Priority of Blink task */
-#define SIZE_BLINK_TASK				100	/* Stack size of Blink task */
-OS_STK stkBlink[SIZE_BLINK_TASK];		/* Stack of Blink task */
+/* led blinker task */
+#define PRIORITY_BLINK_TASK			5
+#define SIZE_BLINK_TASK				50
+OS_STK stkBlink[SIZE_BLINK_TASK];
 void taskBlink(void *param);
+
+/* user task */
+#define PRIORITY_USER_TASK			4
+#define SIZE_USER_TASK				200
+OS_STK stkUser[SIZE_USER_TASK];
+void taskUser(void *param);
 
 
 int main(void)
@@ -30,6 +36,13 @@ int main(void)
 
 	/* Quadruped tasks*/
 	CreateQuadTasks();
+
+	/* Create User Task */
+	CoCreateTask( taskUser,
+				  (void *)0,
+				  PRIORITY_USER_TASK,
+			      &stkUser[SIZE_USER_TASK-1],
+			      SIZE_USER_TASK );
 
 	CoStartOS();
 
@@ -55,4 +68,21 @@ void taskBlink(void *param)
 	}
 }
 
+void taskUser(void *param)
+{
+	for(;;){
+		g_QuadDirection = STEADY;
+		CoTickDelay(200);
+		g_QuadDirection = FORWARD;
+		CoTickDelay(700);
+		//g_QuadDirection = BACKWARD;
+		//CoTickDelay(700);
+		//g_QuadDirection = STEADY;
+		//CoTickDelay(200);
+		g_QuadDirection = LEFT_TURN;
+		CoTickDelay(700);
+		g_QuadDirection = RIGHT_TURN;
+		CoTickDelay(700);
+	}
+}
 
