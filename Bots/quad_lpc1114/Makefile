@@ -46,7 +46,7 @@ SZ = $(CROSS_COMPILE)size
 NM = $(CROSS_COMPILE)nm
 
 
-OPT = s #optimize: 0, 1, 2, 3, or s
+OPT = 0 #optimize: 0, 1, 2, 3, or s
 
 #--- Toolchain flags ---#
 COMMON_FLAGS = -mcpu=cortex-m0 -mthumb
