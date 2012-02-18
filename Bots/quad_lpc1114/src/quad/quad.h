@@ -28,6 +28,25 @@ typedef enum{
 
 
 void quad_init(void);
-inline void setLeg(leg_t leg, uint8_t pivot, uint8_t lift, uint8_t knee);
+void setLeg(leg_t leg, uint8_t pivot, uint8_t lift, uint8_t knee);
+
+/* leg assembly compensation */
+// pivot normals to CoG
+#define AN	85
+#define BN	95
+#define CN	90
+#define DN	95
+
+// lift flats
+#define AF	85
+#define BF	90
+#define CF	90
+#define DF	90
+
+// knee straight
+#define AS	120
+#define BS	120
+#define CS	110
+#define DS	120
 
 #endif /* __QUAD_H__ */
