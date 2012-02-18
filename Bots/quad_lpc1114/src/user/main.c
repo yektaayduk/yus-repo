@@ -8,8 +8,10 @@
 #include "xuart.h"
 #include "quadtasks.h"
 
+// from remote joystick
 #define DATA_START				0x55
 #define MAX_TIMEOUT_COUNT		100 // tick delays
+#define MAX_JOYSTICK_RAD		10 // radius value
 
 /* led blinker task */
 #define PRIORITY_BLINK_TASK			7
@@ -96,21 +98,25 @@ void taskUser(void *param)
 		radiusL = uart_getc();	angleL = uart_getc();
 		radiusR = uart_getc();	angleR = uart_getc();
 
-		if(radiusL>5) {
-			if( angleL>=33 || angleL<3 )
-				g_QuadDirection = FORWARD;
-			else if( angleL>=3 && angleL<9 )
-				g_QuadDirection = LEFTWARD;
-			else if( angleL>=9 && angleL<15 )
-				g_QuadDirection = LEFT_TURN;
-			else if( angleL>=15 && angleL<21 )
-				g_QuadDirection = BACKWARD;
-			else if( angleL>=21 && angleL<27 )
-				g_QuadDirection = RIGHT_TURN;
-			else if( angleL>=27 && angleL<33 )
-				g_QuadDirection = RIGHTWARD;
+		if( radiusR>5 && (angleR>=33 || angleR<3) ) { // "move" command
+			if( radiusL ) {
+				g_StepDelay = MIN_STEP_DELAY + ((MAX_JOYSTICK_RAD-radiusL)>>1);
+				if( angleL>=35 || angleL<5 )
+					g_QuadDirection = FORWARD;
+				else if( angleL>=5 && angleL<9 )
+					g_QuadDirection = LEFTWARD;
+				else if( angleL>=9 && angleL<15 )
+					g_QuadDirection = LEFT_TURN;
+				else if( angleL>=15 && angleL<21 )
+					g_QuadDirection = BACKWARD;
+				else if( angleL>=21 && angleL<27 )
+					g_QuadDirection = RIGHT_TURN;
+				else if( angleL>=27 && angleL<35 )
+					g_QuadDirection = RIGHTWARD;
+			}
+			else g_QuadDirection = CENTER;
 		}
-		else{
+		else {
 			g_QuadDirection = CENTER;
 		}
 		CoTickDelay(5);

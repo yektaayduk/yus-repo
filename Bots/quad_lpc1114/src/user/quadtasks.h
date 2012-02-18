@@ -4,7 +4,7 @@
 
 #include "quad.h"
 
-#define STEP_DELAY		2	// x10ms
+#define MIN_STEP_DELAY		2//1	// x10ms
 
 // interval of A->D & C->B
 //#define LEG_INTERVAL_1	(POSITION_TOTAL/8)
@@ -38,6 +38,7 @@ typedef enum{
 }direction_t;
 
 extern volatile direction_t g_QuadDirection;
+extern volatile uint16_t g_StepDelay;
 
 void taskLegA(void *param);
 void taskLegB(void *param);
