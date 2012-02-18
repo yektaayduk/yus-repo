@@ -82,30 +82,32 @@ void taskUser(void *param)
 		cmd = uart_getc();
 		switch(cmd)
 		{
-		case 'a':
-		case 'A':
-			g_QuadDirection = FORWARD;
-			break;
-		case 'g':
-		case 'G':
-			g_QuadDirection = LEFTWARD;
-			break;
-		case 'm':
-		case 'M':
-			g_QuadDirection = RIGHTWARD;
-			break;
-		case 't':
-		case 'T':
-			g_QuadDirection = BACKWARD;
-			break;
-		case 'p':
-		case 'P':
-			g_QuadDirection = LEFT_TURN;
-			break;
 		case 'w':
 		case 'W':
+			g_QuadDirection = FORWARD;
+			break;
+		case 'a':
+		case 'A':
+			g_QuadDirection = LEFT_TURN;
+			break;
+		case 's':
+		case 'S':
+			g_QuadDirection = BACKWARD;
+			break;
+		case 'd':
+		case 'D':
 			g_QuadDirection = RIGHT_TURN;
 			break;
+		case 'q':
+		case 'Q':
+			g_QuadDirection = LEFTWARD;
+			break;
+		case 'e':
+		case 'E':
+			g_QuadDirection = RIGHTWARD;
+			break;
+		case 'x':
+		case 'X':
 		default:
 			g_QuadDirection = STEADY;
 			break;
