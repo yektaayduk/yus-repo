@@ -35,18 +35,32 @@ void setLeg(leg_t leg, uint8_t pivot, uint8_t lift, uint8_t knee);
 #define AN	85
 #define BN	95
 #define CN	90
-#define DN	95
+#define DN	105
 
-// lift flats
-#define AF	85
-#define BF	90
-#define CF	90
-#define DF	90
+// lift horizontal
+#define AH	85
+#define BH	90
+#define CH	90
+#define DH	90
 
 // knee straight
 #define AS	120
-#define BS	120
+#define BS	110
 #define CS	110
 #define DS	120
 
+/* steps table */
+#if 0
+#define POSITION_TOTAL	32
+
+extern const int8_t pivots[32];
+extern const int8_t lifts[32];
+extern const int8_t knees[32];
+#else
+#define POSITION_TOTAL	64
+
+extern const int8_t pivots[POSITION_TOTAL];
+extern const int8_t lifts[POSITION_TOTAL];
+extern const int8_t knees[POSITION_TOTAL];
+#endif
 #endif /* __QUAD_H__ */

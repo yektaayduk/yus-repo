@@ -8,21 +8,31 @@
 #include "xuart.h"
 #include "quad.h"
 
+#define STEP_DELAY		2	// x10ms
+
 #define PRIORITY_BLINK_TASK  2		/* Priority of Blink task */
 #define PRIORITY_LEGA_TASK  3
 #define PRIORITY_LEGB_TASK  3
+#define PRIORITY_LEGC_TASK  3
+#define PRIORITY_LEGD_TASK  3
 
 #define SIZE_BLINK_TASK	  100    /* Stack size of Blink task */
 #define SIZE_LEGA_TASK	  200
 #define SIZE_LEGB_TASK	  200
+#define SIZE_LEGC_TASK	  200
+#define SIZE_LEGD_TASK	  200
 
 OS_STK stkBlink[SIZE_BLINK_TASK];	/* Stack of Blink task */
 OS_STK stkLegA[SIZE_LEGA_TASK];
 OS_STK stkLegB[SIZE_LEGB_TASK];
+OS_STK stkLegC[SIZE_LEGC_TASK];
+OS_STK stkLegD[SIZE_LEGC_TASK];
 
 void taskBlink(void *param);
 void taskLegA(void *param);
 void taskLegB(void *param);
+void taskLegC(void *param);
+void taskLegD(void *param);
 
 int main(void)
 {
@@ -54,6 +64,22 @@ int main(void)
 				  SIZE_LEGB_TASK );
 #endif
 
+#if 1
+	CoCreateTask( taskLegC,
+				  (void *)0,
+				  PRIORITY_LEGC_TASK,
+				  &stkLegC[SIZE_LEGC_TASK-1],
+				  SIZE_LEGC_TASK );
+#endif
+
+#if 1
+	CoCreateTask( taskLegD,
+				  (void *)0,
+				  PRIORITY_LEGD_TASK,
+				  &stkLegD[SIZE_LEGD_TASK-1],
+				  SIZE_LEGD_TASK );
+#endif
+
 	CoStartOS();
 
 	while(1);
@@ -80,31 +106,52 @@ void taskBlink(void *param)
 
 void taskLegA(void *param)
 {
-	CoTickDelay(200);
+	uint8_t pos;
+	//CoTickDelay(0);
 	for(;;) {
-		setLeg(LEG_A, AN, AF, AS-20);
-		CoTickDelay(100);
-		setLeg(LEG_A, AN+35, AF, AS-30);
-		CoTickDelay(100);
-		setLeg(LEG_A, AN, AF+30, AS+40);
-		CoTickDelay(100);
-		setLeg(LEG_A, AN-35, AF, AS-30);
-		CoTickDelay(100);
+		for(pos=0; pos<POSITION_TOTAL; pos++)
+		{
+			setLeg(LEG_A, AN+pivots[pos], AH+lifts[pos], AS+knees[pos]);
+			CoTickDelay(STEP_DELAY);
+		}
 	}
 }
 
 void taskLegB(void *param)
 {
-	CoTickDelay(100);
+	uint8_t pos;
+	CoTickDelay(STEP_DELAY*POSITION_TOTAL*3/4);
 	for(;;) {
-		setLeg(LEG_B, BN+35, BF, BS-30);
-		CoTickDelay(100);
-		setLeg(LEG_B, BN, BF+30, BS+40);
-		CoTickDelay(100);
-		setLeg(LEG_B, BN-35, BF, BS-30);
-		CoTickDelay(100);
-		setLeg(LEG_B, BN, BF, BS-20);
-		CoTickDelay(100);
+		for(pos=0; pos<POSITION_TOTAL; pos++)
+		{
+			setLeg(LEG_B, BN+pivots[pos], BH+lifts[pos], BS+knees[pos]);
+			CoTickDelay(STEP_DELAY);
+		}
 	}
 }
 
+void taskLegC(void *param)
+{
+	uint8_t pos;
+	CoTickDelay(STEP_DELAY*POSITION_TOTAL*2/4);
+	for(;;) {
+		for(pos=0; pos<POSITION_TOTAL; pos++)
+		{
+			setLeg(LEG_C, CN+pivots[POSITION_TOTAL-pos-1], CH+lifts[pos], CS+knees[pos]);
+			CoTickDelay(STEP_DELAY);
+		}
+	}
+}
+
+void taskLegD(void *param)
+{
+	uint8_t pos;
+	CoTickDelay(STEP_DELAY*POSITION_TOTAL*1/4);
+	for(;;) {
+		for(pos=0; pos<POSITION_TOTAL; pos++)
+		{
+			setLeg(LEG_D, DN+pivots[POSITION_TOTAL-pos-1], DH+lifts[pos], DS+knees[pos]);
+			CoTickDelay(STEP_DELAY);
+		}
+	}
+}
