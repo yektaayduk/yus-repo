@@ -6,7 +6,6 @@
 
 #include "gpio.h"
 #include "xuart.h"
-#include "servo.h"
 #include "quad.h"
 
 #define PRIORITY_BLINK_TASK  2		/* Priority of Blink task */
@@ -27,6 +26,7 @@ void taskServoTest(void *param);
 
 int main(void)
 {
+	quad_init();
 	CoInitOS();
 
 	/* Create Blink Task */
@@ -90,24 +90,21 @@ void taskPrint(void *param)
 
 void taskServoTest(void *param)
 {
-	quad_init();
-	uint16_t angle, pwm;
+	uint16_t angle;
 
 	for(;;) {
 		for(angle=30; angle<150; angle++){
-			pwm = ANGLE_TO_COUNTER(angle);
-			servo_pwm[2] = pwm;
-			servo_pwm[5] = pwm;
-			servo_pwm[8] = pwm;
-			servo_pwm[11] = pwm;
+			setLeg(LEG_A, INITIAL_ANGLE, INITIAL_ANGLE, angle);
+			setLeg(LEG_B, INITIAL_ANGLE, INITIAL_ANGLE, angle);
+			setLeg(LEG_C, INITIAL_ANGLE, INITIAL_ANGLE, angle);
+			setLeg(LEG_D, INITIAL_ANGLE, INITIAL_ANGLE, angle);
 			CoTickDelay(2);
 		}
 		for(angle=150; angle>30; angle--){
-			pwm = ANGLE_TO_COUNTER(angle);
-			servo_pwm[2] = pwm;
-			servo_pwm[5] = pwm;
-			servo_pwm[8] = pwm;
-			servo_pwm[11] = pwm;
+			setLeg(LEG_A, INITIAL_ANGLE, INITIAL_ANGLE, angle);
+			setLeg(LEG_B, INITIAL_ANGLE, INITIAL_ANGLE, angle);
+			setLeg(LEG_C, INITIAL_ANGLE, INITIAL_ANGLE, angle);
+			setLeg(LEG_D, INITIAL_ANGLE, INITIAL_ANGLE, angle);
 			CoTickDelay(2);
 		}
 	}
