@@ -232,7 +232,7 @@ Enable(1) or disable(0) flag management.
 Max number of flag is 32.					    	  
 */
 #if CFG_TASK_WAITTING_EN > 0
-#define  CFG_FLAG_EN           (0) 
+#define  CFG_FLAG_EN           (1)
 #endif		
 
 

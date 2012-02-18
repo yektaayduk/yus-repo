@@ -19,7 +19,7 @@ LKR_SCRIPT = $(SRC_DIR)/lpc1114_flash.ld
 #---------------------------------------#
 #STARTUP_OBJS = $(STARTUP_DIR)/cr_startup_lpc11.o
 STARTUP_OBJS = $(STARTUP_DIR)/startup_lpc11xx.o
-USER_OBJS = $(USER_DIR)/main.o
+USER_OBJS = $(USER_DIR)/main.o $(USER_DIR)/quadtasks.o
 XUART_OBJS = $(XUART_DIR)/xuart.o $(XUART_DIR)/xprintf.o
 QUAD_OBJS = $(QUAD_DIR)/servo.o $(QUAD_DIR)/quad.o $(QUAD_DIR)/pwmtable.o
 
