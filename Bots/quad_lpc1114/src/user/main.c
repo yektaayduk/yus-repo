@@ -9,13 +9,13 @@
 #include "quadtasks.h"
 
 /* led blinker task */
-#define PRIORITY_BLINK_TASK			5
+#define PRIORITY_BLINK_TASK			7
 #define SIZE_BLINK_TASK				50
 OS_STK stkBlink[SIZE_BLINK_TASK];
 void taskBlink(void *param);
 
 /* user task */
-#define PRIORITY_USER_TASK			4
+#define PRIORITY_USER_TASK			6
 #define SIZE_USER_TASK				200
 OS_STK stkUser[SIZE_USER_TASK];
 void taskUser(void *param);
@@ -23,8 +23,6 @@ void taskUser(void *param);
 
 int main(void)
 {
-	xuart_init(115200);
-
 	CoInitOS();
 
 	/* Create Blink Task */
@@ -60,29 +58,58 @@ void taskBlink(void *param)
 	for(;;) {
 		/* Turn On Led */
 		GPIOSetValue( LED_PORT, LED_BIT, LED_ON );
-		CoTickDelay(50);	/* Delay 500ms */
+		CoTickDelay(10);	/* Delay 100ms */
 
 		/* Turn Off Led */
 		GPIOSetValue( LED_PORT, LED_BIT, LED_OFF );
-		CoTickDelay(50);	/* Delay 500ms */
+		CoTickDelay(90);	/* Delay 900ms */
 	}
 }
 
 void taskUser(void *param)
 {
+	uint8_t cmd;
+
+	xuart_init(57600);
+	g_QuadDirection = STEADY;
+	CoTickDelay(200);
+
 	for(;;){
-		g_QuadDirection = STEADY;
-		CoTickDelay(200);
-		g_QuadDirection = FORWARD;
-		CoTickDelay(700);
-		//g_QuadDirection = BACKWARD;
-		//CoTickDelay(700);
-		//g_QuadDirection = STEADY;
-		//CoTickDelay(200);
-		g_QuadDirection = LEFT_TURN;
-		CoTickDelay(700);
-		g_QuadDirection = RIGHT_TURN;
-		CoTickDelay(700);
+		if( !uart_test() ){
+			CoTickDelay(10);
+			continue;
+		}
+		cmd = uart_getc();
+		switch(cmd)
+		{
+		case 'a':
+		case 'A':
+			g_QuadDirection = FORWARD;
+			break;
+		case 'g':
+		case 'G':
+			g_QuadDirection = LEFTWARD;
+			break;
+		case 'm':
+		case 'M':
+			g_QuadDirection = RIGHTWARD;
+			break;
+		case 't':
+		case 'T':
+			g_QuadDirection = BACKWARD;
+			break;
+		case 'p':
+		case 'P':
+			g_QuadDirection = LEFT_TURN;
+			break;
+		case 'w':
+		case 'W':
+			g_QuadDirection = RIGHT_TURN;
+			break;
+		default:
+			g_QuadDirection = STEADY;
+			break;
+		}
 	}
 }
 

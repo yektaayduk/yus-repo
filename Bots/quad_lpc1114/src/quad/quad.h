@@ -45,20 +45,20 @@ extern const uint16_t pwm_values[180];
 // pivot normals to CoG
 #define AN	100
 #define BN	100
-#define CN	95
-#define DN	120 //105
+#define CN	100
+#define DN	110 //105
 
 // lift horizontal
-#define AH	85
+#define AH	90
 #define BH	90
-#define CH	90
-#define DH	90
+#define CH	95
+#define DH	85
 
 // knee straight
 #define AS	120
 #define BS	110
 #define CS	120
-#define DS	130
+#define DS	120
 
 // move directions
 #define PIVOT_OFFSET	5
