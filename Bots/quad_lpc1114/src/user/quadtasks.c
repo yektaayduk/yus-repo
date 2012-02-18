@@ -18,6 +18,8 @@ OS_FlagID g_flagNextD;
 volatile movement_t g_QuadMovement;
 volatile uint16_t g_StepDelay = MIN_STEP_DELAY + 1;
 volatile int16_t g_InclineAngle = 0;
+volatile int8_t g_LiftLevel = 0;
+volatile int8_t g_LiftAngle = 0;
 
 static inline void positive_angle(int16_t *angle)
 {	// fixme: {0...359} deg
@@ -50,6 +52,7 @@ void taskLegA(void *param)
 				setLegA( A_BW+pivots[POSITION_TOTAL-pos-1], AH+lifts[pos], AS+knees[pos] );
 				break;
 			case CENTER_POS:
+			case LIFT_LEG_D:
 				setLegA( AN+pivots[POSITION_TOTAL>>1], AH+lifts[POSITION_TOTAL>>1], AS+knees[POSITION_TOTAL>>1] );
 				break;
 			case INCLINED_POS:
@@ -57,6 +60,19 @@ void taskLegA(void *param)
 				positive_angle(&incline);
 				incline = (incline>>1) ;
 				setLegA( AN, AH+incline-20, AS-incline-(incline>>4) );
+				break;
+			case LIFT_LEG_A:
+				setLegA( AN + pivots[POSITION_TOTAL>>1] - MAX_LIFT_ANGLE + g_LiftAngle,
+						 AH + lifts[POSITION_TOTAL>>1] + g_LiftLevel,
+						 AS + knees[POSITION_TOTAL>>1] + (g_LiftLevel<<1) + g_LiftLevel );
+				break;
+			case LIFT_LEG_B:
+				setLegA( A_BW + pivots[POSITION_TOTAL-LEG_INTERVAL_2-1],
+						AH + lifts[LEG_INTERVAL_2], AS + knees[LEG_INTERVAL_2] );
+				break;
+			case LIFT_LEG_C:
+				setLegA( A_FW + pivots[LEG_INTERVAL_2],
+						AH + lifts[LEG_INTERVAL_2], AS + knees[LEG_INTERVAL_2] );
 				break;
 			default:
 				break;
@@ -93,6 +109,7 @@ void taskLegB(void *param)
 				setLegB( B_BW+pivots[POSITION_TOTAL-pos-1], BH+lifts[pos], BS+knees[pos] );
 				break;
 			case CENTER_POS:
+			case LIFT_LEG_C:
 				setLegB( BN+pivots[POSITION_TOTAL>>1], BH+lifts[POSITION_TOTAL>>1], BS+knees[POSITION_TOTAL>>1] );
 				break;
 			case INCLINED_POS:
@@ -100,6 +117,19 @@ void taskLegB(void *param)
 				positive_angle(&incline);
 				incline = (incline>>1) ;
 				setLegB( BN, BH+incline-20, BS-incline-(incline>>4) );
+				break;
+			case LIFT_LEG_A:
+				setLegB( B_FW + pivots[LEG_INTERVAL_2],
+						BH + lifts[LEG_INTERVAL_2], BS + knees[LEG_INTERVAL_2] );
+				break;
+			case LIFT_LEG_B:
+				setLegB( BN + pivots[POSITION_TOTAL>>1] - MAX_LIFT_ANGLE + g_LiftAngle,
+						 BH + lifts[POSITION_TOTAL>>1] + g_LiftLevel,
+						 BS + knees[POSITION_TOTAL>>1] + (g_LiftLevel<<1) + g_LiftLevel );
+				break;
+			case LIFT_LEG_D:
+				setLegB( B_BW + pivots[POSITION_TOTAL-LEG_INTERVAL_2-1],
+						BH + lifts[LEG_INTERVAL_2], BS + knees[LEG_INTERVAL_2] );
 				break;
 			default:
 				break;
@@ -136,6 +166,7 @@ void taskLegC(void *param)
 				setLegC( C_BW+pivots[pos], CH+lifts[pos], CS+knees[pos] );
 				break;
 			case CENTER_POS:
+			case LIFT_LEG_B:
 				setLegC( CN+pivots[POSITION_TOTAL>>1], CH+lifts[POSITION_TOTAL>>1], CS+knees[POSITION_TOTAL>>1] );
 				break;
 			case INCLINED_POS:
@@ -143,6 +174,19 @@ void taskLegC(void *param)
 				positive_angle(&incline);
 				incline = (incline>>1) ;
 				setLegC( CN, CH+incline-20, CS-incline-(incline>>4));
+				break;
+			case LIFT_LEG_A:
+				setLegC( C_FW + pivots[POSITION_TOTAL-LEG_INTERVAL_2-1],
+						CH + lifts[LEG_INTERVAL_2], CS + knees[LEG_INTERVAL_2] );
+				break;
+			case LIFT_LEG_C:
+				setLegC( CN + pivots[POSITION_TOTAL>>1] - MAX_LIFT_ANGLE + g_LiftAngle,
+						 CH + lifts[POSITION_TOTAL>>1] + g_LiftLevel,
+						 CS + knees[POSITION_TOTAL>>1] + (g_LiftLevel<<1) + g_LiftLevel );
+				break;
+			case LIFT_LEG_D:
+				setLegC( C_BW + pivots[LEG_INTERVAL_2],
+						CH + lifts[LEG_INTERVAL_2], CS + knees[LEG_INTERVAL_2] );
 				break;
 			default:
 				break;
@@ -179,6 +223,7 @@ void taskLegD(void *param)
 				setLegD( D_BW+pivots[pos], DH+lifts[pos], DS+knees[pos] );
 				break;
 			case CENTER_POS:
+			case LIFT_LEG_A:
 				setLegD( DN+pivots[POSITION_TOTAL>>1], DH+lifts[POSITION_TOTAL>>1], DS+knees[POSITION_TOTAL>>1] );
 				break;
 			case INCLINED_POS:
@@ -186,6 +231,19 @@ void taskLegD(void *param)
 				positive_angle(&incline);
 				incline = (incline>>1) ;
 				setLegD( DN, DH+incline-20, DS-incline-(incline>>4) );
+				break;
+			case LIFT_LEG_B:
+				setLegD( D_BW + pivots[LEG_INTERVAL_2],
+						DH + lifts[LEG_INTERVAL_2], DS + knees[LEG_INTERVAL_2] );
+				break;
+			case LIFT_LEG_C:
+				setLegD( D_FW + pivots[POSITION_TOTAL-LEG_INTERVAL_2-1],
+						DH + lifts[LEG_INTERVAL_2], DS + knees[LEG_INTERVAL_2] );
+				break;
+			case LIFT_LEG_D:
+				setLegD( DN + pivots[POSITION_TOTAL>>1] - MAX_LIFT_ANGLE + g_LiftAngle,
+						 DH + lifts[POSITION_TOTAL>>1] + g_LiftLevel,
+						 DS + knees[POSITION_TOTAL>>1] + (g_LiftLevel<<1) + g_LiftLevel );
 				break;
 			default:
 				break;

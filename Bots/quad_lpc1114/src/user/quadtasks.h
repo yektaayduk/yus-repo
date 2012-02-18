@@ -26,6 +26,8 @@
 #define SIZE_LEGC_TASK	  200
 #define SIZE_LEGD_TASK	  200
 
+#define MAX_LIFT_ANGLE    32	// range = x2
+
 typedef enum{
 	REMAIN_POS = 0,
 	CENTER_POS,
@@ -36,11 +38,17 @@ typedef enum{
 	LEFT_TURN,
 	RIGHT_TURN,
 	INCLINED_POS,
+	LIFT_LEG_A,
+	LIFT_LEG_B,
+	LIFT_LEG_C,
+	LIFT_LEG_D,
 }movement_t;
 
 extern volatile movement_t g_QuadMovement;
 extern volatile uint16_t g_StepDelay;
 extern volatile int16_t g_InclineAngle;
+extern volatile int8_t g_LiftLevel;
+extern volatile int8_t g_LiftAngle;
 
 void taskLegA(void *param);
 void taskLegB(void *param);

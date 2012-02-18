@@ -98,30 +98,62 @@ void taskUser(void *param)
 		radiusL = uart_getc();	angleL = uart_getc();
 		radiusR = uart_getc();	angleR = uart_getc();
 
-		if( !radiusL && !angleL && !radiusR && !angleR) continue; // "null" data
+		if( !radiusL && !radiusR ) continue; // "null" data
 
-		if( radiusR>5 && (angleR>=33 || angleR<3) ) { // "move" command
-			if( radiusL ) {
-				g_StepDelay = MIN_STEP_DELAY + ((MAX_JOYSTICK_RAD-radiusL)>>1);
-				if( angleL>=35 || angleL<5 )
-					g_QuadMovement = FORWARD;
-				else if( angleL>=5 && angleL<9 )
-					g_QuadMovement = LEFTWARD;
-				else if( angleL>=9 && angleL<15 )
-					g_QuadMovement = LEFT_TURN;
-				else if( angleL>=15 && angleL<21 )
-					g_QuadMovement = BACKWARD;
-				else if( angleL>=21 && angleL<27 )
-					g_QuadMovement = RIGHT_TURN;
-				else if( angleL>=27 && angleL<35 )
-					g_QuadMovement = RIGHTWARD;
-			}
-			else g_QuadMovement = CENTER_POS;
+		if(radiusR<5)
+			goto incline_pos;
+		if(angleR>=33 || angleR<3)
+			goto quadruped_gait;
+		if(angleR>=6 && angleR<12)
+			goto lift_leg;
+		continue;
+
+quadruped_gait:
+		if(radiusL) {
+			g_StepDelay = MIN_STEP_DELAY + ((MAX_JOYSTICK_RAD-radiusL)>>1);
+			if( angleL>=35 || angleL<5 )
+				g_QuadMovement = FORWARD;
+			else if( angleL>=5 && angleL<9 )
+				g_QuadMovement = LEFTWARD;
+			else if( angleL>=9 && angleL<15 )
+				g_QuadMovement = LEFT_TURN;
+			else if( angleL>=15 && angleL<21 )
+				g_QuadMovement = BACKWARD;
+			else if( angleL>=21 && angleL<27 )
+				g_QuadMovement = RIGHT_TURN;
+			else if( angleL>=27 && angleL<35 )
+				g_QuadMovement = RIGHTWARD;
 		}
-		else {
-			g_InclineAngle = (angleL<<3) + (angleL<<1); // angle x 10
-			g_QuadMovement = INCLINED_POS;
+		else g_QuadMovement = CENTER_POS;
+		goto end;
+
+incline_pos:
+		g_InclineAngle = (angleL<<3) + (angleL<<1); // angle x 10
+		g_QuadMovement = INCLINED_POS;
+		goto end;
+
+lift_leg:
+		g_LiftLevel = radiusL<<1;
+		if( angleL>=1 && angleL<7 ) { //45
+			g_QuadMovement = LIFT_LEG_A;
+			g_LiftAngle = (angleL-1)<<3;
 		}
+		else if( angleL>=10 && angleL<16 ) { //135
+			g_QuadMovement = LIFT_LEG_B;
+			g_LiftAngle = (angleL-10)<<3;
+		}
+		else if( angleL>=28 && angleL<36 ) { //315
+			g_QuadMovement = LIFT_LEG_C;
+			g_LiftAngle = (angleL-28)<<3;
+		}
+		else if( angleL>=19 && angleL<27 ) { //225
+			g_QuadMovement = LIFT_LEG_D;
+			g_LiftAngle = (angleL-19)<<3;
+		}
+		else g_QuadMovement = CENTER_POS;
+		goto end;
+
+end:
 		CoTickDelay(1);
 	}
 }
