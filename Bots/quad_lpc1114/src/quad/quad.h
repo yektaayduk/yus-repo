@@ -49,15 +49,15 @@ extern const uint16_t pwm_values[180];
 #define DN	110 //105
 
 // lift horizontal
-#define AH	90
+#define AH	85
 #define BH	90
 #define CH	95
 #define DH	85
 
 // knee straight
 #define AS	120
-#define BS	110
-#define CS	120
+#define BS	115
+#define CS	115
 #define DS	120
 
 // move directions

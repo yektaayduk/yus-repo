@@ -8,6 +8,9 @@
 #include "xuart.h"
 #include "quadtasks.h"
 
+#define DATA_START				0x55
+#define MAX_TIMEOUT_COUNT		100 // tick delays
+
 /* led blinker task */
 #define PRIORITY_BLINK_TASK			7
 #define SIZE_BLINK_TASK				50
@@ -68,50 +71,49 @@ void taskBlink(void *param)
 
 void taskUser(void *param)
 {
-	uint8_t cmd;
+	// joystick data
+	uint8_t radiusL, angleL;
+	uint8_t radiusR, angleR;
+	uint8_t cnt = 0;
 
 	xuart_init(57600);
-	g_QuadDirection = STEADY;
+	g_QuadDirection = CENTER;
 	CoTickDelay(200);
 
 	for(;;){
-		if( !uart_test() ){
-			CoTickDelay(10);
+		if( !uart_test() ) {
+			// no commands received
+			if( ++cnt > MAX_TIMEOUT_COUNT ) {
+				g_QuadDirection = CENTER;
+				cnt = 0;
+			}
+			CoTickDelay(1);
 			continue;
 		}
-		cmd = uart_getc();
-		switch(cmd)
-		{
-		case 'w':
-		case 'W':
-			g_QuadDirection = FORWARD;
-			break;
-		case 'a':
-		case 'A':
-			g_QuadDirection = LEFT_TURN;
-			break;
-		case 's':
-		case 'S':
-			g_QuadDirection = BACKWARD;
-			break;
-		case 'd':
-		case 'D':
-			g_QuadDirection = RIGHT_TURN;
-			break;
-		case 'q':
-		case 'Q':
-			g_QuadDirection = LEFTWARD;
-			break;
-		case 'e':
-		case 'E':
-			g_QuadDirection = RIGHTWARD;
-			break;
-		case 'x':
-		case 'X':
-		default:
-			g_QuadDirection = STEADY;
-			break;
+		if( uart_getc() != DATA_START) continue;
+		cnt = 0;
+		GPIOSetValue( LED_PORT, LED_BIT, LED_ON );
+		radiusL = uart_getc();	angleL = uart_getc();
+		radiusR = uart_getc();	angleR = uart_getc();
+
+		if(radiusL>5) {
+			if( angleL>=33 || angleL<3 )
+				g_QuadDirection = FORWARD;
+			else if( angleL>=3 && angleL<9 )
+				g_QuadDirection = LEFTWARD;
+			else if( angleL>=9 && angleL<15 )
+				g_QuadDirection = LEFT_TURN;
+			else if( angleL>=15 && angleL<21 )
+				g_QuadDirection = BACKWARD;
+			else if( angleL>=21 && angleL<27 )
+				g_QuadDirection = RIGHT_TURN;
+			else if( angleL>=27 && angleL<33 )
+				g_QuadDirection = RIGHTWARD;
 		}
+		else{
+			g_QuadDirection = CENTER;
+		}
+		CoTickDelay(5);
 	}
 }
 
