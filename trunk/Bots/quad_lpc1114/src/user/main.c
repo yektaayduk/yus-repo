@@ -79,14 +79,14 @@ void taskUser(void *param)
 	uint8_t cnt = 0;
 
 	xuart_init(57600);
-	g_QuadDirection = CENTER;
+	g_QuadMovement = CENTER_POS;
 	CoTickDelay(200);
 
 	for(;;){
 		if( !uart_test() ) {
 			// no commands received
 			if( ++cnt > MAX_TIMEOUT_COUNT ) {
-				g_QuadDirection = CENTER;
+				g_QuadMovement = CENTER_POS;
 				cnt = 0;
 			}
 			CoTickDelay(1);
@@ -98,28 +98,31 @@ void taskUser(void *param)
 		radiusL = uart_getc();	angleL = uart_getc();
 		radiusR = uart_getc();	angleR = uart_getc();
 
+		if( !radiusL && !angleL && !radiusR && !angleR) continue; // "null" data
+
 		if( radiusR>5 && (angleR>=33 || angleR<3) ) { // "move" command
 			if( radiusL ) {
 				g_StepDelay = MIN_STEP_DELAY + ((MAX_JOYSTICK_RAD-radiusL)>>1);
 				if( angleL>=35 || angleL<5 )
-					g_QuadDirection = FORWARD;
+					g_QuadMovement = FORWARD;
 				else if( angleL>=5 && angleL<9 )
-					g_QuadDirection = LEFTWARD;
+					g_QuadMovement = LEFTWARD;
 				else if( angleL>=9 && angleL<15 )
-					g_QuadDirection = LEFT_TURN;
+					g_QuadMovement = LEFT_TURN;
 				else if( angleL>=15 && angleL<21 )
-					g_QuadDirection = BACKWARD;
+					g_QuadMovement = BACKWARD;
 				else if( angleL>=21 && angleL<27 )
-					g_QuadDirection = RIGHT_TURN;
+					g_QuadMovement = RIGHT_TURN;
 				else if( angleL>=27 && angleL<35 )
-					g_QuadDirection = RIGHTWARD;
+					g_QuadMovement = RIGHTWARD;
 			}
-			else g_QuadDirection = CENTER;
+			else g_QuadMovement = CENTER_POS;
 		}
 		else {
-			g_QuadDirection = CENTER;
+			g_InclineAngle = (angleL<<3) + (angleL<<1); // angle x 10
+			g_QuadMovement = INCLINED_POS;
 		}
-		CoTickDelay(5);
+		CoTickDelay(1);
 	}
 }
 

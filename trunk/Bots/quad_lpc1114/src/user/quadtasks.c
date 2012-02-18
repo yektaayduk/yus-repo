@@ -15,12 +15,21 @@ OS_FlagID g_flagNextB;
 OS_FlagID g_flagNextC;
 OS_FlagID g_flagNextD;
 
-volatile direction_t g_QuadDirection;
-volatile uint16_t g_StepDelay = 2;
+volatile movement_t g_QuadMovement;
+volatile uint16_t g_StepDelay = MIN_STEP_DELAY + 1;
+volatile int16_t g_InclineAngle = 0;
+
+static inline void positive_angle(int16_t *angle)
+{	// fixme: {0...359} deg
+	if(*angle>=180) *angle -= 360;
+	else if(*angle<=-180) *angle += 360;
+	if(*angle<0) *angle = -*angle;
+}
 
 void taskLegA(void *param)
 {
 	uint8_t pos;
+	int16_t incline;
 	CoTickDelay(5);
 	CoWaitForSingleFlag( g_flagNextA, 0 );
 	for(;;) {
@@ -29,7 +38,7 @@ void taskLegA(void *param)
 			if(pos==LEG_INTERVAL_1)
 				CoSetFlag( g_flagNextD );
 
-			switch(g_QuadDirection){
+			switch(g_QuadMovement){
 			case FORWARD:
 			case RIGHTWARD:
 			case RIGHT_TURN:
@@ -40,8 +49,14 @@ void taskLegA(void *param)
 			case LEFT_TURN:
 				setLegA( A_BW+pivots[POSITION_TOTAL-pos-1], AH+lifts[pos], AS+knees[pos] );
 				break;
-			case CENTER:
+			case CENTER_POS:
 				setLegA( AN+pivots[POSITION_TOTAL>>1], AH+lifts[POSITION_TOTAL>>1], AS+knees[POSITION_TOTAL>>1] );
+				break;
+			case INCLINED_POS:
+				incline = Apos - g_InclineAngle + 180;
+				positive_angle(&incline);
+				incline = (incline>>1) ;
+				setLegA( AN, AH+incline-20, AS-incline-(incline>>4) );
 				break;
 			default:
 				break;
@@ -57,6 +72,7 @@ void taskLegA(void *param)
 void taskLegB(void *param)
 {
 	uint8_t pos;
+	int16_t incline;
 	CoTickDelay(5);
 	CoWaitForSingleFlag( g_flagNextB, 0 );
 	for(;;) {
@@ -65,7 +81,7 @@ void taskLegB(void *param)
 			if(pos==LEG_INTERVAL_2)
 				CoSetFlag( g_flagNextA );
 
-			switch(g_QuadDirection){
+			switch(g_QuadMovement){
 			case FORWARD:
 			case LEFTWARD:
 			case RIGHT_TURN:
@@ -76,8 +92,14 @@ void taskLegB(void *param)
 			case LEFT_TURN:
 				setLegB( B_BW+pivots[POSITION_TOTAL-pos-1], BH+lifts[pos], BS+knees[pos] );
 				break;
-			case CENTER:
+			case CENTER_POS:
 				setLegB( BN+pivots[POSITION_TOTAL>>1], BH+lifts[POSITION_TOTAL>>1], BS+knees[POSITION_TOTAL>>1] );
+				break;
+			case INCLINED_POS:
+				incline = Bpos - g_InclineAngle + 180;
+				positive_angle(&incline);
+				incline = (incline>>1) ;
+				setLegB( BN, BH+incline-20, BS-incline-(incline>>4) );
 				break;
 			default:
 				break;
@@ -93,6 +115,7 @@ void taskLegB(void *param)
 void taskLegC(void *param)
 {
 	uint8_t pos;
+	int16_t incline;
 	CoTickDelay(5);
 	CoWaitForSingleFlag( g_flagNextC, 0 );
 	for(;;) {
@@ -101,7 +124,7 @@ void taskLegC(void *param)
 			if(pos==LEG_INTERVAL_1)
 				CoSetFlag( g_flagNextB );
 
-			switch(g_QuadDirection){
+			switch(g_QuadMovement){
 			case FORWARD:
 			case LEFTWARD:
 			case LEFT_TURN:
@@ -112,8 +135,14 @@ void taskLegC(void *param)
 			case RIGHT_TURN:
 				setLegC( C_BW+pivots[pos], CH+lifts[pos], CS+knees[pos] );
 				break;
-			case CENTER:
+			case CENTER_POS:
 				setLegC( CN+pivots[POSITION_TOTAL>>1], CH+lifts[POSITION_TOTAL>>1], CS+knees[POSITION_TOTAL>>1] );
+				break;
+			case INCLINED_POS:
+				incline = Cpos - g_InclineAngle + 180;
+				positive_angle(&incline);
+				incline = (incline>>1) ;
+				setLegC( CN, CH+incline-20, CS-incline-(incline>>4));
 				break;
 			default:
 				break;
@@ -129,6 +158,7 @@ void taskLegC(void *param)
 void taskLegD(void *param)
 {
 	uint8_t pos;
+	int16_t incline;
 	CoTickDelay(5);
 	CoWaitForSingleFlag( g_flagNextD, 0 );
 	for(;;) {
@@ -137,7 +167,7 @@ void taskLegD(void *param)
 			if(pos==LEG_INTERVAL_2)
 				CoSetFlag( g_flagNextC );
 
-			switch(g_QuadDirection){
+			switch(g_QuadMovement){
 			case FORWARD:
 			case RIGHTWARD:
 			case LEFT_TURN:
@@ -148,8 +178,14 @@ void taskLegD(void *param)
 			case RIGHT_TURN:
 				setLegD( D_BW+pivots[pos], DH+lifts[pos], DS+knees[pos] );
 				break;
-			case CENTER:
+			case CENTER_POS:
 				setLegD( DN+pivots[POSITION_TOTAL>>1], DH+lifts[POSITION_TOTAL>>1], DS+knees[POSITION_TOTAL>>1] );
+				break;
+			case INCLINED_POS:
+				incline = Dpos - g_InclineAngle + 180;
+				positive_angle(&incline);
+				incline = (incline>>1) ;
+				setLegD( DN, DH+incline-20, DS-incline-(incline>>4) );
 				break;
 			default:
 				break;
@@ -173,7 +209,7 @@ void CreateQuadTasks(void)
 	g_flagNextC = CoCreateFlag(TRUE, FALSE);
 	g_flagNextD = CoCreateFlag(TRUE, FALSE);
 
-	g_QuadDirection = CENTER; // REMAIN;
+	g_QuadMovement = CENTER_POS; // REMAIN_POS;
 
 	CoCreateTask( taskLegA,
 				  (void *)0,

@@ -27,18 +27,20 @@
 #define SIZE_LEGD_TASK	  200
 
 typedef enum{
-	REMAIN = 0,
-	CENTER,
+	REMAIN_POS = 0,
+	CENTER_POS,
 	FORWARD,
 	BACKWARD,
 	LEFTWARD,
 	RIGHTWARD,
 	LEFT_TURN,
 	RIGHT_TURN,
-}direction_t;
+	INCLINED_POS,
+}movement_t;
 
-extern volatile direction_t g_QuadDirection;
+extern volatile movement_t g_QuadMovement;
 extern volatile uint16_t g_StepDelay;
+extern volatile int16_t g_InclineAngle;
 
 void taskLegA(void *param);
 void taskLegB(void *param);
