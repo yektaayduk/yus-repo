@@ -19,6 +19,11 @@ extern const uint16_t pwm_values[180];
  *     /             \
  ****************************/
 
+#define Apos	45
+#define Bpos	135
+#define Cpos	-45		//315
+#define Dpos	-135	//225
+
 // quad legs
 #define setLegA(pivot, lift, knee)					\
 		servo_pwm[1-1] = pwm_values[179-(pivot)];	\
@@ -70,6 +75,7 @@ extern const uint16_t pwm_values[180];
 #define C_BW	(CN-PIVOT_OFFSET)
 #define D_FW	(DN+PIVOT_OFFSET)
 #define D_BW	(DN-PIVOT_OFFSET)
+
 
 /* steps table */
 #define POSITION_TOTAL	64
