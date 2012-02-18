@@ -16,6 +16,7 @@ OS_FlagID g_flagNextC;
 OS_FlagID g_flagNextD;
 
 volatile direction_t g_QuadDirection;
+volatile uint16_t g_StepDelay = 2;
 
 void taskLegA(void *param)
 {
@@ -46,7 +47,7 @@ void taskLegA(void *param)
 				break;
 			}
 
-			CoTickDelay(STEP_DELAY);
+			CoTickDelay(g_StepDelay);
 			if(pos==LEG_FINAL_POS)
 				CoWaitForSingleFlag( g_flagNextA, 0 );
 		}
@@ -82,7 +83,7 @@ void taskLegB(void *param)
 				break;
 			}
 
-			CoTickDelay(STEP_DELAY);
+			CoTickDelay(g_StepDelay);
 			if(pos==LEG_FINAL_POS)
 				CoWaitForSingleFlag( g_flagNextB, 0 );
 		}
@@ -118,7 +119,7 @@ void taskLegC(void *param)
 				break;
 			}
 
-			CoTickDelay(STEP_DELAY);
+			CoTickDelay(g_StepDelay);
 			if(pos==LEG_FINAL_POS)
 				CoWaitForSingleFlag( g_flagNextC, 0 );
 		}
@@ -154,7 +155,7 @@ void taskLegD(void *param)
 				break;
 			}
 
-			CoTickDelay(STEP_DELAY);
+			CoTickDelay(g_StepDelay);
 			if(pos==LEG_FINAL_POS)
 				CoWaitForSingleFlag( g_flagNextD, 0 );
 		}
