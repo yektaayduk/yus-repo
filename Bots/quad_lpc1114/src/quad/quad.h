@@ -4,6 +4,7 @@
 #define __QUAD_H__
 
 #include "servo.h"
+extern const uint16_t pwm_values[180];
 
 /****************************
  *     \             /
@@ -19,16 +20,26 @@
  ****************************/
 
 // quad legs
-typedef enum{
-	LEG_A = 0,
-	LEG_B,
-	LEG_C,
-	LEG_D
-}leg_t;
+#define setLegA(pivot, lift, knee)					\
+		servo_pwm[1-1] = pwm_values[179-(pivot)];	\
+		servo_pwm[2-1] = pwm_values[(lift)];		\
+		servo_pwm[3-1] = pwm_values[179-(knee)]
 
+#define setLegB(pivot, lift, knee)					\
+		servo_pwm[4-1] = pwm_values[179-(pivot)];	\
+		servo_pwm[5-1] = pwm_values[179-(lift)];	\
+		servo_pwm[6-1] = pwm_values[(knee)]
 
-void quad_init(void);
-void setLeg(leg_t leg, uint8_t pivot, uint8_t lift, uint8_t knee);
+#define setLegC(pivot, lift, knee)					\
+		servo_pwm[7-1] = pwm_values[179-(pivot)];	\
+		servo_pwm[8-1] = pwm_values[179-(lift)];	\
+		servo_pwm[9-1] = pwm_values[(knee)]
+
+#define setLegD(pivot, lift, knee)					\
+		servo_pwm[10-1] = pwm_values[179-(pivot)];	\
+		servo_pwm[11-1] = pwm_values[(lift)];		\
+		servo_pwm[12-1] = pwm_values[179-(knee)]
+
 
 /* leg assembly compensation */
 // pivot normals to CoG
@@ -47,15 +58,14 @@ void setLeg(leg_t leg, uint8_t pivot, uint8_t lift, uint8_t knee);
 #define AS	120
 #define BS	110
 #define CS	120
-#define DS	120
+#define DS	130
 
 /* steps table */
-
 #define POSITION_TOTAL	64
-
 extern const int8_t pivots[POSITION_TOTAL];
 extern const int8_t lifts[POSITION_TOTAL];
 extern const int8_t knees[POSITION_TOTAL];
 
+void quad_init(void);
 
 #endif /* __QUAD_H__ */

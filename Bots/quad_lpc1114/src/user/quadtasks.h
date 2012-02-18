@@ -2,7 +2,17 @@
 #ifndef __QUADTASKS_H__
 #define __QUADTASKS_H__
 
+#include "quad.h"
+
 #define STEP_DELAY		2	// x10ms
+
+// interval of A->D & C->B
+//#define LEG_INTERVAL_1	(POSITION_TOTAL/8)
+#define LEG_INTERVAL_1	(POSITION_TOTAL/10)
+// interval of D->C & B->A
+#define LEG_INTERVAL_2	(POSITION_TOTAL/4)
+//#define LEG_FINAL_POS	(POSITION_TOTAL*3/4) // 75%
+#define LEG_FINAL_POS	(POSITION_TOTAL-LEG_INTERVAL_1)
 
 /* tasks priorities */
 #define PRIORITY_LEGA_TASK  3
