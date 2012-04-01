@@ -1,0 +1,2856 @@
+
+
+WonderMedia Technologies, Inc.
+W-Load Version : 0.19.00.01
+ethaddr............found
+
+
+U-Boot 1.1.4 (Oct 27 2010 - 11:14:28)
+WonderMedia Technologies, Inc.
+WMT U-Boot Version : 0.12.01.00.33
+U-Boot code: 03F80000 -> 03FCA86C  BSS: -> 0401BE84
+RAM Configuration:
+Bank #0: 00000000 128 MB
+boot from spi flash.
+flash:
+     Bank1: FFF80000 -- FFFFFFFF
+     Bank2: FF780000 -- FFF7FFFF
+Flash:  8.5 MB
+vibra start !
+  reg op: 0xD811005C | 0x8
+  reg op: 0xD8110084 | 0x8
+  reg op: 0xD81100AC | 0x8
+vibra time: 200 mesc
+vibra stop !
+  reg op: 0xD81100AC & 0xFFFFFFF7
+In:    serial
+Out:   serial
+Err:   serial
+bootcmd="usbinit;fatload usb 0 3c00000 logo.bmp;logo show;run text1"
+usb usb1: Product: USB Host Controller
+usb usb1: Manufacturer: Linux 2.6.10_dev-VT8610 ehci_hcd
+usb usb1: SerialNumber: pci-echi
+ 1-0:1.0: USB hub found
+ 1-0:1.0: 2 ports detected
+locktree(): line: 1024: this function not completed
+usb 1-: new high speed USB device using abc and address 2
+usb 1-: Product: Flash Disk      
+usb 1-: Manufacturer: Generic 
+usb 1-: SerialNumber: CCBB1012031148201242545304
+       scanning bus for storage devices... part_offset : 3f, cur_part : 1
+1 Storage Device(s) found
+usb 1-+11111111010010: new high speed USB device using abc and address 3
+usb 1-+11111111010010: Product: USB2.0 Hub
+       scanning bus for storage devices... 1 Storage Device(s) found
+part_offset : 3f, cur_part : 1
+reading logo.bmp
+Tina_Match: isdir 0x0######################
+mydata : 
+Size of clusters in sectors : 4
+The sector of the first cluster, can be negative : 97
+Current FAT buffer : 03f4d6fc
+fatbufnum : ffffffff
+Length of FAT in sectors : 3f
+Size of FAT in bits : 10
+Starting sector of the FAT : 1
+Start sector of root directory : 7f
+...........
+
+0x119436 bytes read
+show logo .....
+LCD param (setting): 1,30000,8,800,480,48,40,40,3,29,13
+PWM param (setting): 0,4,599,599
+LCD FrameBuffer = 0x07900000, BMP Address = 0x03C00000
+Loading BMP ..... 
+colorBits = 24
+logo_width = 800, logo_height= 480
+lcd_width= 800, lcd_height = 480
+ok
+no string .... 
+PWM0 input freq = 47916666 Hz, output freq = 19998 Hz
+PWM0 register setting: scalar = 3, period = 598, duty = 598
+"Uberoid" 
+REG32_VAL(0xd8000440) = 0x10101000
+memory size: 256MB
+### main_loop entered: bootdelay=1
+
+Execute register operation:
+  reg op: 0xD8110064 | 0x4
+  reg op: 0xD811008C | 0x4
+  reg op: 0xD81100B4 & 0xFFFFFFFB
+  reg op: 0xD8110064 | 0x8
+  reg op: 0xD811008C | 0x8
+  reg op: 0xD81100B4 | 0x8
+  reg op: 0xD8130054 | 0x1
+### main_loop: bootcmd="fatload usb 0 fc00000 animation.data;fatload usb 0 0 uzImage.bin;bootm 0"
+Hit Enter key to stop autoboot:  1  0 
+ATSMB Host 390KHz 
+Found SD Card
+
+scriptcmd start:
+ATSMB Host 390KHz 
+
+SD2_0  : SDHC card!
+
+Init  : card selected !
+
+set blocklen fun. !
+
+SD:Four Bits Mode!
+SD Card High Speed!
+
+Initial SD Card OK!
+ATSMB Host 25MHz 
+SD clock is 25Mhz
+register mmc device
+part_offset : 5000, cur_part : 1
+--> fatload mmc 0 0 script/scriptcmd
+part_offset : 5000, cur_part : 1
+reading script/scriptcmd
+Tina_Match: isdir 0x1######################
+mydata : 
+Size of clusters in sectors : 1
+The sector of the first cluster, can be negative : 1fa0
+Current FAT buffer : 03f4d6fc
+fatbufnum : ffffffff
+Length of FAT in sectors : fc1
+Size of FAT in bits : 20
+Starting sector of the FAT : 20
+Start sector of root directory : 1fa2
+
+0x59F bytes read
+## Executing script at 00000000
+** Script length: 1367
+** exec: "mmcinit"
+ATSMB Host 390KHz 
+
+SD2_0  : SDHC card!
+
+Init  : card selected !
+
+set blocklen fun. !
+
+SD:Four Bits Mode!
+SD Card High Speed!
+
+Initial SD Card OK!
+ATSMB Host 25MHz 
+SD clock is 25Mhz
+register mmc device
+part_offset : 5000, cur_part : 1
+** exec: "setenv BMP_ADR 3c00000"
+** exec: "fatload mmc 0 $(BMP_ADR) script/hint_en.bmp"
+part_offset : 5000, cur_part : 1
+reading script/hint_en.bmp
+Tina_Match: isdir 0x1######################
+mydata : 
+Size of clusters in sectors : 1
+The sector of the first cluster, can be negative : 1fa0
+Current FAT buffer : 03f4c39c
+fatbufnum : 0
+Length of FAT in sectors : fc1
+Size of FAT in bits : 20
+Starting sector of the FAT : 20
+Start sector of root directory : 1fa2
+
+0x299D6 bytes read
+** exec: "setenv lcdparam 1,40000,8,800,480,10,46,20,10,23,10"
+** exec: "setenv pwmparam 0,4,599,599"
+** exec: "setenv LCDC_FB 7900000"
+** exec: "lcdinit"
+LCD param (setting): 1,40000,8,800,480,10,46,20,10,23,10
+PWM param (setting): 0,4,599,599
+LCD FrameBuffer = 0x07900000, BMP Address = 0x03C00000
+PWM0 input freq = 47916666 Hz, output freq = 19998 Hz
+PWM0 register setting: scalar = 3, period = 598, duty = 598
+LCD init OK
+** exec: "logo show -1 0"
+(-1, 0) show logo .....
+LCD already initialized
+Loading BMP ..... 
+colorBits = 24
+logo_width = 800, logo_height= 71
+lcd_width= 800, lcd_height = 480
+ok
+** exec: "textout 30 80 "Android upgrade will start after 8 seconds ..." ffff00"
+"Android upgrade will start after 8 seconds ..." 
+** exec: "sleep 1"
+** exec: "textout 30 80 "Android upgrade will start after 7 seconds ..." ffff00"
+"Android upgrade will start after 7 seconds ..." 
+** exec: "sleep 1"
+** exec: "textout 30 80 "Android upgrade will start after 6 seconds ..." ffff00"
+"Android upgrade will start after 6 seconds ..." 
+** exec: "sleep 1"
+** exec: "textout 30 80 "Android upgrade will start after 5 seconds ..." ffff00"
+"Android upgrade will start after 5 seconds ..." 
+** exec: "sleep 1"
+** exec: "textout 30 80 "Android upgrade will start after 4 seconds ..." ffff00"
+"Android upgrade will start after 4 seconds ..." 
+** exec: "sleep 1"
+** exec: "textout 30 80 "Android upgrade will start after 3 seconds ..." ffff00"
+"Android upgrade will start after 3 seconds ..." 
+** exec: "sleep 1"
+** exec: "textout 30 80 "Android upgrade will start after 2 seconds ..." ffff00"
+"Android upgrade will start after 2 seconds ..." 
+** exec: "sleep 1"
+** exec: "textout 30 80 "Android upgrade will start after 1 seconds ..." ffff00"
+"Android upgrade will start after 1 seconds ..." 
+** exec: "sleep 1"
+** exec: "mmcinit"
+ATSMB Host 390KHz 
+
+SD2_0  : SDHC card!
+
+Init  : card selected !
+
+set blocklen fun. !
+
+SD:Four Bits Mode!
+SD Card High Speed!
+
+Initial SD Card OK!
+ATSMB Host 25MHz 
+SD clock is 25Mhz
+register mmc device
+part_offset : 5000, cur_part : 1
+** exec: "textout 30 80 "Android upgrade start" ffff00"
+"Android upgrade start" 
+** exec: "textout -1 -1 "Upgrading w-load ..." ffff00"
+"Upgrading w-load ..." 
+** exec: "fatload mmc 0 0 script/wload.bin"
+part_offset : 5000, cur_part : 1
+reading script/wload.bin
+Tina_Match: isdir 0x1######################
+mydata : 
+Size of clusters in sectors : 1
+The sector of the first cluster, can be negative : 1fa0
+Current FAT buffer : 03f4c39c
+fatbufnum : 0
+Length of FAT in sectors : fc1
+Size of FAT in bits : 20
+Starting sector of the FAT : 20
+Start sector of root directory : 1fa2
+
+0xFFF8 bytes read
+** exec: "erase ffff0000 +10000"
+Erase Flash from 0xffff0000 to 0xffffffff in Bank # 1 
+Erasing sector  7 @ FFFF0000... ok.
+Erased 1 sectors
+** exec: "cp.b 0 ffff0000 10000"
+Copy to Flash... done
+** exec: "textout -1 -1 "Upgraded w-load successful!" ff00"
+"Upgraded w-load successful!" 
+** exec: "textout -1 -1 "Upgrading u-boot ..." ffff00"
+"Upgrading u-boot ..." 
+** exec: "fatload mmc 0 0 script/u-boot.bin"
+part_offset : 5000, cur_part : 1
+reading script/u-boot.bin
+Tina_Match: isdir 0x1######################
+mydata : 
+Size of clusters in sectors : 1
+The sector of the first cluster, can be negative : 1fa0
+Current FAT buffer : 03f4c39c
+fatbufnum : 0
+Length of FAT in sectors : fc1
+Size of FAT in bits : 20
+Starting sector of the FAT : 20
+Start sector of root directory : 1fa2
+
+0x4A86C bytes read
+** exec: "erase fff80000 +50000"
+Erase Flash from 0xfff80000 to 0xfffcffff in Bank # 1 
+Erasing sector  0 @ FFF80000... ok.
+Erasing sector  1 @ FFF90000... ok.
+Erasing sector  2 @ FFFA0000... ok.
+Erasing sector  3 @ FFFB0000... ok.
+Erasing sector  4 @ FFFC0000... ok.
+Erased 5 sectors
+** exec: "cp.b 0 fff80000 50000"
+Copy to Flash... done
+** exec: "textout -1 -1 "Upgraded u-boot successful!" ff00"
+"Upgraded u-boot successful!" 
+** exec: "setenv rescript 1"
+** exec: "setenv directboot 1"
+** exec: "saveenv"
+Saving Environment to Flash...
+Protect off FFFD0000 ... FFFDFFFF
+Un-Protecting sectors 5..5 in bank 1
+Un-Protected 1 sectors
+Protect off FFFE0000 ... FFFEFFFF
+Un-Protecting sectors 6..6 in bank 1
+Un-Protected 1 sectors
+Erasing Flash... FFFE0000 ... FFFEFFFF ...Erase Flash from 0xfffe0000 to 0xfffeffff in Bank # 1 
+Erasing sector  6 @ FFFE0000... ok.
+Erased 1 sectors
+Writing to Flash...  FFFE0005 ... FFFF0000 ...done
+Protecting sectors 6..6 in bank 1
+Protected 1 sectors
+Protecting sectors 5..5 in bank 1
+Protected 1 sectors
+** exec: "textout -1 -1 " " 000000"
+" " 
+** exec: "textout -1 -1 "System reboot to upgrade filesystem ..." ffff00"
+"System reboot to upgrade filesystem ..." 
+** exec: "sleep 2"
+** exec: "reset"þ
+
+WonderMedia Technologies, Inc.
+W-Load Version : 0.19.00.01
+ethaddr............found
+
+
+U-Boot 1.1.4 (Oct 27 2010 - 11:14:28)
+WonderMedia Technologies, Inc.
+WMT U-Boot Version : 0.12.01.00.33
+U-Boot code: 03F80000 -> 03FCA86C  BSS: -> 0401BE84
+RAM Configuration:
+Bank #0: 00000000 128 MB
+boot from spi flash.
+flash:
+     Bank1: FFF80000 -- FFFFFFFF
+     Bank2: FF780000 -- FFF7FFFF
+Flash:  8.5 MB
+--> direct boot
+vibra start !
+  reg op: 0xD811005C | 0x8
+  reg op: 0xD8110084 | 0x8
+  reg op: 0xD81100AC | 0x8
+vibra time: 200 mesc
+vibra stop !
+  reg op: 0xD81100AC & 0xFFFFFFF7
+In:    serial
+Out:   serial
+Err:   serial
+Protect off FFFE0000 ... FFFEFFFF
+Un-Protecting sectors 6..6 in bank 1
+Un-Protected 1 sectors
+Protect off FFFD0000 ... FFFDFFFF
+Un-Protecting sectors 5..5 in bank 1
+Un-Protected 1 sectors
+Erasing Flash... FFFD0000 ... FFFDFFFF ...Erase Flash from 0xfffd0000 to 0xfffdffff in Bank # 1 
+Erasing sector  5 @ FFFD0000... ok.
+Erased 1 sectors
+Writing to Flash...  FFFD0005 ... FFFE0000 ...done
+Protecting sectors 5..5 in bank 1
+Protected 1 sectors
+Protecting sectors 6..6 in bank 1
+Protected 1 sectors
+Protect off FFFD0000 ... FFFDFFFF
+Un-Protecting sectors 5..5 in bank 1
+Un-Protected 1 sectors
+Protect off FFFE0000 ... FFFEFFFF
+Un-Protecting sectors 6..6 in bank 1
+Un-Protected 1 sectors
+Erasing Flash... FFFE0000 ... FFFEFFFF ...Erase Flash from 0xfffe0000 to 0xfffeffff in Bank # 1 
+Erasing sector  6 @ FFFE0000... ok.
+Erased 1 sectors
+Writing to Flash...  FFFE0005 ... FFFF0000 ...done
+Protecting sectors 6..6 in bank 1
+Protected 1 sectors
+Protecting sectors 5..5 in bank 1
+Protected 1 sectors
+bootcmd="usbinit;fatload usb 0 3c00000 logo.bmp;logo show;run text1"
+usb usb1: Product: USB Host Controller
+usb usb1: Manufacturer: Linux 2.6.10_dev-VT8610 ehci_hcd
+usb usb1: SerialNumber: pci-echi
+ 1-0:1.0: USB hub found
+ 1-0:1.0: 2 ports detected
+locktree(): line: 1024: this function not completed
+usb 1-: new high speed USB device using abc and address 2
+usb 1-: Product: Flash Disk      
+usb 1-: Manufacturer: Generic 
+usb 1-: SerialNumber: CCBB1012031148201242545304
+       scanning bus for storage devices... part_offset : 3f, cur_part : 1
+1 Storage Device(s) found
+usb 1-+11111111010010: new high speed USB device using abc and address 3
+usb 1-+11111111010010: Product: USB2.0 Hub
+       scanning bus for storage devices... 1 Storage Device(s) found
+part_offset : 3f, cur_part : 1
+reading logo.bmp
+Tina_Match: isdir 0x0######################
+mydata : 
+Size of clusters in sectors : 4
+The sector of the first cluster, can be negative : 97
+Current FAT buffer : 03f4d6fc
+fatbufnum : ffffffff
+Length of FAT in sectors : 3f
+Size of FAT in bits : 10
+Starting sector of the FAT : 1
+Start sector of root directory : 7f
+...........
+
+0x119436 bytes read
+show logo .....
+LCD param (setting): 1,40000,8,800,480,10,46,20,10,23,10
+PWM param (setting): 0,4,599,599
+LCD FrameBuffer = 0x07900000, BMP Address = 0x03C00000
+Loading BMP ..... 
+colorBits = 24
+logo_width = 800, logo_height= 480
+lcd_width= 800, lcd_height = 480
+ok
+no string .... 
+PWM0 input freq = 47916666 Hz, output freq = 19998 Hz
+PWM0 register setting: scalar = 3, period = 598, duty = 598
+"Uberoid" 
+REG32_VAL(0xd8000440) = 0x10101000
+memory size: 256MB
+### main_loop entered: bootdelay=1
+
+Execute register operation:
+  reg op: 0xD8110064 | 0x4
+  reg op: 0xD811008C | 0x4
+  reg op: 0xD81100B4 & 0xFFFFFFFB
+  reg op: 0xD8110064 | 0x8
+  reg op: 0xD811008C | 0x8
+  reg op: 0xD81100B4 | 0x8
+  reg op: 0xD8130054 | 0x1
+### main_loop: bootcmd="fatload usb 0 fc00000 animation.data;fatload usb 0 0 uzImage.bin;bootm 0"
+Hit Enter key to stop autoboot:  1  0 
+ATSMB Host 390KHz 
+Found SD Card
+
+scriptcmd start:
+ATSMB Host 390KHz 
+
+SD2_0  : SDHC card!
+
+Init  : card selected !
+
+set blocklen fun. !
+
+SD:Four Bits Mode!
+SD Card High Speed!
+
+Initial SD Card OK!
+ATSMB Host 25MHz 
+SD clock is 25Mhz
+register mmc device
+part_offset : 5000, cur_part : 1
+--> fatload mmc 0 0 script/rescriptcmd
+part_offset : 5000, cur_part : 1
+reading script/rescriptcmd
+Tina_Match: isdir 0x1######################
+mydata : 
+Size of clusters in sectors : 1
+The sector of the first cluster, can be negative : 1fa0
+Current FAT buffer : 03f4d6fc
+fatbufnum : ffffffff
+Length of FAT in sectors : fc1
+Size of FAT in bits : 20
+Starting sector of the FAT : 20
+Start sector of root directory : 1fa2
+
+0xB0F bytes read
+## Executing script at 00000000
+** Script length: 2759
+** exec: "setenv rescript"
+** exec: "saveenv"
+Saving Environment to Flash...
+Protect off FFFE0000 ... FFFEFFFF
+Un-Protecting sectors 6..6 in bank 1
+Un-Protected 1 sectors
+Protect off FFFD0000 ... FFFDFFFF
+Un-Protecting sectors 5..5 in bank 1
+Un-Protected 1 sectors
+Erasing Flash... FFFD0000 ... FFFDFFFF ...Erase Flash from 0xfffd0000 to 0xfffdffff in Bank # 1 
+Erasing sector  5 @ FFFD0000... ok.
+Erased 1 sectors
+Writing to Flash...  FFFD0005 ... FFFE0000 ...done
+Protecting sectors 5..5 in bank 1
+Protected 1 sectors
+Protecting sectors 6..6 in bank 1
+Protected 1 sectors
+** exec: "saveenv"
+Saving Environment to Flash...
+Protect off FFFD0000 ... FFFDFFFF
+Un-Protecting sectors 5..5 in bank 1
+Un-Protected 1 sectors
+Protect off FFFE0000 ... FFFEFFFF
+Un-Protecting sectors 6..6 in bank 1
+Un-Protected 1 sectors
+Erasing Flash... FFFE0000 ... FFFEFFFF ...Erase Flash from 0xfffe0000 to 0xfffeffff in Bank # 1 
+Erasing sector  6 @ FFFE0000... ok.
+Erased 1 sectors
+Writing to Flash...  FFFE0005 ... FFFF0000 ...done
+Protecting sectors 6..6 in bank 1
+Protected 1 sectors
+Protecting sectors 5..5 in bank 1
+Protected 1 sectors
+** exec: "mmcinit"
+ATSMB Host 390KHz 
+
+SD2_0  : SDHC card!
+
+Init  : card selected !
+
+set blocklen fun. !
+
+SD:Four Bits Mode!
+SD Card High Speed!
+
+Initial SD Card OK!
+ATSMB Host 25MHz 
+SD clock is 25Mhz
+register mmc device
+part_offset : 5000, cur_part : 1
+** exec: "setenv BMP_ADR 3c00000"
+** exec: "fatload mmc 0 $(BMP_ADR) script/hint_en.bmp"
+part_offset : 5000, cur_part : 1
+reading script/hint_en.bmp
+Tina_Match: isdir 0x1######################
+mydata : 
+Size of clusters in sectors : 1
+The sector of the first cluster, can be negative : 1fa0
+Current FAT buffer : 03f4c39c
+fatbufnum : 0
+Length of FAT in sectors : fc1
+Size of FAT in bits : 20
+Starting sector of the FAT : 20
+Start sector of root directory : 1fa2
+
+0x299D6 bytes read
+** exec: "setenv lcdparam 1,30000,8,800,480,48,40,40,3,29,13"
+** exec: "setenv pwmparam 0,4,599,599"
+** exec: "setenv LCDC_FB 7900000"
+** exec: "lcdinit"
+LCD param (setting): 1,30000,8,800,480,48,40,40,3,29,13
+PWM param (setting): 0,4,599,599
+LCD FrameBuffer = 0x07900000, BMP Address = 0x03C00000
+PWM0 input freq = 47916666 Hz, output freq = 19998 Hz
+PWM0 register setting: scalar = 3, period = 598, duty = 598
+LCD init OK
+** exec: "logo show -1 0"
+(-1, 0) show logo .....
+LCD already initialized
+Loading BMP ..... 
+colorBits = 24
+logo_width = 800, logo_height= 71
+lcd_width= 800, lcd_height = 480
+ok
+** exec: "textout 30 80 "Ready to upgrade filesystem" ffff00"
+"Ready to upgrade filesystem" 
+** exec: "mmcinit"
+ATSMB Host 390KHz 
+
+SD2_0  : SDHC card!
+
+Init  : card selected !
+
+set blocklen fun. !
+
+SD:Four Bits Mode!
+SD Card High Speed!
+
+Initial SD Card OK!
+ATSMB Host 25MHz 
+SD clock is 25Mhz
+register mmc device
+part_offset : 5000, cur_part : 1
+** exec: "setenv text1 'textout 660 440 "Uberoid" c5c5c5'"
+** exec: "run text1"
+"Uberoid" 
+** exec: "textout 30 80 "Uberoid upgrade start" ffff00"
+"Uberoid upgrade start" 
+** exec: "setenv touchic  true"
+** exec: "setenv audioic  wm9715"
+** exec: "setenv touchirq  gpio4"
+** exec: "setenv battvoltlist  6600,6989,7174,7319,7400,7431,7511,7639,7772,7939,8254"
+** exec: "setenv gpiostate  1"
+** exec: "setenv kpadid m001v2_4"
+** exec: "setenv panelres.x 800"
+** exec: "setenv panelres.y 480"
+** exec: "setenv bootdelay 1"
+** exec: "setenv logocmd 'usbinit;fatload usb 0 3c00000 logo.bmp;logo show;run text1'"
+** exec: "setenv bootcmd 'fatload usb 0 fc00000 animation.data;fatload usb 0 0 uzImage.bin;bootm 0'"
+** exec: "setenv bootargs 'mem=109M noinitrd root=/dev/sda5 rootfstype=ext4 rw console=ttyS0,115200n8 init=/init lcdid=1 androidboot.console=ttyS0 loadtime=-3 rootdelay=7'"
+** exec: "setenv sd_powerup "
+** exec: "setenv sd_powerdown"
+** exec: "setenv amp_powerup D8110064|0x8,D811008C|0x8,D81100B4&~0x8"
+** exec: "setenv amp_powerdown D8110064|0x8,D811008C|0x8,D81100B4|0x8"
+** exec: "setenv wifi_powerdown D8110064|0x4,D811008C|0x4,D81100B4&~0x4"
+** exec: "setenv wifi_powerup D8110064|0x4,D811008C|0x4,D81100B4|0x4"
+** exec: "setenv regop $(wifi_powerdown),$(amp_powerdown),D8130054|0x1"
+** exec: "setenv LOGO_STRING"
+** exec: "setenv basevolt 3000"
+** exec: "setenv gsensor_axis 0,-1,1,1,2,1"
+** exec: "setenv gsensor_int gpio6"
+** exec: "setenv gsensor_ui yes"
+** exec: "setenv motor_ui no"
+** exec: "setenv hibernation_ui no"
+** exec: "setenv eth_ui yes"
+** exec: "setenv need_restore_data yes"
+** exec: "setenv orientation_ui yes"
+** exec: "setenv pcmvolum puzhi"
+** exec: "setenv pppoe_ui yes"
+** exec: "setenv modem3g_ui yes"
+** exec: "setenv enable_hw_scal no"
+** exec: "setenv musicplayer_black_cd yes"
+** exec: "setenv camera_ui yes"
+** exec: "setenv camera_rotate 270"
+** exec: "setenv cam_pre_width 320"
+** exec: "setenv cam_pre_height 480"
+** exec: "setenv camera_powerup"
+** exec: "setenv camera_powerdown"
+** exec: "setenv camera_chip"
+** exec: "setenv udisk_ui yes"
+** exec: "setenv video_ui_dir_select"
+** exec: "setenv 88"
+** exec: "setenv dw"
+** exec: "setenv restore"
+** exec: "setenv release_ver WMT2.1.2"
+** exec: "setenv fake_firmware_version Uberoid"
+** exec: "setenv fake_mem 128M"
+** exec: "setenv showmemory_ui yes"
+** exec: "setenv release_date 20110128"
+** exec: "setenv release_language english"
+** exec: "setenv touchcodec  "
+** exec: "setenv amp_stop_when_nouse"
+** exec: "setenv spkvolum"
+** exec: "setenv hpvolum"
+** exec: "setenv vibratorset"
+** exec: "setenv showmemory_ui yes"
+** exec: "setenv photo_ui_slideshow_mode"
+** exec: "setenv enable_gome_theme no"
+** exec: "setenv udisk_boot yes"
+** exec: "setenv iLike style1"
+** exec: "setenv slideUnlock 0"
+** exec: "randommac"
+The random mac: 00:40:63:55:25:B4
+** exec: "protect off all"
+Un-Protect Flash Bank # 1
+Un-Protect Flash Bank # 2
+** exec: "saveenv"
+Saving Environment to Flash...
+Protect off FFFE0000 ... FFFEFFFF
+Un-Protecting sectors 6..6 in bank 1
+Un-Protected 1 sectors
+Protect off FFFD0000 ... FFFDFFFF
+Un-Protecting sectors 5..5 in bank 1
+Un-Protected 1 sectors
+Erasing Flash... FFFD0000 ... FFFDFFFF ...Erase Flash from 0xfffd0000 to 0xfffdffff in Bank # 1 
+Erasing sector  5 @ FFFD0000... ok.
+Erased 1 sectors
+Writing to Flash...  FFFD0005 ... FFFE0000 ...done
+Protecting sectors 5..5 in bank 1
+Protected 1 sectors
+Protecting sectors 6..6 in bank 1
+Protected 1 sectors
+** exec: "textout -1 -1 "Loading kernel ..." ffff00"
+"Loading kernel ..." 
+** exec: "fatload mmc 0 0 script/uzImage_ac97.bin"
+part_offset : 5000, cur_part : 1
+reading script/uzImage_ac97.bin
+Tina_Match: isdir 0x1######################
+mydata : 
+Size of clusters in sectors : 1
+The sector of the first cluster, can be negative : 1fa0
+Current FAT buffer : 03f4c39c
+fatbufnum : 0
+Length of FAT in sectors : fc1
+Size of FAT in bits : 20
+Starting sector of the FAT : 20
+Start sector of root directory : 1fa2
+
+0x297F1C bytes read
+** exec: "textout -1 -1 "Load kernel successful!" ff00"
+"Load kernel successful!" 
+** exec: "textout -1 -1 "Upgrading file-system ..." ffff00"
+"Upgrading file-system ..." 
+** exec: "setenv bootargs 'mem=109M root=/dev/ram rw initrd=0x01000000,32M console=ttyS0,115200n8 init=/linuxrc lcdid=1 loadtime=-2'"
+** exec: "fatload mmc 0 1000000 script/ramdisk_for_upgrade.gz"
+part_offset : 5000, cur_part : 1
+reading script/ramdisk_for_upgrade.gz
+Tina_Match: isdir 0x1######################
+mydata : 
+Size of clusters in sectors : 1
+The sector of the first cluster, can be negative : 1fa0
+Current FAT buffer : 03f4c39c
+fatbufnum : ffffffff
+Length of FAT in sectors : fc1
+Size of FAT in bits : 20
+Starting sector of the FAT : 20
+Start sector of root directory : 1fa2
+
+0x27974D bytes read
+** exec: "textout -1 -1 "Please wait..." ff00"
+"Please wait..." 
+** exec: "bootm 0"
+## Booting image at 00000000 ...
+   Image Name:   MontaVista Linux 2.6.10
+   Image Type:   ARM Linux Kernel Image (uncompressed)
+   Data Size:    2719452 Bytes =  2.6 MB
+   Load Address: 00008000
+   Entry Point:  00008000
+   Verifying Checksum ... OK
+OK
+No initrd
+## Transferring control to Linux (at address 00008000) ...
+
+Starting kernel ...
+
+Uncompressing Linux............................................................................................................................................................................ done, booting the kernel.
+Linux version 2.6.29-00236-g4f8dbbb-dirty (howayhuo@szmce12) (gcc version 4.2.0 20070126 (prerelease) (MontaVista 4.2.0-3.0.0.0702771 2007-03-10)) #34 Wed Oct 27 11:07:30 HKT 2010
+CPU: ARM926EJ-S [41069265] revision 5 (ARMv5TEJ), cr=00053177
+CPU: VIVT data cache, VIVT instruction cache
+Machine: WMT
+Memory policy: ECC disabled, Data cache writethrough
+Built 1 zonelists in Zone order, mobility grouping on.  Total pages: 27686
+Kernel command line: mem=109M root=/dev/ram rw initrd=0x01000000,32M console=ttyS0,115200n8 init=/linuxrc lcdid=1 loadtime=-2
+[LCD] lcd_arg_panel_id: <6>set lcd panel id = 1
+set load time = -2
+PID hash table entries: 512 (order: 9, 2048 bytes)
+start_kernel(): bug: interrupts were enabled early
+Console: colour dummy device 80x30
+console [ttyS0] enabled
+Dentry cache hash table entries: 16384 (order: 4, 65536 bytes)
+Inode-cache hash table entries: 8192 (order: 3, 32768 bytes)
+Memory: 109MB = 109MB total
+Memory: 71708KB available (5048K code, 775K data, 144K init)
+Calibrating delay loop... 174.48 BogoMIPS (lpj=872448)
+Mount-cache hash table entries: 512
+CPU: Testing write buffer coherency: ok
+net_namespace: 520 bytes
+NET: Registered protocol family 16
+wmt_init
+wmt_pci_init
+PCI: WonderMidia Technology PCI Bridge
+PCI: bus0: Fast back to back transfers disabled
+[WMT-MB] Preparing VIDEO BUFFER (SIZE 16384 kB) ...
+[WMT-MB] MAX MB Area size: Max 4096 Kbs Min 256 Kbs
+[WMT-MB] prob /dev/Memory Block major 216, minor 0
+mb_init ok
+bio: create slab <bio-0> at 0
+SCSI subsystem initialized
+usbcore: registered new interface driver usbfs
+usbcore: registered new interface driver hub
+usbcore: registered new device driver usb
+Bluetooth: Core ver 2.15
+NET: Registered protocol family 31
+Bluetooth: HCI device and connection manager initialized
+Bluetooth: HCI socket layer initialized
+NET: Registered protocol family 2
+IP route cache hash table entries: 1024 (order: 0, 4096 bytes)
+TCP established hash table entries: 4096 (order: 3, 32768 bytes)
+TCP bind hash table entries: 4096 (order: 2, 16384 bytes)
+TCP: Hash tables configured (established 4096 bind 4096)
+TCP reno registered
+NET: Registered protocol family 1
+checking if image is initramfs...it isn't (no cpio magic); looks like an initrd
+Freeing initrd memory: 32768K
+VT8500 SPI Flash Driver, (c) 2007 VIA Electronics ltd.
+Find SPI Flash, ID = 0x001C3113
+Find SPI Flash, ID = 0x00000000
+un-know id = 0x0
+vt8500 sf controller initial ok
+cmdlinepart partition parsing not available
+Creating 6 MTD partitions on "mtdsf device":
+0x000000000000-0x000000d00000 : "filesystem-SF"
+0x000000d00000-0x000000f80000 : "kernel-SF"
+0x000000f80000-0x000000fd0000 : "u-boot-SF"
+0x000000fd0000-0x000000fe0000 : "u-boot env. cfg. 1-SF"
+0x000000fe0000-0x000000ff0000 : "u-boot env. cfg. 2-SF"
+0x000000ff0000-0x000001000000 : "w-load-SF"
+ashmem: initialized
+yaffs Oct 27 2010 10:59:01 Installing. 
+msgmni has been set to 204
+alg: No test for stdrng (krng)
+io scheduler noop registered
+io scheduler anticipatory registered (default)
+io scheduler deadline registered
+io scheduler cfq registered
+loadtime = -2
+start_boot_splash: screen xres = 800, yres = 480
+processbar gefb: framebuffer at 0x7d00000, mapped to 0xc7400000, using 3072KB, total 3072KB
+--> framebuffer is right
+--> start progress bar
+vpp_init(boot logo 1)
+-------------lcd_init
+kmalloc buffer env_ptr = 0xc3520000, env_ptr_nand = 0xc3520000
+--- pwmparam = 0,4,599,599
+pwm_no = 0 scalar = 4, period = 599, duty = 599
+pwm0: clock = 47916666, freq = 19998, level = 100
+[VOUT] DVO to LCD
+[LCD Type] CHILIN LW700AT9003
+fb0: WMT GE frame buffer device
+fb1: WMT VPU frame buffer device
+------------ pwm_init
+## Warning: "vibratorset" not defined
+Error when reading vibratorset from u-boot!!!
+WMT vibrater driver load successfully!
+uart.0: ttyS0 at MMIO 0xd8200000 (irq = 32) is a wmt serial
+uart.1: ttyS1 at MMIO 0xd82b0000 (irq = 33) is a wmt serial
+uart.2: ttyS2 at MMIO 0xd8210000 (irq = 47) is a wmt serial
+uart.3: ttyS3 at MMIO 0xd82c0000 (irq = 50) is a wmt serial
+uart.4: ttyS4 at MMIO 0xd8370000 (irq = 31) is a wmt serial
+uart.5: ttyS5 at MMIO 0xd8380000 (irq = 30) is a wmt serial
+WMT Serial driver initialized: ok
+brd: module loaded
+loop: module loaded
+nbd: registered device at major 43
+--> pmem_init
+pmem: 0 init
+PPP generic driver version 2.4.2
+PPP Deflate Compression module registered
+PPP BSD Compression module registered
+PPP MPPE Compression module registered
+NET: Registered protocol family 24
+PPPoL2TP kernel driver, V1.0
+STRIP: Version 1.3A-STUART.CHESHIRE (unlimited channels)
+Linux video capture interface: v2.00
+usbcore: registered new interface driver uvcvideo
+USB Video Class driver (v0.1.0)
+[wmt-vd] prob /dev/wmt-vd major 236, minor 0, prdt ffc01000/3560000, size 100 KB
+[wmt-vd] WonderMedia HW decoder driver inited
+st: Version 20081215, fixed bufsize 32768, s/g segs 256
+Driver 'st' needs updating - please use bus_type methods
+Driver 'sd' needs updating - please use bus_type methods
+NAND Driver, (c) 2008 WMT Electronics ltd.
+1PMNAND_ADDR=0x10c 
+nand chip device maf_id is 98, and dev_id is ba
+NAND device: Manufacturer ID: 0x98, Chip ID: 0xd594ba (Toshiba TC58NVG4D1DTG0)
+PLLB=0x17, spec_clk=0x190f0f70
+T1=2, clk1=19, div1=11, Thold=1, tREA=25+delay(9)
+T2=1, clk2=34, div2=20, Thold2=1, comp=1
+Tim1=233472 , Tim2=278528
+T2 is greater and not use
+T=2, clk=19, divisor=11, Thold=0x201
+divisor PMNAND_ADDR is set 0x10c, NFC_timing=0x24242424
+BCH ECC 8BIT 
+## Warning: "nand_chip_num" not defined
+MTD NADN flash driver probe default 1 chip
+chip->chipsize = 0x80000000
+NAND device: Manufacturer ID: 0x98, Chip ID: 0xd594ba (Toshiba TC58NVG4D1DTG0)
+len= 0x401! 
+nand_scan_bbt(): this->bbt = 0xc6885800:
+mtd->size -2147483648,this->bbt_erase_shift 19,this->chipsize -2147483648,this->page_shift 12
+535
+startblock 4095
+546
+chips 1, bbtblocks 4096, startblock 4095
+call scan_read_raw(): and block is 0 and i is 0 and chips is 1
+call scan_read_raw(): and mtd->writesize is 4096
+find bbt page is 524160
+mtd->size -2147483648,this->bbt_erase_shift 19,this->chipsize -2147483648,this->page_shift 12
+535
+startblock 4095
+546
+chips 1, bbtblocks 4096, startblock 4095
+call scan_read_raw(): and block is 0 and i is 0 and chips is 1
+call scan_read_raw(): and mtd->writesize is 4096
+call scan_read_raw(): and block is 1 and i is 0 and chips is 1
+call scan_read_raw(): and mtd->writesize is 4096
+in nfc_wait_idle(): redunt area uncorrected err bch_ecc_idx:f
+call scan_read_raw(): and block is 2 and i is 0 and chips is 1
+call scan_read_raw(): and mtd->writesize is 4096
+in nfc_wait_idle(): redunt area uncorrected err bch_ecc_idx:f
+call scan_read_raw(): and block is 3 and i is 0 and chips is 1
+call scan_read_raw(): and mtd->writesize is 4096
+in nfc_wait_idle(): redunt area uncorrected err bch_ecc_idx:f
+Bad block table not found for chip 0
+bbt perchip, mtd->size=0x80000000, numblocks=0x1000, chipsel=0x0, nrchips=0x1
+startblock=0xfff, numblocks=0x1000, dir=-1
+mtd->size=0x80000000, td->maxblocks=0x4
+1md->pages[0]=0x7ff80, block=0xfff, md=0xc053ee80
+2md->pages[0]=0x7ff80, page=0x7ff80, md=0xc053ee80
+1md->pages[0]=0x7ff80, block=0xffe, md=0xc053ee80
+1md->pages[0]=0x7ff80, block=0xffd, md=0xc053ee80
+1md->pages[0]=0x7ff80, block=0xffc, md=0xc053ee80
+No space left to write bad block table
+nand initialised ok
+spi_probe: /dev/WMT_SPI major number 154, minor number 0, device number 3
+ehci_hcd: USB 2.0 'Enhanced' Host Controller (EHCI) Driver
+PCI: enabling device 0000:00:04.0 (0040 -> 0042)
+ehci_hcd 0000:00:04.0: EHCI Host Controller
+ehci_hcd 0000:00:04.0: new USB bus registered, assigned bus number 1
+ehci_hcd 0000:00:04.0: irq 1, io mem 0xd8007100
+ehci_hcd 0000:00:04.0: USB 0.0 started, EHCI 1.00
+usb usb1: New USB device found, idVendor=1d6b, idProduct=0002
+usb usb1: New USB device strings: Mfr=3, Product=2, SerialNumber=1
+usb usb1: Product: EHCI Host Controller
+usb usb1: Manufacturer: Linux 2.6.29-00236-g4f8dbbb-dirty ehci_hcd
+usb usb1: SerialNumber: 0000:00:04.0
+usb usb1: configuration #1 chosen from 1 choice
+hub 1-0:1.0: USB hub found
+hub 1-0:1.0: 2 ports detected
+uhci_hcd: USB Universal Host Controller Interface driver
+PCI: enabling device 0000:00:05.0 (0000 -> 0001)
+uhci_hcd 0000:00:05.0: UHCI Host Controller
+uhci_hcd 0000:00:05.0: new USB bus registered, assigned bus number 2
+uhci_hcd 0000:00:05.0: irq 0, io base 0xd8007300
+usb usb2: New USB device found, idVendor=1d6b, idProduct=0001
+usb usb2: New USB device strings: Mfr=3, Product=2, SerialNumber=1
+usb usb2: Product: UHCI Host Controller
+usb usb2: Manufacturer: Linux 2.6.29-00236-g4f8dbbb-dirty uhci_hcd
+usb usb2: SerialNumber: 0000:00:05.0
+usb usb2: configuration #1 chosen from 1 choice
+hub 2-0:1.0: USB hub found
+hub 2-0:1.0: 2 ports detected
+usbcore: registered new interface driver cdc_acm
+cdc_acm: v0.26:USB Abstract Control Model driver for USB modems and ISDN adapters
+Initializing USB Mass Storage driver...
+usbcore: registered new interface driver usb-storage
+USB Mass Storage support registered.
+usbcore: registered new interface driver usbserial
+USB Serial support registered for generic
+usbcore: registered new interface driver usbserial_generic
+usbserial: USB Serial Driver core
+## Warning: "3g_powerup" not defined
+USB Serial support registered for GSM modem (1-port)
+usbcore: registered new interface driver option
+option: v0.7.2:USB Driver for GSM modems
+usbcore: registered new interface driver VIAUSBModem
+LinuxVIAUSBD1.0.4:VIA USB CDMA Modem<6>USB Serial support registered for pl2303
+usbcore: registered new interface driver pl2303
+pl2303: Prolific PL2303 USB to serial adaptor driver
+udc: VIA UDC driver, version: 3 December 2007 (dma)
+udc: pullup_disable()
+IRQ 5/wmotgdev: IRQF_DISABLED is not guaranteed on shared IRQs
+IRQ 2/wmotgdev: IRQF_DISABLED is not guaranteed on shared IRQs
+udc: wmt_udc_probe - request_irq(0x05) pass!
+i8042_controller_init
+I8042_CMD_CTL_TEST ok 0x55
+write 0x50 cmd 0x1060
+serio: i8042 AUX port at 0xd8008800,0xd8008804 irq 4
+serio: i8042 KBD port at 0xd8008800,0xd8008804 irq 23
+mice: PS/2 mouse device common for all mice
+wmt_rtc on
+wmt-rtc wmt-rtc.0: rtc core: registered wmt-rtc as rtc0
+WMT Real Time Clock driver v0.54 initialized: ok
+i2c /dev entries driver
+i2c: adding wmt_i2c_adapter.
+i2c: successfully added bus
+[wmt_i2c_api_i2c_init]
+[wmt_i2c_api_init] wmt_i2c_api_init.
+i2c: wmt algorithm module loaded.
+Bluetooth: Generic Bluetooth USB driver ver 0.5
+usbcore: registered new interface driver btusb
+sd power down
+## Warning: "sd_powerdown" not defined
+WMT AHB to SD/MMC bus controller registered!
+------------ lcd_backlight_init
+Registered led device: lcd-backlight
+atkbd.c: keyboard reset failed on isa0060/serio1
+sd power up
+## Warning: "sd_powerup" not defined
+usbcore: registered new interface driver usbhid
+usbhid: v2.6:USB HID core driver
+logger: created 64K log 'log_main'
+logger: created 256K log 'log_events'
+logger: created 64K log 'log_radio'
+Advanced Linux Sound Architecture Driver Version 1.0.18a.
+Sound: WMT AC97: dsp id 3 mixer id 0
+## Warning: "audio_max_gain" not defined
+Max. audio gain was default value(0x1e)
+## Warning: "wmt_disspdif" not defined
+VT1613 generic driver installed
+ALSA device list:
+  No soundcards found.
+IPv4 over IPv4 tunneling driver
+GRE over IPv4 tunneling driver
+TCP cubic registered
+NET: Registered protocol family 17
+Bluetooth: L2CAP ver 2.13
+Bluetooth: L2CAP socket layer initialized
+Bluetooth: SCO (Voice Link) ver 0.6
+Bluetooth: SCO socket layer initialized
+Bluetooth: RFCOMM socket layer initialized
+rfcomm_init_ttys: Can't register RFCOMM TTY driver
+Bluetooth: RFCOMM ver 1.11
+Bluetooth: BNEP (Ethernet Emulation) ver 1.3
+Bluetooth: BNEP filters: protocol multicast
+Bluetooth: HIDP (Human Interface Emulation) ver 1.2
+Trying to free already-free IRQ 4
+RPC: Registered udp transport module.
+RPC: Registered tcp transport module.
+802.1Q VLAN Support v1.8 Ben Greear <greearb@candelatech.com>
+All bugs added by David S. Miller <davem@redhat.com>
+## Warning: "pwbtn" not defined
+input: kpadPower as /devices/virtual/input/input0
+PMC: WonderMedia Power Management driver
+PMC: Power button is configured as soft power
+VFP support v0.3: not present
+wmt-rtc wmt-rtc.0: setting system clock to 2012-03-16 23:17:25 UTC (1331939845)
+Trying to free already-free IRQ 4
+atkbd.c: keyboard reset failed on isa0060/serio0
+Trying to free already-free IRQ 23
+usb 1-1: new high speed USB device using ehci_hcd and address 2
+atkbd.c: keyboard reset failed on isa0060/serio1
+Trying to free already-free IRQ 4
+atkbd.c: keyboard reset failed on isa0060/serio0
+Trying to free already-free IRQ 23
+Trying to free already-free IRQ 4
+usb 1-1: New USB device found, idVendor=1e3d, idProduct=2095
+usb 1-1: New USB device strings: Mfr=1, Product=2, SerialNumber=3
+usb 1-1: Product: Flash Disk      
+usb 1-1: Manufacturer: Generic 
+usb 1-1: SerialNumber: CCBB1012031148201242545304
+usb 1-1: configuration #1 chosen from 1 choice
+scsi0 : SCSI emulation for USB Mass Storage devices
+RAMDISK: Compressed image found at block 0
+[GOVRH] VGA DAC DISCONNECT
+EXT2-fs warning: checktime reached, running e2fsck is recommended
+VFS: Mounted root (ext2 filesystem) on device 1:0.
+Freeing init memory: 144K
+usb 1-2: new high speed USB device using ehci_hcd and address 3
+usb 1-2: New USB device found, idVendor=05e3, idProduct=0608
+usb 1-2: New USB device strings: Mfr=0, Product=1, SerialNumber=0
+usb 1-2: Product: USB2.0 Hub
+usb 1-2: configuration #1 chosen from 1 choice
+hub 1-2:1.0: USB hub found
+hub 1-2:1.0: 4 ports detected
+[atsmb_set_ios]ATSMB Host fix to 25MHz
+[atsmb_set_ios]ATSMB Host fix to 25MHz
+mmc0: new high speed SD card at address 0003
+mmcblk0: mmc0:0003 SD2GB 1.83 GiB 
+ mmcblk0: p1 p2 p3
+0
+Starting the hotplug events dispatcher: udevd.
+Synthesizing the initial hotplug events...scsi 0:0:0:0: Direct-Access     Generic  Flash Disk       5.00 PQ: 0 ANSI: 2
+sd 0:0:0:0: [sda] 4114432 512-byte hardware sectors: (2.10 GB/1.96 GiB)
+sd 0:0:0:0: [sda] Write Protect is off
+sd 0:0:0:0: [sda] Assuming drive cache: write through
+sd 0:0:0:0: [sda] 4114432 512-byte hardware sectors: (2.10 GB/1.96 GiB)
+sd 0:0:0:0: [sda] Write Protect is off
+sd 0:0:0:0: [sda] Assuming drive cache: write through
+ sda: sda1 sda2 < sda5 sda6 sda7 sda8 >
+sd 0:0:0:0: [sda] Attached SCSI removable disk
+sd 0:0:0:0: Attached scsi generic sg0 type 0
+done.
+Waiting for /dev to be fully populated...card=
+EXT4-fs: Update your userspace programs to mount using ext4
+EXT4-fs: ext4dev backwards compatibility will go away by 2.6.31
+yaffs: dev is 8388608 name is "sda"
+yaffs: passed flags ""
+yaffs: Attempting MTD mount on 8.0, "sda"
+yaffs: dev is 8388608 name is "sda"
+yaffs: passed flags ""
+yaffs: Attempting MTD mount on 8.0, "sda"
+EXT4-fs: Update your userspace programs to mount using ext4
+EXT4-fs: ext4dev backwards compatibility will go away by 2.6.31
+yaffs: dev is 187695104 name is "mmcblk0"
+yaffs: passed flags ""
+yaffs: Attempting MTD mount on 179.0, "mmcblk0"
+yaffs: dev is 187695104 name is "mmcblk0"
+yaffs: passed flags ""
+yaffs: Attempting MTD mount on 179.0, "mmcblk0"
+attempt to access beyond end of device
+sda2: rw=0, want=4, limit=2
+EXT3-fs: unable to read superblock
+attempt to access beyond end of device
+sda2: rw=0, want=4, limit=2
+EXT2-fs: unable to read superblock
+attempt to access beyond end of device
+sda2: rw=0, want=4, limit=2
+EXT4-fs: unable to read superblock
+EXT3-fs: sda5: couldn't mount because of unsupported optional features (240).
+EXT2-fs: sda5: couldn't mount because of unsupported optional features (244).
+EXT3-fs: sda7: couldn't mount because of unsupported optional features (240).
+EXT4-fs: Update your userspace programs to mount using ext4
+EXT4-fs: ext4dev backwards compatibility will go away by 2.6.31
+EXT2-fs: sda7: couldn't mount because of unsupported optional features (240).
+EXT3-fs: sda6: couldn't mount because of unsupported optional features (240).
+EXT2-fs: sda6: couldn't mount because of unsupported optional features (240).
+EXT4-fs: barriers enabled
+attempt to access beyond end of device
+sda2: rw=0, want=4, limit=2
+EXT4-fs: unable to read superblock
+EXT4-fs: Update your userspace programs to mount using ext4
+EXT4-fs: ext4dev backwards compatibility will go away by 2.6.31
+EXT4-fs: barriers enabled
+kjournald2 starting: pid 382, dev sda5:8, commit interval 5 seconds
+kjournald2 starting: pid 386, dev sda7:8, commit interval 5 seconds
+EXT4-fs: Update your userspace programs to mount using ext4
+EXT4-fs: ext4dev backwards compatibility will go away by 2.6.31
+EXT4-fs: barriers enabled
+kjournald2 starting: pid 387, dev sda6:8, commit interval 5 seconds
+yaffs: dev is 8388610 name is "sda2"
+yaffs: passed flags ""
+yaffs: Attempting MTD mount on 8.2, "sda2"
+EXT4-fs: Update your userspace programs to mount using ext4
+EXT4-fs: ext4dev backwards compatibility will go away by 2.6.31
+EXT4 FS on sda5, internal journal on sda5:8
+EXT4-fs: delayed allocation enabled
+EXT4-fs: file extents enabled
+EXT4-fs: mballoc enabled
+EXT4-fs: recovery complete.
+EXT4-fs: mounted filesystem sda5 with ordered data mode
+yaffs: dev is 8388610 name is "sda2"
+yaffs: passed flags ""
+yaffs: Attempting MTD mount on 8.2, "sda2"
+EXT4 FS on sda6, internal journal on sda6:8
+EXT4-fs: delayed allocation enabled
+EXT4-fs: file extents enabled
+EXT4-fs: mballoc enabled
+EXT4-fs: mounted filesystem sda6 with ordered data mode
+EXT4 FS on sda7, internal journal on sda7:8
+EXT4-fs: delayed allocation enabled
+EXT4-fs: file extents enabled
+EXT4-fs: mballoc enabled
+EXT4-fs: mounted filesystem sda7 with ordered data mode
+EXT4-fs: Update your userspace programs to mount using ext4
+EXT4-fs: ext4dev backwards compatibility will go away by 2.6.31
+yaffs: dev is 187695107 name is "mmcblk0p3"
+yaffs: passed flags ""
+yaffs: Attempting MTD mount on 179.3, "mmcblk0p3"
+yaffs: dev is 187695107 name is "mmcblk0p3"
+yaffs: passed flags ""
+yaffs: Attempting MTD mount on 179.3, "mmcblk0p3"
+EXT4-fs: Update your userspace programs to mount using ext4
+EXT4-fs: ext4dev backwards compatibility will go away by 2.6.31
+done.
+0
+Activating swap...done. 
+Starting mounting local filesystems: mount EXT4-fs: Update your userspace programs to mount using ext4
+EXT4-fs: ext4dev backwards compatibility will go away by 2.6.31
+ failed (1: ).
+Setting up networking ....
+/etc/network/options is deprecated.
+Setting up IP spoofing protection: rp_filter done.
+Disabling TCP/IP SYN cookies: done.
+Disabling IPv4 packet forwarding: done.
+Disabling TCP/IP Explicit Congestion Notification: done.
+Starting network interfaces: done.
+FBInfo (800 x 480) bpp(32), Line(3200), Addr(0x4013f000)
+Prepare update files...
+FBInfo (800 x 480) bpp(32), Line(3200), Addr(0x4013f000)
+Update filesystem Start ......
+FBInfo (800 x 480) bpp(32), Line(3200), Addr(0x4013f000)
+Wait for Udisk Ready ......
+FBInfo (800 x 480) bpp(32), Line(3200), Addr(0x4013f000)
+kill 'sh/etc/udev/scripts/CARD_DET'
+EXT4-fs: mballoc: 0 blocks 0 reqs (0 success)
+EXT4-fs: mballoc: 0 extents scanned, 0 goal hits, 0 2^N hits, 0 breaks, 0 lost
+EXT4-fs: mballoc: 0 generated and it took 0
+EXT4-fs: mballoc: 0 preallocated, 0 discarded
+EXT4-fs: mballoc: 0 blocks 0 reqs (0 success)
+EXT4-fs: mballoc: 0 extents scanned, 0 goal hits, 0 2^N hits, 0 breaks, 0 lost
+EXT4-fs: mballoc: 0 generated and it took 0
+EXT4-fs: mballoc: 0 preallocated, 0 discarded
+EXT4-fs: mballoc: 0 blocks 0 reqs (0 success)
+EXT4-fs: mballoc: 0 extents scanned, 0 goal hits, 0 2^N hits, 0 breaks, 0 lost
+EXT4-fs: mballoc: 0 generated and it took 0
+EXT4-fs: mballoc: 0 preallocated, 0 discarded
+UDisk Partition ......
+FBInfo (800 x 480) bpp(32), Line(3200), Addr(0x4013f000)
+
+The number of cylinders for this disk is set to 32654.
+There is nothing wrong with that, but this is larger than 1024,
+and could in certain setups cause problems with:
+1) software that runs at boot time (e.g., old versions of LILO)
+2) booting and partitioning software from other OSs
+   (e.g., DOS FDISK, OS/2 FDISK)
+
+Command (m for help): 
+Disk /dev/sda: 2106 MB, 2106589184 bytes
+2 heads, 63 sectors/track, 32654 cylinders
+Units = cylinders of 126 * 512 = 64512 bytes
+
+   Device Boot      Start         End      Blocks  Id System
+/dev/sda1               1         513       32287+ 83 Linux
+/dev/sda2             514       32654     2024883   5 Extended
+/dev/sda5             514        6218      359383+ 83 Linux
+/dev/sda6            6219       16264      632866+ 83 Linux
+/dev/sda7           16265       17893      102595+ 83 Linux
+/dev/sda8           17894       32654      929911+ 83 Linux
+
+Command (m for help): Partition number (1-8): 
+Command (m for help): Partition number (1-8): 
+Command (m for help): No partition is defined yet!
+
+Command (m for help): 3: unknown command
+Command Action
+a	toggle a bootable flag
+b	edit bsd disklabel
+c	toggle the dos compatibility flag
+d	delete a partition
+l	list known partition types
+n	add a new partition
+o	create a new empty DOS partition table
+p	print the partition table
+q	quit without saving changes
+s	create a new empty Sun disklabel
+t	change a partition's system id
+u	change display/entry units
+v	verify the partition table
+w	write table to disk and exit
+x	extra functionality (experts only)
+
+Command (m for help): No partition is defined yet!
+
+Command (m for help): 4: unknown command
+Command Action
+a	toggle a bootable flag
+b	edit bsd disklabel
+c	toggle the dos compatibility flag
+d	delete a partition
+l	list known partition types
+n	add a new partition
+o	create a new empty DOS partition table
+p	print the partition table
+q	quit without saving changes
+s	create a new empty Sun disklabel
+t	change a partition's system id
+u	change display/entry units
+v	verify the partition table
+w	write table to disk and exit
+x	extra functionality (experts only)
+
+Command (m for help): 
+Disk /dev/sda: 2106 MB, 2106589184 bytes
+2 heads, 63 sectors/track, 32654 cylinders
+Units = cylinders of 126 * 512 = 64512 bytes
+
+   Device Boot      Start         End      Blocks  Id System
+
+Command (m for help): Command action
+   e   extended
+   p   primary partition (1-4)
+Partition number (1-4): First cylinder (1-32654, default 1): Using default value 1
+Last cylinder or +size or +sizeM or +sizeK (1-32654, default 32654): 
+Command (m for help): Command action
+   e   extended
+   p   primary partition (1-4)
+Partition number (1-4): First cylinder (514-32654, default 514): Using default value 514
+Last cylinder or +size or +sizeM or +sizeK (514-32654, default 32654): Using default value 32654
+
+Command (m for help): 
+Disk /dev/sda: 2106 MB, 2106589184 bytes
+2 heads, 63 sectors/track, 32654 cylinders
+Units = cylinders of 126 * 512 = 64512 bytes
+
+   Device Boot      Start         End      Blocks  Id System
+/dev/sda1               1         513       32287+ 83 Linux
+/dev/sda2             514       32654     2024883   5 Extended
+
+Command (m for help): Command action
+   l   logical (5 or over)
+   p   primary partition (1-4)
+First cylinder (514-32654, default 514): Using default value 514
+Last cylinder or +size or +sizeM or +sizeK (514-32654, default 32654): 
+Command (m for help): 
+Disk /dev/sda: 2106 MB, 2106589184 bytes
+2 heads, 63 sectors/track, 32654 cylinders
+Units = cylinders of 126 * 512 = 64512 bytes
+
+   Device Boot      Start         End      Blocks  Id System
+/dev/sda1               1         513       32287+ 83 Linux
+/dev/sda2             514       32654     2024883   5 Extended
+/dev/sda5             514        6218      359383+ 83 Linux
+
+Command (m for help): Command action
+   l   logical (5 or over)
+   p   primary partition (1-4)
+First cylinder (6219-32654, default 6219): Using default value 6219
+Last cylinder or +size or +sizeM or +sizeK (6219-32654, default 32654): 
+Command (m for help): 
+Disk /dev/sda: 2106 MB, 2106589184 bytes
+2 heads, 63 sectors/track, 32654 cylinders
+Units = cylinders of 126 * 512 = 64512 bytes
+
+   Device Boot      Start         End      Blocks  Id System
+/dev/sda1               1         513       32287+ 83 Linux
+/dev/sda2             514       32654     2024883   5 Extended
+/dev/sda5             514        6218      359383+ 83 Linux
+/dev/sda6            6219       16264      632866+ 83 Linux
+
+Command (m for help): Command action
+   l   logical (5 or over)
+   p   primary partition (1-4)
+First cylinder (16265-32654, default 16265): Using default value 16265
+Last cylinder or +size or +sizeM or +sizeK (16265-32654, default 32654): 
+Command (m for help): 
+Disk /dev/sda: 2106 MB, 2106589184 bytes
+2 heads, 63 sectors/track, 32654 cylinders
+Units = cylinders of 126 * 512 = 64512 bytes
+
+   Device Boot      Start         End      Blocks  Id System
+/dev/sda1               1         513       32287+ 83 Linux
+/dev/sda2             514       32654     2024883   5 Extended
+/dev/sda5             514        6218      359383+ 83 Linux
+/dev/sda6            6219       16264      632866+ 83 Linux
+/dev/sda7           16265       17893      102595+ 83 Linux
+
+Command (m for help): Command action
+   l   logical (5 or over)
+   p   primary partition (1-4)
+First cylinder (17894-32654, default 17894): Using default value 17894
+Last cylinder or +size or +sizeM or +sizeK (17894-32654, default 32654): Using default value 32654
+
+Command (m for help): 
+Disk /dev/sda: 2106 MB, 2106589184 bytes
+2 heads, 63 sectors/track, 32654 cylinders
+Units = cylinders of 126 * 512 = 64512 bytes
+
+   Device Boot      Start         End      Blocks  Id System
+/dev/sda1               1         513       32287+ 83 Linux
+/dev/sda2             514       32654     2024883   5 Extended
+/dev/sda5             514        6218      359383+ 83 Linux
+/dev/sda6            6219       16264      632866+ 83 Linux
+/dev/sda7           16265       17893      102595+ 83 Linux
+/dev/sda8           17894       32654      929911+ 83 Linux
+
+Command (m for help): The partition table has been altered!
+
+Calling ioctl() to re-read partition table
+sd 0:0:0:0: [sda] 4114432 512-byte hardware sectors: (2.10 GB/1.96 GiB)
+sd 0:0:0:0: [sda] Write Protect is off
+sd 0:0:0:0: [sda] Assuming drive cache: write through
+ sda: sda1 sda2 < sda5 sda6 sda7 sda8 >
+Format Kernel Partition (FAT) ......
+FBInfo (800 x 480) bpp(32), Line(3200), Addr(0x4013f000)
+mkdosfs 2.11 (12 Mar 2005)
+Format Kernel Partition OK
+FBInfo (800 x 480) bpp(32), Line(3200), Addr(0x4013f000)
+EXT4-fs: Update your userspace programs to mount using ext4
+EXT4-fs: ext4dev backwards compatibility will go away by 2.6.31
+Mount Kernel Partition OK
+FBInfo (800 x 480) bpp(32), Line(3200), Addr(0x4013f000)
+Copy File to Kernel Partition ......
+FBInfo (800 x 480) bpp(32), Line(3200), Addr(0x4013f000)
+Copy File to Kernel Partition OK
+FBInfo (800 x 480) bpp(32), Line(3200), Addr(0x4013f000)
+Format File-System Partition (EXT4)......
+FBInfo (800 x 480) bpp(32), Line(3200), Addr(0x4013f000)
+Filesystem label=
+OS type: Linux
+Block size=4096 (log=2)
+Fragment size=4096 (log=2)
+22464 inodes, 89845 blocks
+4492 blocks (5.00%) reserved for the super user
+First data block=0
+Maximum filesystem blocks=92274688
+3 block groups
+32768 blocks per group, 32768 fragments per group
+7488 inodes per group
+Superblock backups stored on blocks: 
+	32768
+
+Writing inode tables: 0/31/32/3done                            
+Creating journal (4096 blocks): done
+Writing superblocks and filesystem accounting information: done
+
+This filesystem will be automatically checked every 31 mounts or
+180 days, whichever comes first.  Use tune2fs -c or -i to override.
+Format File-System Partition OK
+FBInfo (800 x 480) bpp(32), Line(3200), Addr(0x4013f000)
+EXT3-fs: sda5: couldn't mount because of unsupported optional features (240).
+EXT2-fs: sda5: couldn't mount because of unsupported optional features (240).
+EXT4-fs: barriers enabled
+kjournald2 starting: pid 602, dev sda5:8, commit interval 5 seconds
+EXT4 FS on sda5, internal journal on sda5:8
+EXT4-fs: delayed allocation enabled
+EXT4-fs: file extents enabled
+EXT4-fs: mballoc enabled
+EXT4-fs: mounted filesystem sda5 with ordered data mode
+Mount File-System Partition OK
+FBInfo (800 x 480) bpp(32), Line(3200), Addr(0x4013f000)
+Now Copy System Files, Please wait ......
+FBInfo (800 x 480) bpp(32), Line(3200), Addr(0x4013f000)
+./data/
+./default.prop
+./dev/
+./init
+./init.goldfish.rc
+./init.rc
+./proc/
+./sbin/
+./sbin/adbd
+./sys/
+./system/
+./system/app/
+./system/app/AlarmClock.apk
+./system/app/ApplicationsProvider.apk
+./system/app/BootReceiver.apk
+./system/app/Browser.apk
+./system/app/Calendar.apk
+./system/app/CalendarProvider.apk
+./system/app/Contacts.apk
+./system/app/ContactsProvider.apk
+./system/app/DownloadProvider.apk
+./system/app/DrmProvider.apk
+./system/app/Email.apk
+./system/app/EnhancedGoogleSearchProvider.apk
+./system/app/GlobalSearch.apk
+./system/app/GlobalSearchBenchmarks.apk
+./system/app/Gmail.apk
+./system/app/GmailProvider.apk
+./system/app/GoogleApps.apk
+./system/app/GoogleCheckin.apk
+./system/app/GoogleSearch.apk
+./system/app/GoogleSettingsProvider.apk
+./system/app/gtalkservice.apk
+./system/app/HTMLViewer.apk
+./system/app/ImProvider.apk
+./system/app/LatinIME.apk
+./system/app/Launcher.apk
+./system/app/MediaProvider.apk
+./system/app/PackageInstaller.apk
+./system/app/Phone.apk
+./system/app/PicoTts.apk
+./system/app/Settings.apk
+./system/app/SettingsProvider.apk
+./system/app/SetupWizard.apk
+./system/app/SlowSuggestions.apk
+./system/app/SoundRecorder.apk
+./system/app/SpammySuggestions.apk
+./system/app/SubscribedFeedsProvider.apk
+./system/app/Talk.apk
+./system/app/TelephonyProvider.apk
+./system/app/TtsService.apk
+./system/app/UserDictionaryProvider.apk
+./system/app/Vending.apk
+./system/app/VpnServices.apk
+./system/bin/
+./system/bin/am
+./system/bin/applypatch
+./system/bin/app_process
+./system/bin/bmgr
+./system/bin/bootanimation
+./system/bin/bugreport
+./system/bin/busybox
+./system/bin/cat
+./system/bin/chat
+./system/bin/chmod
+./system/bin/chown
+./system/bin/cmp
+./system/bin/dalvikvm
+./system/bin/date
+./system/bin/dbus-daemon
+./system/bin/dd
+./system/bin/debuggerd
+./system/bin/dexopt
+./system/bin/df
+./system/bin/dhcpcd
+./system/bin/dmesg
+./system/bin/dumpcrash
+./system/bin/dumpstate
+./system/bin/dumpsys
+./system/bin/dvz
+./system/bin/ffplayer
+./system/bin/fsck_msdos
+./system/bin/getenv
+./system/bin/getevent
+./system/bin/getprop
+./system/bin/gzip
+./system/bin/hciattach
+./system/bin/hcid
+./system/bin/hd
+./system/bin/id
+./system/bin/ifconfig
+./system/bin/iftop
+./system/bin/ime
+./system/bin/input
+./system/bin/insmod
+./system/bin/installd
+./system/bin/ioctl
+./system/bin/iptables
+./system/bin/iwpriv
+./system/bin/keystore
+./system/bin/kill
+./system/bin/linker
+./system/bin/ln
+./system/bin/log
+./system/bin/logcat
+./system/bin/logwrapper
+./system/bin/ls
+./system/bin/lsmod
+./system/bin/mediaserver
+./system/bin/mkdir
+./system/bin/monkey
+./system/bin/mount
+./system/bin/mtpd
+./system/bin/mv
+./system/bin/netcfg
+./system/bin/netstat
+./system/bin/newfs_msdos
+./system/bin/notify
+./system/bin/ping
+./system/bin/pm
+./system/bin/pppd
+./system/bin/pppdnew
+./system/bin/pppoe
+./system/bin/preboot
+./system/bin/printenv
+./system/bin/ps
+./system/bin/racoon
+./system/bin/reboot
+./system/bin/renice
+./system/bin/rild
+./system/bin/rm
+./system/bin/rmdir
+./system/bin/rmmod
+./system/bin/route
+./system/bin/schedtest
+./system/bin/schedtop
+./system/bin/sdptool
+./system/bin/sendevent
+./system/bin/service
+./system/bin/servicemanager
+./system/bin/setconsole
+./system/bin/setenv
+./system/bin/setprop
+./system/bin/sh
+./system/bin/sleep
+./system/bin/smd
+./system/bin/sqlite3
+./system/bin/start
+./system/bin/stop
+./system/bin/su
+./system/bin/su2
+./system/bin/surfaceflinger
+./system/bin/svc
+./system/bin/sync
+./system/bin/system_server
+./system/bin/thumbserver
+./system/bin/toolbox
+./system/bin/top
+./system/bin/umount
+./system/bin/usb_modeswitch
+./system/bin/usb_modeswitch_loop
+./system/bin/vmstat
+./system/bin/vold
+./system/bin/watchprops
+./system/bin/wipe
+./system/bin/wmt_getspeed
+./system/bin/wpa_supplicant
+./system/build.prop
+./system/etc/
+./system/etc/apns-conf.xml
+./system/etc/bluez/
+./system/etc/bluez/audio.conf
+./system/etc/bluez/hcid.conf
+./system/etc/bluez/input.conf
+./system/etc/bookmarks.xml
+./system/etc/cursor/
+./system/etc/cursor/logo.bin
+./system/etc/dbus.conf
+./system/etc/dhcpcd/
+./system/etc/dhcpcd/android.conf
+./system/etc/dhcpcd/dhcpcd-hooks/
+./system/etc/dhcpcd/dhcpcd-hooks/01-test
+./system/etc/dhcpcd/dhcpcd-hooks/20-dns.conf
+./system/etc/dhcpcd/dhcpcd-hooks/95-configured
+./system/etc/dhcpcd/dhcpcd-run-hooks
+./system/etc/event-log-tags
+./system/etc/hosts
+./system/etc/init.goldfish.sh
+./system/etc/init.gprs-pppd
+./system/etc/init.oef
+./system/etc/init.sh
+./system/etc/NOTICE.html.gz
+./system/etc/permissions/
+./system/etc/permissions/com.google.android.datamessaging.xml
+./system/etc/permissions/com.google.android.gtalkservice.xml
+./system/etc/permissions/com.google.android.maps.xml
+./system/etc/permissions/platform.xml
+./system/etc/ppp/
+./system/etc/ppp/chap-secrets
+./system/etc/ppp/chat_DeviceDATANG.conf
+./system/etc/ppp/chat_DeviceHW_E220.conf
+./system/etc/ppp/chat_DeviceVIA.conf
+./system/etc/ppp/DeviceDATANG.dia
+./system/etc/ppp/DeviceHW_E220.dia
+./system/etc/ppp/DeviceVIA.dia
+./system/etc/ppp/dialer
+./system/etc/ppp/gprs-connect-chat
+./system/etc/ppp/ip-up-vpn
+./system/etc/ppp/pap-secrets
+./system/etc/pvplayer.cfg
+./system/etc/security/
+./system/etc/security/cacerts.bks
+./system/etc/security/otacerts.zip
+./system/etc/sensor_shake
+./system/etc/setup/
+./system/etc/setup/E1750.setup
+./system/etc/setup/ET128.setup
+./system/etc/usb-modem-dialer
+./system/etc/vold.conf
+./system/etc/wifi/
+./system/etc/wifi/wpa_supplicant.conf
+./system/etc/Wireless/
+./system/etc/Wireless/RT2870STA/
+./system/etc/Wireless/RT2870STA/RT2870STA.dat
+./system/etc/Wireless/RT2870STA/RT2870STA.tmp
+./system/fonts/
+./system/fonts/DroidSans-Bold.ttf
+./system/fonts/DroidSans.ttf
+./system/fonts/DroidSansFallback.ttf
+./system/fonts/DroidSansMono.ttf
+./system/fonts/DroidSerif-Bold.ttf
+./system/fonts/DroidSerif-BoldItalic.ttf
+./system/fonts/DroidSerif-Italic.ttf
+./system/fonts/DroidSerif-Regular.ttf
+./system/framework/
+./system/framework/am.jar
+./system/framework/android.policy.jar
+./system/framework/android.test.runner.jar
+./system/framework/bmgr.jar
+./system/framework/com.android.im.plugin.jar
+./system/framework/com.google.android.gtalkservice.jar
+./system/framework/core.jar
+./system/framework/ext.jar
+./system/framework/framework-res.apk
+./system/framework/framework-tests.jar
+./system/framework/framework.jar
+./system/framework/ime.jar
+./system/framework/input.jar
+./system/framework/monkey.jar
+./system/framework/pm.jar
+./system/framework/services.jar
+./system/framework/svc.jar
+./system/lib/
+./system/lib/bluez-plugin/
+./system/lib/bluez-plugin/audio.so
+./system/lib/bluez-plugin/input.so
+./system/lib/browsertestplugin.so
+./system/lib/hw/
+./system/lib/hw/copybit.wmt.so
+./system/lib/hw/lights.wmt.so
+./system/lib/hw/sensors.wmt.so
+./system/lib/liba2dp.so
+./system/lib/libagl.so
+./system/lib/libandless.so
+./system/lib/libandroid_runtime.so
+./system/lib/libandroid_servers.so
+./system/lib/libaudioflinger.so
+./system/lib/libbluedroid.so
+./system/lib/libbluetooth.so
+./system/lib/libc.so
+./system/lib/libcamera.so
+./system/lib/libcameraservice.so
+./system/lib/libcerttool_jni.so
+./system/lib/libcorecg.so
+./system/lib/libcrypto.so
+./system/lib/libctest.so
+./system/lib/libcutils.so
+./system/lib/libdbus.so
+./system/lib/libdl.so
+./system/lib/libdrm1.so
+./system/lib/libdrm1_jni.so
+./system/lib/libdvm.so
+./system/lib/libEGL.so
+./system/lib/libemoji.so
+./system/lib/libexif.so
+./system/lib/libexpat.so
+./system/lib/libffplayer.so
+./system/lib/libFFTEm.so
+./system/lib/libGLESv1_CM.so
+./system/lib/libgtalk_jni.so
+./system/lib/libhardware.so
+./system/lib/libhardware_legacy.so
+./system/lib/libhcid.so
+./system/lib/libicudata.so
+./system/lib/libicui18n.so
+./system/lib/libicuuc.so
+./system/lib/libid3tag.so
+./system/lib/libjni_latinime.so
+./system/lib/libjni_pinyinime.so
+./system/lib/liblog.so
+./system/lib/libm.so
+./system/lib/libmedia.so
+./system/lib/libmediaplayerservice.so
+./system/lib/libmedia_jni.so
+./system/lib/libnativehelper.so
+./system/lib/libnetutils.so
+./system/lib/libomx_aacdec_sharedlibrary.so
+./system/lib/libomx_amrdec_sharedlibrary.so
+./system/lib/libomx_amrenc_sharedlibrary.so
+./system/lib/libomx_avcdec_sharedlibrary.so
+./system/lib/libomx_avcenc_sharedlibrary.so
+./system/lib/libomx_m4vdec_sharedlibrary.so
+./system/lib/libomx_m4venc_sharedlibrary.so
+./system/lib/libomx_mp3dec_sharedlibrary.so
+./system/lib/libomx_sharedlibrary.so
+./system/lib/libopencore_author.so
+./system/lib/libopencore_common.so
+./system/lib/libopencore_download.so
+./system/lib/libopencore_downloadreg.so
+./system/lib/libopencore_mp4local.so
+./system/lib/libopencore_mp4localreg.so
+./system/lib/libopencore_net_support.so
+./system/lib/libopencore_player.so
+./system/lib/libopencore_rtsp.so
+./system/lib/libopencore_streaming.so
+./system/lib/libopencore_streamingreg.so
+./system/lib/libpixelflinger.so
+./system/lib/libpointerboot.so
+./system/lib/libpointercal.so
+./system/lib/libpointertch.so
+./system/lib/libpvoma1passthru.so
+./system/lib/libpvrtsptunicast_streaming.so
+./system/lib/libpvrtsptunicast_streamingreg.so
+./system/lib/libpvrtspunicast_streaming.so
+./system/lib/libpvrtspunicast_streamingreg.so
+./system/lib/libreference-cdma-sms.so
+./system/lib/libreference-ril.so
+./system/lib/libril.so
+./system/lib/libsgl.so
+./system/lib/libskiagl.so
+./system/lib/libsonivox.so
+./system/lib/libsoundpool.so
+./system/lib/libsqlite.so
+./system/lib/libsrec_jni.so
+./system/lib/libssl.so
+./system/lib/libstdc++.so
+./system/lib/libsurfaceflinger.so
+./system/lib/libsvgandroid.so
+./system/lib/libsystem_server.so
+./system/lib/libsysutils.so
+./system/lib/libthread_db.so
+./system/lib/libttspico.so
+./system/lib/libttssynthproxy.so
+./system/lib/libui.so
+./system/lib/libutils.so
+./system/lib/libvorbisidec.so
+./system/lib/libwbxml.so
+./system/lib/libwbxml_jni.so
+./system/lib/libwebcore.so
+./system/lib/libwmtapi.so
+./system/lib/libwmtdatabase.so
+./system/lib/libwmtmedia.so
+./system/lib/libwmtnative.so
+./system/lib/libwmtprotect.so
+./system/lib/libwpa_client.so
+./system/lib/libxml2wbxml.so
+./system/lib/libz.so
+./system/lib/modules/
+./system/lib/modules/rt3070sta.ko
+./system/lib/modules/rtl8129/
+./system/lib/modules/rtl8129/rt3070sta.ko
+./system/media/
+./system/media/audio/
+./system/media/audio/alarms/
+./system/media/audio/alarms/Alarm_Beep_01.ogg
+./system/media/audio/alarms/Alarm_Beep_02.ogg
+./system/media/audio/alarms/Alarm_Beep_03.ogg
+./system/media/audio/alarms/Alarm_Buzzer.ogg
+./system/media/audio/alarms/Alarm_Classic.ogg
+./system/media/audio/alarms/Alarm_Rooster_02.ogg
+./system/media/audio/notifications/
+./system/media/audio/notifications/Beat_Box_Android.ogg
+./system/media/audio/notifications/CaffeineSnake.ogg
+./system/media/audio/notifications/Cricket.ogg
+./system/media/audio/notifications/DearDeer.ogg
+./system/media/audio/notifications/Doink.ogg
+./system/media/audio/notifications/DontPanic.ogg
+./system/media/audio/notifications/Drip.ogg
+./system/media/audio/notifications/F1_MissedCall.ogg
+./system/media/audio/notifications/F1_New_MMS.ogg
+./system/media/audio/notifications/F1_New_SMS.ogg
+./system/media/audio/notifications/Heaven.ogg
+./system/media/audio/notifications/Highwire.ogg
+./system/media/audio/notifications/KzurbSonar.ogg
+./system/media/audio/notifications/moonbeam.ogg
+./system/media/audio/notifications/OnTheHunt.ogg
+./system/media/audio/notifications/pixiedust.ogg
+./system/media/audio/notifications/pizzicato.ogg
+./system/media/audio/notifications/Plastic_Pipe.ogg
+./system/media/audio/notifications/SpaceSeed.ogg
+./system/media/audio/notifications/TaDa.ogg
+./system/media/audio/notifications/Tinkerbell.ogg
+./system/media/audio/notifications/tweeters.ogg
+./system/media/audio/notifications/Voila.ogg
+./system/media/audio/ringtones/
+./system/media/audio/ringtones/Backroad.ogg
+./system/media/audio/ringtones/Big_Easy.ogg
+./system/media/audio/ringtones/BirdLoop.ogg
+./system/media/audio/ringtones/Bollywood.ogg
+./system/media/audio/ringtones/BussaMove.ogg
+./system/media/audio/ringtones/Cairo.ogg
+./system/media/audio/ringtones/Calypso_Steel.ogg
+./system/media/audio/ringtones/Champagne_Edition.ogg
+./system/media/audio/ringtones/Club_Cubano.ogg
+./system/media/audio/ringtones/CrayonRock.ogg
+./system/media/audio/ringtones/CurveBall.ogg
+./system/media/audio/ringtones/DancinFool.ogg
+./system/media/audio/ringtones/Ding.ogg
+./system/media/audio/ringtones/DonMessWivIt.ogg
+./system/media/audio/ringtones/Eastern_Sky.ogg
+./system/media/audio/ringtones/Enter_the_Nexus.ogg
+./system/media/audio/ringtones/EtherShake.ogg
+./system/media/audio/ringtones/FreeFlight.ogg
+./system/media/audio/ringtones/Funk_Yall.ogg
+./system/media/audio/ringtones/Gimme_Mo_Town.ogg
+./system/media/audio/ringtones/Glacial_Groove.ogg
+./system/media/audio/ringtones/Growl.ogg
+./system/media/audio/ringtones/HalfwayHome.ogg
+./system/media/audio/ringtones/LoopyLounge.ogg
+./system/media/audio/ringtones/LosAngeles2019.ogg
+./system/media/audio/ringtones/LoveFlute.ogg
+./system/media/audio/ringtones/MidEvilJaunt.ogg
+./system/media/audio/ringtones/MildlyAlarming.ogg
+./system/media/audio/ringtones/Nairobi.ogg
+./system/media/audio/ringtones/Nassau.ogg
+./system/media/audio/ringtones/No_Limits.ogg
+./system/media/audio/ringtones/OrganDub.ogg
+./system/media/audio/ringtones/Paradise_Island.ogg
+./system/media/audio/ringtones/Playa.ogg
+./system/media/audio/ringtones/Radiation.ogg
+./system/media/audio/ringtones/Ring_Classic_02.ogg
+./system/media/audio/ringtones/Ring_Digital_02.ogg
+./system/media/audio/ringtones/Ring_Synth_02.ogg
+./system/media/audio/ringtones/Ring_Synth_04.ogg
+./system/media/audio/ringtones/Road_Trip.ogg
+./system/media/audio/ringtones/Safari.ogg
+./system/media/audio/ringtones/Seville.ogg
+./system/media/audio/ringtones/Shes_All_That.ogg
+./system/media/audio/ringtones/SilkyWay.ogg
+./system/media/audio/ringtones/Steppin_Out.ogg
+./system/media/audio/ringtones/Terminated.ogg
+./system/media/audio/ringtones/Third_Eye.ogg
+./system/media/audio/ringtones/TwirlAway.ogg
+./system/media/audio/ringtones/World.ogg
+./system/media/audio/ui/
+./system/media/audio/ui/camera_click.ogg
+./system/media/audio/ui/Effect_Tick.ogg
+./system/media/audio/ui/KeypressDelete.ogg
+./system/media/audio/ui/KeypressReturn.ogg
+./system/media/audio/ui/KeypressSpacebar.ogg
+./system/media/audio/ui/KeypressStandard.ogg
+./system/media/audio/ui/VideoRecord.ogg
+./system/usr/
+./system/usr/keychars/
+./system/usr/keychars/english.us.kcm.bin
+./system/usr/keychars/french.kcm.bin
+./system/usr/keychars/german.kcm.bin
+./system/usr/keychars/qwerty.kcm.bin
+./system/usr/keychars/qwerty2.kcm.bin
+./system/usr/keychars/spanish.kcm.bin
+./system/usr/keychars/tuttle2.kcm.bin
+./system/usr/keylayout/
+./system/usr/keylayout/AVRCP.kl
+./system/usr/keylayout/english.us.kl
+./system/usr/keylayout/french.kl
+./system/usr/keylayout/german.kl
+./system/usr/keylayout/qwerty.kl
+./system/usr/keylayout/spanish.kl
+./system/usr/keylayout/tuttle2.kl
+./system/usr/share/
+./system/usr/share/bmd/
+./system/usr/share/bmd/RFFspeed_501.bmd
+./system/usr/share/bmd/RFFstd_501.bmd
+./system/usr/share/zoneinfo/
+./system/usr/share/zoneinfo/zoneinfo.dat
+./system/usr/share/zoneinfo/zoneinfo.idx
+./system/usr/share/zoneinfo/zoneinfo.version
+./system/usr/srec/
+./system/usr/srec/config/
+./system/usr/srec/config/en.us/
+./system/usr/srec/config/en.us/baseline.par
+./system/usr/srec/config/en.us/baseline11k.par
+./system/usr/srec/config/en.us/baseline8k.par
+./system/usr/srec/config/en.us/dictionary/
+./system/usr/srec/config/en.us/dictionary/basic.ok
+./system/usr/srec/config/en.us/dictionary/cmu6plus.ok.zip
+./system/usr/srec/config/en.us/dictionary/enroll.ok
+./system/usr/srec/config/en.us/g2p/
+./system/usr/srec/config/en.us/g2p/en-US-ttp.data
+./system/usr/srec/config/en.us/grammars/
+./system/usr/srec/config/en.us/grammars/VoiceDialer.g2g
+./system/usr/srec/config/en.us/models/
+./system/usr/srec/config/en.us/models/generic.swiarb
+./system/usr/srec/config/en.us/models/generic11.lda
+./system/usr/srec/config/en.us/models/generic11_f.swimdl
+./system/usr/srec/config/en.us/models/generic11_m.swimdl
+./system/usr/srec/config/en.us/models/generic8.lda
+./system/usr/srec/config/en.us/models/generic8_f.swimdl
+./system/usr/srec/config/en.us/models/generic8_m.swimdl
+./system/wmtapp/
+./system/wmtapp/camera_res/
+./system/wmtapp/camera_res/customer/
+./system/wmtapp/camera_res/customer/romantic/
+./system/wmtapp/camera_res/customer/romantic/480x640/
+./system/wmtapp/camera_res/customer/romantic/480x640/1.png
+./system/wmtapp/camera_res/customer/romantic/480x640/2.png
+./system/wmtapp/camera_res/customer/romantic/480x640/3.png
+./system/wmtapp/camera_res/customer/romantic/640x480/
+./system/wmtapp/camera_res/customer/romantic/640x480/1.png
+./system/wmtapp/camera_res/customer/romantic/640x480/2.png
+./system/wmtapp/camera_res/customer/romantic/640x480/3.png
+./system/wmtapp/camera_res/customer/romantic/grid_icon/
+./system/wmtapp/camera_res/customer/romantic/grid_icon/1.png
+./system/wmtapp/camera_res/customer/romantic/grid_icon/2.png
+./system/wmtapp/camera_res/customer/romantic/grid_icon/3.png
+./system/wmtapp/erroravoid.jpg
+./system/wmtapp/HomePage/
+./system/wmtapp/HomePage/weather/
+./system/wmtapp/HomePage/weather/chance_of_rain_l.png
+./system/wmtapp/HomePage/weather/chance_of_rain_s.png
+./system/wmtapp/HomePage/weather/chance_of_storm_l.png
+./system/wmtapp/HomePage/weather/chance_of_storm_s.png
+./system/wmtapp/HomePage/weather/cloudy_l.png
+./system/wmtapp/HomePage/weather/cloudy_s.png
+./system/wmtapp/HomePage/weather/haze_l.png
+./system/wmtapp/HomePage/weather/haze_s.png
+./system/wmtapp/HomePage/weather/heavyrain_l.png
+./system/wmtapp/HomePage/weather/heavyrain_s.png
+./system/wmtapp/HomePage/weather/lightrain_l.png
+./system/wmtapp/HomePage/weather/lightrain_s.png
+./system/wmtapp/HomePage/weather/mist_l.png
+./system/wmtapp/HomePage/weather/mist_s.png
+./system/wmtapp/HomePage/weather/mostly_sunny_l.png
+./system/wmtapp/HomePage/weather/mostly_sunny_s.png
+./system/wmtapp/HomePage/weather/overcast_l.png
+./system/wmtapp/HomePage/weather/overcast_s.png
+./system/wmtapp/HomePage/weather/rain_l.png
+./system/wmtapp/HomePage/weather/rain_s.png
+./system/wmtapp/HomePage/weather/snow_l.png
+./system/wmtapp/HomePage/weather/snow_s.png
+./system/wmtapp/HomePage/weather/sunny_l.png
+./system/wmtapp/HomePage/weather/sunny_s.png
+./system/wmtapp/HomePage/weather/thunderstorm_l.png
+./system/wmtapp/HomePage/weather/thunderstorm_s.png
+./system/wmtapp/HomePage/weather/weather.xml
+./system/wmtapp/HomePage/yahooicons/
+./system/wmtapp/HomePage/yahooicons/10d.png
+./system/wmtapp/HomePage/yahooicons/10n.png
+./system/wmtapp/HomePage/yahooicons/11d.png
+./system/wmtapp/HomePage/yahooicons/11n.png
+./system/wmtapp/HomePage/yahooicons/12d.png
+./system/wmtapp/HomePage/yahooicons/12n.png
+./system/wmtapp/HomePage/yahooicons/13d.png
+./system/wmtapp/HomePage/yahooicons/13n.png
+./system/wmtapp/HomePage/yahooicons/14d.png
+./system/wmtapp/HomePage/yahooicons/14n.png
+./system/wmtapp/HomePage/yahooicons/15d.png
+./system/wmtapp/HomePage/yahooicons/15n.png
+./system/wmtapp/HomePage/yahooicons/16d.png
+./system/wmtapp/HomePage/yahooicons/16n.png
+./system/wmtapp/HomePage/yahooicons/17d.png
+./system/wmtapp/HomePage/yahooicons/17n.png
+./system/wmtapp/HomePage/yahooicons/18d.png
+./system/wmtapp/HomePage/yahooicons/18n.png
+./system/wmtapp/HomePage/yahooicons/19d.png
+./system/wmtapp/HomePage/yahooicons/19n.png
+./system/wmtapp/HomePage/yahooicons/1d.png
+./system/wmtapp/HomePage/yahooicons/1n.png
+./system/wmtapp/HomePage/yahooicons/2d.png
+./system/wmtapp/HomePage/yahooicons/2n.png
+./system/wmtapp/HomePage/yahooicons/3d.png
+./system/wmtapp/HomePage/yahooicons/3n.png
+./system/wmtapp/HomePage/yahooicons/4d.png
+./system/wmtapp/HomePage/yahooicons/4n.png
+./system/wmtapp/HomePage/yahooicons/5d.png
+./system/wmtapp/HomePage/yahooicons/5n.png
+./system/wmtapp/HomePage/yahooicons/6d.png
+./system/wmtapp/HomePage/yahooicons/6n.png
+./system/wmtapp/HomePage/yahooicons/7d.png
+./system/wmtapp/HomePage/yahooicons/7n.png
+./system/wmtapp/HomePage/yahooicons/8d.png
+./system/wmtapp/HomePage/yahooicons/8n.png
+./system/wmtapp/HomePage/yahooicons/9d.png
+./system/wmtapp/HomePage/yahooicons/9n.png
+./system/wmtapp/launcher-res/
+./system/wmtapp/launcher-res/launcher_icon_cfg.xml
+./system/wmtapp/launcher-res/style1/
+./system/wmtapp/launcher-res/style1/3g.png
+./system/wmtapp/launcher-res/style1/adsl.png
+./system/wmtapp/launcher-res/style1/alarmclock.png
+./system/wmtapp/launcher-res/style1/alipay.png
+./system/wmtapp/launcher-res/style1/appman.png
+./system/wmtapp/launcher-res/style1/calculator.png
+./system/wmtapp/launcher-res/style1/calendar.png
+./system/wmtapp/launcher-res/style1/camera.png
+./system/wmtapp/launcher-res/style1/contact.png
+./system/wmtapp/launcher-res/style1/eth.png
+./system/wmtapp/launcher-res/style1/filemanager.png
+./system/wmtapp/launcher-res/style1/gallery.png
+./system/wmtapp/launcher-res/style1/gamesetting.png
+./system/wmtapp/launcher-res/style1/googlemap.png
+./system/wmtapp/launcher-res/style1/jiepang.png
+./system/wmtapp/launcher-res/style1/magicframe.png
+./system/wmtapp/launcher-res/style1/mail.png
+./system/wmtapp/launcher-res/style1/market.png
+./system/wmtapp/launcher-res/style1/mymusic.png
+./system/wmtapp/launcher-res/style1/myphoto.png
+./system/wmtapp/launcher-res/style1/myvideo.png
+./system/wmtapp/launcher-res/style1/setting.png
+./system/wmtapp/launcher-res/style1/snapshot.png
+./system/wmtapp/launcher-res/style1/talk.png
+./system/wmtapp/launcher-res/style1/tudou.png
+./system/wmtapp/launcher-res/style1/videorecoder.png
+./system/wmtapp/launcher-res/style1/webbrowser.png
+./system/wmtapp/launcher-res/style1/wifi.png
+./system/wmtapp/launcher-res/style1/youtube.png
+./system/wmtapp/launcher-res/style2/
+./system/wmtapp/launcher-res/style2/3g.png
+./system/wmtapp/launcher-res/style2/adsl.png
+./system/wmtapp/launcher-res/style2/alarmclock.png
+./system/wmtapp/launcher-res/style2/alipay.png
+./system/wmtapp/launcher-res/style2/appman.png
+./system/wmtapp/launcher-res/style2/calendar.png
+./system/wmtapp/launcher-res/style2/camera.png
+./system/wmtapp/launcher-res/style2/contact.png
+./system/wmtapp/launcher-res/style2/dragpallet480.png
+./system/wmtapp/launcher-res/style2/dragpallet800.png
+./system/wmtapp/launcher-res/style2/eth.png
+./system/wmtapp/launcher-res/style2/filemanager.png
+./system/wmtapp/launcher-res/style2/gallery.png
+./system/wmtapp/launcher-res/style2/gamesetting.png
+./system/wmtapp/launcher-res/style2/googlemap.png
+./system/wmtapp/launcher-res/style2/magicframe.png
+./system/wmtapp/launcher-res/style2/mail.png
+./system/wmtapp/launcher-res/style2/market.png
+./system/wmtapp/launcher-res/style2/mymusic.png
+./system/wmtapp/launcher-res/style2/myphoto.png
+./system/wmtapp/launcher-res/style2/myvideo.png
+./system/wmtapp/launcher-res/style2/pallet480.png
+./system/wmtapp/launcher-res/style2/pallet800.png
+./system/wmtapp/launcher-res/style2/plp.png
+./system/wmtapp/launcher-res/style2/setting.png
+./system/wmtapp/launcher-res/style2/snapshot.png
+./system/wmtapp/launcher-res/style2/tudou.png
+./system/wmtapp/launcher-res/style2/tutor.png
+./system/wmtapp/launcher-res/style2/videorecoder.png
+./system/wmtapp/launcher-res/style2/webbrowser.png
+./system/wmtapp/launcher-res/style2/wifi.png
+./system/wmtapp/launcher-res/style3/
+./system/wmtapp/launcher-res/style3/3g.png
+./system/wmtapp/launcher-res/style3/adsl.png
+./system/wmtapp/launcher-res/style3/alarmclock.png
+./system/wmtapp/launcher-res/style3/alipay.png
+./system/wmtapp/launcher-res/style3/appman.png
+./system/wmtapp/launcher-res/style3/calculator.png
+./system/wmtapp/launcher-res/style3/calendar.png
+./system/wmtapp/launcher-res/style3/camera.png
+./system/wmtapp/launcher-res/style3/contact.png
+./system/wmtapp/launcher-res/style3/eth.png
+./system/wmtapp/launcher-res/style3/filemanager.png
+./system/wmtapp/launcher-res/style3/gallery.png
+./system/wmtapp/launcher-res/style3/gamesetting.png
+./system/wmtapp/launcher-res/style3/googlemap.png
+./system/wmtapp/launcher-res/style3/jiepang.png
+./system/wmtapp/launcher-res/style3/magicframe.png
+./system/wmtapp/launcher-res/style3/mail.png
+./system/wmtapp/launcher-res/style3/market.png
+./system/wmtapp/launcher-res/style3/mymusic.png
+./system/wmtapp/launcher-res/style3/myphoto.png
+./system/wmtapp/launcher-res/style3/myvideo.png
+./system/wmtapp/launcher-res/style3/setting.png
+./system/wmtapp/launcher-res/style3/snapshot.png
+./system/wmtapp/launcher-res/style3/talk.png
+./system/wmtapp/launcher-res/style3/tudou.png
+./system/wmtapp/launcher-res/style3/videorecoder.png
+./system/wmtapp/launcher-res/style3/webbrowser.png
+./system/wmtapp/launcher-res/style3/wifi.png
+./system/wmtapp/launcher-res/style3/youtube.png
+./system/wmtapp/PeacockPhotoGallery/
+./system/wmtapp/PeacockPhotoGallery/slideshow/
+./system/wmtapp/PeacockPhotoGallery/slideshow/activity/
+./system/wmtapp/PeacockPhotoGallery/slideshow/activity/1.png
+./system/wmtapp/PeacockPhotoGallery/slideshow/fragrant/
+./system/wmtapp/PeacockPhotoGallery/slideshow/fragrant/1.png
+./system/wmtapp/PeacockPhotoGallery/slideshow/party/
+./system/wmtapp/PeacockPhotoGallery/slideshow/party/1.png
+./system/wmtapp/PeacockPhotoGallery/slideshow/reminiscently/
+./system/wmtapp/PeacockPhotoGallery/slideshow/reminiscently/1.png
+./system/wmtapp/PeacockPhotoGallery/slideshow/romantic/
+./system/wmtapp/PeacockPhotoGallery/slideshow/romantic/1.png
+./system/wmtapp/PeacockPhotoGallery/slideshow/slideshow.xml
+./udisk/
+Copy System Files to File-System Partition OK
+FBInfo (800 x 480) bpp(32), Line(3200), Addr(0x4013f000)
+Now Copy Drivers to File-System Partition ......
+Copy Drivers to File-System Partition OK
+FBInfo (800 x 480) bpp(32), Line(3200), Addr(0x4013f000)
+Now Copy busybox to File-System Partition ......
+FBInfo (800 x 480) bpp(32), Line(3200), Addr(0x4013f000)
+busybox/
+busybox/bin/
+busybox/bin/ar
+busybox/bin/arping
+busybox/bin/ash
+busybox/bin/awk
+busybox/bin/basename
+busybox/bin/beep
+busybox/bin/bunzip2
+busybox/bin/busybox
+busybox/bin/bzcat
+busybox/bin/bzip2
+busybox/bin/cal
+busybox/bin/cat
+busybox/bin/catv
+busybox/bin/chat
+busybox/bin/chattr
+busybox/bin/chgrp
+busybox/bin/chmod
+busybox/bin/chown
+busybox/bin/chpst
+busybox/bin/chrt
+busybox/bin/chvt
+busybox/bin/cksum
+busybox/bin/clear
+busybox/bin/cmp
+busybox/bin/comm
+busybox/bin/cp
+busybox/bin/cpio
+busybox/bin/crontab
+busybox/bin/cryptpw
+busybox/bin/cttyhack
+busybox/bin/cut
+busybox/bin/date
+busybox/bin/dc
+busybox/bin/dd
+busybox/bin/deallocvt
+busybox/bin/deluser
+busybox/bin/df
+busybox/bin/diff
+busybox/bin/dirname
+busybox/bin/dmesg
+busybox/bin/dnsdomainname
+busybox/bin/dos2unix
+busybox/bin/du
+busybox/bin/dumpkmap
+busybox/bin/dumpleases
+busybox/bin/echo
+busybox/bin/ed
+busybox/bin/egrep
+busybox/bin/eject
+busybox/bin/env
+busybox/bin/envdir
+busybox/bin/envuidgid
+busybox/bin/ether-wake
+busybox/bin/expand
+busybox/bin/expr
+busybox/bin/false
+busybox/bin/fdflush
+busybox/bin/fdformat
+busybox/bin/fgrep
+busybox/bin/find
+busybox/bin/fold
+busybox/bin/free
+busybox/bin/fsync
+busybox/bin/ftpget
+busybox/bin/ftpput
+busybox/bin/fuser
+busybox/bin/getopt
+busybox/bin/grep
+busybox/bin/gunzip
+busybox/bin/gzip
+busybox/bin/hd
+busybox/bin/head
+busybox/bin/hexdump
+busybox/bin/hostid
+busybox/bin/hostname
+busybox/bin/hush
+busybox/bin/id
+busybox/bin/ifplugd
+busybox/bin/install
+busybox/bin/ionice
+busybox/bin/ip
+busybox/bin/ipaddr
+busybox/bin/ipcalc
+busybox/bin/ipcrm
+busybox/bin/ipcs
+busybox/bin/iplink
+busybox/bin/iproute
+busybox/bin/iprule
+busybox/bin/iptunnel
+busybox/bin/kbd_mode
+busybox/bin/kill
+busybox/bin/killall
+busybox/bin/killall5
+busybox/bin/last
+busybox/bin/length
+busybox/bin/less
+busybox/bin/linux32
+busybox/bin/linux64
+busybox/bin/ln
+busybox/bin/login
+busybox/bin/logname
+busybox/bin/ls
+busybox/bin/lsattr
+busybox/bin/lzmacat
+busybox/bin/lzop
+busybox/bin/lzopcat
+busybox/bin/md5sum
+busybox/bin/mesg
+busybox/bin/microcom
+busybox/bin/mkdir
+busybox/bin/mkfifo
+busybox/bin/mknod
+busybox/bin/mkpasswd
+busybox/bin/mktemp
+busybox/bin/more
+busybox/bin/mount
+busybox/bin/mountpoint
+busybox/bin/msh
+busybox/bin/mt
+busybox/bin/mv
+busybox/bin/nc
+busybox/bin/netstat
+busybox/bin/nice
+busybox/bin/nmeter
+busybox/bin/nohup
+busybox/bin/nslookup
+busybox/bin/od
+busybox/bin/openvt
+busybox/bin/passwd
+busybox/bin/patch
+busybox/bin/pgrep
+busybox/bin/pidof
+busybox/bin/ping
+busybox/bin/ping6
+busybox/bin/pipe_progress
+busybox/bin/pkill
+busybox/bin/printenv
+busybox/bin/printf
+busybox/bin/ps
+busybox/bin/pscan
+busybox/bin/pwd
+busybox/bin/readlink
+busybox/bin/realpath
+busybox/bin/renice
+busybox/bin/reset
+busybox/bin/resize
+busybox/bin/rm
+busybox/bin/rmdir
+busybox/bin/rtcwake
+busybox/bin/run-parts
+busybox/bin/runsv
+busybox/bin/runsvdir
+busybox/bin/rx
+busybox/bin/script
+busybox/bin/scriptreplay
+busybox/bin/sed
+busybox/bin/seq
+busybox/bin/setarch
+busybox/bin/setkeycodes
+busybox/bin/setsid
+busybox/bin/setuidgid
+busybox/bin/sh
+busybox/bin/sha1sum
+busybox/bin/sha256sum
+busybox/bin/sha512sum
+busybox/bin/showkey
+busybox/bin/sleep
+busybox/bin/softlimit
+busybox/bin/sort
+busybox/bin/split
+busybox/bin/stat
+busybox/bin/strings
+busybox/bin/stty
+busybox/bin/sum
+busybox/bin/sv
+busybox/bin/sync
+busybox/bin/tac
+busybox/bin/tail
+busybox/bin/tar
+busybox/bin/tcpsvd
+busybox/bin/tee
+busybox/bin/telnet
+busybox/bin/test
+busybox/bin/tftp
+busybox/bin/tftpd
+busybox/bin/time
+busybox/bin/timeout
+busybox/bin/top
+busybox/bin/touch
+busybox/bin/tr
+busybox/bin/traceroute
+busybox/bin/true
+busybox/bin/tty
+busybox/bin/ttysize
+busybox/bin/udpsvd
+busybox/bin/umount
+busybox/bin/uname
+busybox/bin/uncompress
+busybox/bin/unexpand
+busybox/bin/uniq
+busybox/bin/unix2dos
+busybox/bin/unlzma
+busybox/bin/unlzop
+busybox/bin/unzip
+busybox/bin/uptime
+busybox/bin/usleep
+busybox/bin/uudecode
+busybox/bin/uuencode
+busybox/bin/vi
+busybox/bin/vlock
+busybox/bin/volname
+busybox/bin/wall
+busybox/bin/watch
+busybox/bin/wc
+busybox/bin/wget
+busybox/bin/which
+busybox/bin/who
+busybox/bin/whoami
+busybox/bin/xargs
+busybox/bin/yes
+busybox/bin/zcat
+busybox/bin/[
+busybox/bin/[[
+busybox/etc/
+busybox/etc/passwd
+busybox/passwd
+busybox/sbin/
+busybox/sbin/adjtimex
+busybox/sbin/arp
+busybox/sbin/blkid
+busybox/sbin/brctl
+busybox/sbin/chpasswd
+busybox/sbin/chroot
+busybox/sbin/crond
+busybox/sbin/depmod
+busybox/sbin/devmem
+busybox/sbin/dhcprelay
+busybox/sbin/dnsd
+busybox/sbin/fakeidentd
+busybox/sbin/fbset
+busybox/sbin/fbsplash
+busybox/sbin/fdisk
+busybox/sbin/findfs
+busybox/sbin/freeramdisk
+busybox/sbin/fsck
+busybox/sbin/fsck.minix
+busybox/sbin/ftpd
+busybox/sbin/getty
+busybox/sbin/halt
+busybox/sbin/hdparm
+busybox/sbin/httpd
+busybox/sbin/hwclock
+busybox/sbin/ifconfig
+busybox/sbin/ifdown
+busybox/sbin/ifenslave
+busybox/sbin/ifup
+busybox/sbin/inetd
+busybox/sbin/init
+busybox/sbin/insmod
+busybox/sbin/loadfont
+busybox/sbin/loadkmap
+busybox/sbin/losetup
+busybox/sbin/lsmod
+busybox/sbin/makedevs
+busybox/sbin/man
+busybox/sbin/mdev
+busybox/sbin/mkdosfs
+busybox/sbin/mkfs.minix
+busybox/sbin/mkfs.vfat
+busybox/sbin/mkswap
+busybox/sbin/modprobe
+busybox/sbin/nameif
+busybox/sbin/pivot_root
+busybox/sbin/poweroff
+busybox/sbin/raidautorun
+busybox/sbin/rdate
+busybox/sbin/rdev
+busybox/sbin/readprofile
+busybox/sbin/rmmod
+busybox/sbin/route
+busybox/sbin/runlevel
+busybox/sbin/setconsole
+busybox/sbin/setfont
+busybox/sbin/setlogcons
+busybox/sbin/slattach
+busybox/sbin/start-stop-daemon
+busybox/sbin/sulogin
+busybox/sbin/svlogd
+busybox/sbin/swapoff
+busybox/sbin/swapon
+busybox/sbin/switch_root
+busybox/sbin/sysctl
+busybox/sbin/telnetd
+busybox/sbin/tunctl
+busybox/sbin/udhcpc
+busybox/sbin/udhcpd
+busybox/sbin/vconfig
+busybox/sbin/watchdog
+busybox/sbin/zcip
+Copy busybox to File-System Partition OK
+FBInfo (800 x 480) bpp(32), Line(3200), Addr(0x4013f000)
+Now Copy Additional Files to File-System Partition ......
+FBInfo (800 x 480) bpp(32), Line(3200), Addr(0x4013f000)
+Copy Additional Files to File-System Partition OK
+FBInfo (800 x 480) bpp(32), Line(3200), Addr(0x4013f000)
+Umount File-System Partition ...
+FBInfo (800 x 480) bpp(32), Line(3200), Addr(0x4013f000)
+EXT4-fs: mballoc: 35982 blocks 572 reqs (404 success)
+EXT4-fs: mballoc: 233 extents scanned, 49 goal hits, 147 2^N hits, 0 breaks, 0 lost
+EXT4-fs: mballoc: 2 generated and it took 0
+EXT4-fs: mballoc: 25688 preallocated, 10692 discarded
+Umount File-System Partition OK
+FBInfo (800 x 480) bpp(32), Line(3200), Addr(0x4013f000)
+Format Data Partition (EXT4) ......
+FBInfo (800 x 480) bpp(32), Line(3200), Addr(0x4013f000)
+Filesystem label=
+OS type: Linux
+Block size=4096 (log=2)
+Fragment size=4096 (log=2)
+39600 inodes, 158216 blocks
+7910 blocks (5.00%) reserved for the super user
+First data block=0
+Maximum filesystem blocks=163577856
+5 block groups
+32768 blocks per group, 32768 fragments per group
+7920 inodes per group
+Superblock backups stored on blocks: 
+	32768, 98304
+
+Writing inode tables: 0/51/52/53/54/5done                            
+Creating journal (4096 blocks): done
+Writing superblocks and filesystem accounting information: done
+
+This filesystem will be automatically checked every 33 mounts or
+180 days, whichever comes first.  Use tune2fs -c or -i to override.
+Format Data Partition OK
+FBInfo (800 x 480) bpp(32), Line(3200), Addr(0x4013f000)
+EXT3-fs: sda6: couldn't mount because of unsupported optional features (240).
+EXT2-fs: sda6: couldn't mount because of unsupported optional features (240).
+EXT4-fs: barriers enabled
+kjournald2 starting: pid 650, dev sda6:8, commit interval 5 seconds
+EXT4 FS on sda6, internal journal on sda6:8
+EXT4-fs: delayed allocation enabled
+EXT4-fs: file extents enabled
+EXT4-fs: mballoc enabled
+EXT4-fs: mounted filesystem sda6 with ordered data mode
+Mount Data Partition OK
+FBInfo (800 x 480) bpp(32), Line(3200), Addr(0x4013f000)
+Now Copy Files to Data Partition, Please wait ......
+FBInfo (800 x 480) bpp(32), Line(3200), Addr(0x4013f000)
+./anr/
+./anr/traces.txt
+./app/
+./app-private/
+./app/Advanced_Task_Killer_Pro_195.apk
+./app/Air_Attack_Lite_306.apk
+./app/Air_Control_107.apk
+./app/Aldiko.1213.apk
+./app/Androidvnc_Build20100819.apk
+./app/AndroZip1.1.1.apk
+./app/Battery_Booster.apk
+./app/Bowshooter_Lite.apk
+./app/CacheMate_for_Root_Users_263.apk
+./app/Camera.apk
+./app/Chess_For_Android_156.apk
+./app/com.android.calculator2.apk
+./app/com.chaozh.iReaderFree.apk
+./app/com.dataviz.docstogo.apk
+./app/com.dataviz.docstogoapp.apk
+./app/com.google.android.apps.maps.apk
+./app/com.skype.android.lite.apk
+./app/com.wmt.Youtube.apk
+./app/Connectbot-Svn-R400-All.apk
+./app/DeskClock.apk
+./app/Dolphin_Browser_250.apk
+./app/dxTop270.apk
+./app/es_file_explorer.apk
+./app/ExtMediaManager.apk
+./app/facebook.apk
+./app/FileBrowser.apk
+./app/Gmail.apk
+./app/Grenades_As_113.apk
+./app/HomeKey.apk
+./app/HomePage.apk
+./app/HomeSwitcher.apk
+./app/HTMLViewer.apk
+./app/HYReader.apk
+./app/Hyves_Android10.apk
+./app/market.AppBrain47.apk
+./app/market.Camangi.apk
+./app/market.slideme40.apk
+./app/MarketEnabler3112.apk
+./app/Meridianplayer140.apk
+./app/msn.droid.im.apk
+./app/MusicPlayer.apk
+./app/PackageManager.apk
+./app/Papi_Missile_100.apk
+./app/PeacockMusic.apk
+./app/PeacockPhotoGallery.apk
+./app/PeacockVideo.apk
+./app/Quick_System_Info_Pro_1.5.2.apk
+./app/Remote_Desktop_190.apk
+./app/RootExplorer2.13.3.apk
+./app/SnapShot.apk
+./app/Splat_13.apk
+./app/StickyNotes.apk
+./app/Swapper1.7.apk
+./app/Throttle_Copter_10.apk
+./app/Vending.apk
+./app/WebFLV15.apk
+./app/wifionoff.apk
+./app/WiFi_File_Explorer_PRO_109.apk
+./app/wondermedia_v1.0_100618_3_en.apk
+./dalvik-cache/
+./dalvik-cache/data@app@Camera.apk@classes.dex
+./dalvik-cache/data@app@com.android.calculator2.apk@classes.dex
+./dalvik-cache/data@app@com.chaozh.iReaderFree.apk@classes.dex
+./dalvik-cache/data@app@com.dataviz.docstogo.apk@classes.dex
+./dalvik-cache/data@app@com.dataviz.docstogoapp.apk@classes.dex
+./dalvik-cache/data@app@com.google.android.apps.maps.apk@classes.dex
+./dalvik-cache/data@app@com.skype.android.lite.apk@classes.dex
+./dalvik-cache/data@app@com.wmt.Youtube.apk@classes.dex
+./dalvik-cache/data@app@ExtMediaManager.apk@classes.dex
+./dalvik-cache/data@app@FileBrowser.apk@classes.dex
+./dalvik-cache/data@app@HomePage.apk@classes.dex
+./dalvik-cache/data@app@msn.droid.im.apk@classes.dex
+./dalvik-cache/data@app@MusicPlayer.apk@classes.dex
+./dalvik-cache/data@app@PackageManager.apk@classes.dex
+./dalvik-cache/data@app@PeacockMusic.apk@classes.dex
+./dalvik-cache/data@app@PeacockPhotoGallery.apk@classes.dex
+./dalvik-cache/data@app@PeacockVideo.apk@classes.dex
+./dalvik-cache/data@app@SnapShot.apk@classes.dex
+./dalvik-cache/data@app@StickyNotes.apk@classes.dex
+./dalvik-cache/data@app@wondermedia_v1.0_100618_3_en.apk@classes.dex
+./dalvik-cache/system@app@AlarmClock.apk@classes.dex
+./dalvik-cache/system@app@ApplicationsProvider.apk@classes.dex
+./dalvik-cache/system@app@BootReceiver.apk@classes.dex
+./dalvik-cache/system@app@Browser.apk@classes.dex
+./dalvik-cache/system@app@Calendar.apk@classes.dex
+./dalvik-cache/system@app@CalendarProvider.apk@classes.dex
+./dalvik-cache/system@app@Contacts.apk@classes.dex
+./dalvik-cache/system@app@ContactsProvider.apk@classes.dex
+./dalvik-cache/system@app@DownloadProvider.apk@classes.dex
+./dalvik-cache/system@app@DrmProvider.apk@classes.dex
+./dalvik-cache/system@app@Email.apk@classes.dex
+./dalvik-cache/system@app@GlobalSearch.apk@classes.dex
+./dalvik-cache/system@app@GlobalSearchBenchmarks.apk@classes.dex
+./dalvik-cache/system@app@GoogleSearch.apk@classes.dex
+./dalvik-cache/system@app@HTMLViewer.apk@classes.dex
+./dalvik-cache/system@app@LatinIME.apk@classes.dex
+./dalvik-cache/system@app@Launcher.apk@classes.dex
+./dalvik-cache/system@app@MediaProvider.apk@classes.dex
+./dalvik-cache/system@app@PackageInstaller.apk@classes.dex
+./dalvik-cache/system@app@PicoTts.apk@classes.dex
+./dalvik-cache/system@app@Settings.apk@classes.dex
+./dalvik-cache/system@app@SettingsProvider.apk@classes.dex
+./dalvik-cache/system@app@SlowSuggestions.apk@classes.dex
+./dalvik-cache/system@app@SoundRecorder.apk@classes.dex
+./dalvik-cache/system@app@SpammySuggestions.apk@classes.dex
+./dalvik-cache/system@app@TtsService.apk@classes.dex
+./dalvik-cache/system@app@UserDictionaryProvider.apk@classes.dex
+./dalvik-cache/system@app@VpnServices.apk@classes.dex
+./dalvik-cache/system@framework@am.jar@classes.dex
+./dalvik-cache/system@framework@android.policy.jar@classes.dex
+./dalvik-cache/system@framework@android.test.runner.jar@classes.dex
+./dalvik-cache/system@framework@bmgr.jar@classes.dex
+./dalvik-cache/system@framework@com.android.im.plugin.jar@classes.dex
+./dalvik-cache/system@framework@core.jar@classes.dex
+./dalvik-cache/system@framework@ext.jar@classes.dex
+./dalvik-cache/system@framework@framework-tests.jar@classes.dex
+./dalvik-cache/system@framework@framework.jar@classes.dex
+./dalvik-cache/system@framework@ime.jar@classes.dex
+./dalvik-cache/system@framework@input.jar@classes.dex
+./dalvik-cache/system@framework@monkey.jar@classes.dex
+./dalvik-cache/system@framework@pm.jar@classes.dex
+./dalvik-cache/system@framework@services.jar@classes.dex
+./dalvik-cache/system@framework@svc.jar@classes.dex
+./data/
+./data/android.tts/
+./data/android.tts/lib/
+./data/com.android.alarmclock/
+./data/com.android.alarmclock/databases/
+./data/com.android.alarmclock/databases/alarms.db
+./data/com.android.alarmclock/lib/
+./data/com.android.browser/
+./data/com.android.browser/lib/
+./data/com.android.calculator2/
+./data/com.android.calculator2/files/
+./data/com.android.calculator2/files/calculator.data
+./data/com.android.calculator2/lib/
+./data/com.android.calendar/
+./data/com.android.calendar/lib/
+./data/com.android.calendar/shared_prefs/
+./data/com.android.calendar/shared_prefs/com.android.calendar_preferences.xml
+./data/com.android.calendar/shared_prefs/_has_set_default_values.xml
+./data/com.android.camera/
+./data/com.android.camera/lib/
+./data/com.android.contacts/
+./data/com.android.contacts/lib/
+./data/com.android.email/
+./data/com.android.email/lib/
+./data/com.android.globalsearch/
+./data/com.android.globalsearch.benchmarks/
+./data/com.android.globalsearch.benchmarks/lib/
+./data/com.android.globalsearch.tests.slow/
+./data/com.android.globalsearch.tests.slow/lib/
+./data/com.android.globalsearch.tests.spammy/
+./data/com.android.globalsearch.tests.spammy/lib/
+./data/com.android.globalsearch/lib/
+./data/com.android.googlesearch/
+./data/com.android.googlesearch/lib/
+./data/com.android.htmlviewer/
+./data/com.android.htmlviewer/lib/
+./data/com.android.inputmethod.latin/
+./data/com.android.inputmethod.latin/lib/
+./data/com.android.launcher/
+./data/com.android.launcher/databases/
+./data/com.android.launcher/databases/launcher.db
+./data/com.android.launcher/files/
+./data/com.android.launcher/files/launcher.preferences
+./data/com.android.launcher/lib/
+./data/com.android.launcher/shared_prefs/
+./data/com.android.launcher/shared_prefs/factory_setting.dat.xml
+./data/com.android.packageinstaller/
+./data/com.android.packageinstaller/files/
+./data/com.android.packageinstaller/lib/
+./data/com.android.phone/
+./data/com.android.phone/lib/
+./data/com.android.phone/shared_prefs/
+./data/com.android.phone/shared_prefs/_has_set_default_values.xml
+./data/com.android.providers.applications/
+./data/com.android.providers.applications/lib/
+./data/com.android.providers.calendar/
+./data/com.android.providers.calendar/databases/
+./data/com.android.providers.calendar/databases/calendar.db
+./data/com.android.providers.calendar/lib/
+./data/com.android.providers.contacts/
+./data/com.android.providers.contacts/databases/
+./data/com.android.providers.contacts/databases/contacts.db
+./data/com.android.providers.contacts/lib/
+./data/com.android.providers.downloads/
+./data/com.android.providers.downloads/databases/
+./data/com.android.providers.downloads/databases/downloads.db
+./data/com.android.providers.downloads/lib/
+./data/com.android.providers.drm/
+./data/com.android.providers.drm/databases/
+./data/com.android.providers.drm/databases/drm.db
+./data/com.android.providers.drm/lib/
+./data/com.android.providers.media/
+./data/com.android.providers.media/databases/
+./data/com.android.providers.media/databases/internal.db
+./data/com.android.providers.media/lib/
+./data/com.android.providers.settings/
+./data/com.android.providers.settings/databases/
+./data/com.android.providers.settings/databases/settings.db
+./data/com.android.providers.settings/lib/
+./data/com.android.providers.telephony/
+./data/com.android.providers.telephony/lib/
+./data/com.android.providers.userdictionary/
+./data/com.android.providers.userdictionary/databases/
+./data/com.android.providers.userdictionary/databases/user_dict.db
+./data/com.android.providers.userdictionary/lib/
+./data/com.android.server.vpn/
+./data/com.android.server.vpn/lib/
+./data/com.android.settings/
+./data/com.android.settings/files/
+./data/com.android.settings/files/wallpaper
+./data/com.android.settings/lib/
+./data/com.android.settings/shared_prefs/
+./data/com.android.settings/shared_prefs/com.android.settings_preferences.xml
+./data/com.android.soundrecorder/
+./data/com.android.soundrecorder/lib/
+./data/com.chaozh.iReaderFree/
+./data/com.chaozh.iReaderFree/lib/
+./data/com.dataviz.docstogo/
+./data/com.dataviz.docstogoapp/
+./data/com.dataviz.docstogoapp/lib/
+./data/com.dataviz.docstogo/lib/
+./data/com.dataviz.docstogo/shared_prefs/
+./data/com.dataviz.docstogo/shared_prefs/DXTG_PrefsFile.xml
+./data/com.google.android.apps.maps/
+./data/com.google.android.apps.maps/databases/
+./data/com.google.android.apps.maps/databases/LayerInfo
+./data/com.google.android.apps.maps/files/
+./data/com.google.android.apps.maps/files/DATA_Preferences
+./data/com.google.android.apps.maps/files/DATA_PROTO_SAVED_CATEGORY_TREE_DB
+./data/com.google.android.apps.maps/files/DATA_RemoteStringsBlock_en
+./data/com.google.android.apps.maps/files/DATA_RemoteStringsBlock_zh_CN
+./data/com.google.android.apps.maps/files/DATA_SAVED_REMOTE_ICONS_DATA_BLOCK
+./data/com.google.android.apps.maps/files/DATA_Tiles
+./data/com.google.android.apps.maps/files/DATA_Tiles_1
+./data/com.google.android.apps.maps/files/DATA_Tiles_2
+./data/com.google.android.apps.maps/files/DATA_Tiles_3
+./data/com.google.android.apps.maps/files/DATA_Tiles_4
+./data/com.google.android.apps.maps/files/DATA_Tiles_5
+./data/com.google.android.apps.maps/lib/
+./data/com.google.android.inputmethod.pinyin/
+./data/com.google.android.inputmethod.pinyin/files/
+./data/com.google.android.inputmethod.pinyin/files/dict_pinyin_ext.dat
+./data/com.google.android.inputmethod.pinyin/files/dict_pinyin_usr.dat
+./data/com.google.android.inputmethod.pinyin/files/dict_stroke_usr.dat
+./data/com.google.android.inputmethod.pinyin/files/dummy
+./data/com.google.android.inputmethod.pinyin/files/predict_usr.dat
+./data/com.google.android.inputmethod.pinyin/lib/
+./data/com.google.android.inputmethod.pinyin/lib/libjni_googlepinyinime_1.so
+./data/com.google.android.inputmethod.pinyin/shared_prefs/
+./data/com.google.android.inputmethod.pinyin/shared_prefs/com.google.android.inputmethod.pinyin_preferences.xml
+./data/com.skype.android.lite/
+./data/com.skype.android.lite/cache/
+./data/com.skype.android.lite/cache/webviewCache/
+./data/com.skype.android.lite/databases/
+./data/com.skype.android.lite/databases/webview.db
+./data/com.skype.android.lite/databases/webviewCache.db
+./data/com.skype.android.lite/lib/
+./data/com.svox.pico/
+./data/com.svox.pico/lib/
+./data/com.wmt.BootReceiver/
+./data/com.wmt.BootReceiver/lib/
+./data/com.wmt.ExtMediaManager/
+./data/com.wmt.ExtMediaManager/lib/
+./data/com.wmt.filebrowser/
+./data/com.wmt.filebrowser/lib/
+./data/com.wmt.HomePage/
+./data/com.wmt.HomePage/lib/
+./data/com.wmt.MusicPlayer/
+./data/com.wmt.MusicPlayer/lib/
+./data/com.wmt.MusicPlayer/shared_prefs/
+./data/com.wmt.MusicPlayer/shared_prefs/MusicPlayer.xml
+./data/com.wmt.PackageManager/
+./data/com.wmt.PackageManager/lib/
+./data/com.wmt.peacock.music/
+./data/com.wmt.peacock.music/lib/
+./data/com.wmt.peacock.music/shared_prefs/
+./data/com.wmt.peacock.music/shared_prefs/PEACOCK_VIDEO_SETTING.xml
+./data/com.wmt.peacock.photo.gallery/
+./data/com.wmt.peacock.photo.gallery/lib/
+./data/com.wmt.peacock.video/
+./data/com.wmt.peacock.video/lib/
+./data/com.wmt.peacock.video/shared_prefs/
+./data/com.wmt.peacock.video/shared_prefs/PEACOCK_VIDEO_SETTING.xml
+./data/com.wmt.SnapShot/
+./data/com.wmt.SnapShot/lib/
+./data/com.wmt.SnapShot/shared_prefs/
+./data/com.wmt.SnapShot/shared_prefs/com.wmt.SnapShot_preferences.xml
+./data/com.wmt.StickyNotes/
+./data/com.wmt.StickyNotes/lib/
+./data/com.wonderappstore/
+./data/com.wonderappstore/databases/
+./data/com.wonderappstore/databases/marketplace.db
+./data/com.wonderappstore/files/
+./data/com.wonderappstore/files/016e4e13100b999f3e553ba368c8e655
+./data/com.wonderappstore/files/3a87708fc61f53e6fbda77cf53454d32
+./data/com.wonderappstore/files/6170996cd86f231d62876f3b13c1c556
+./data/com.wonderappstore/files/6eb5da451ca8a53b18f4dfa53164c6f7
+./data/com.wonderappstore/files/82fe9de315c2b54784e5800e33dcf42c
+./data/com.wonderappstore/files/933fe92d8a394ca35a8765be6d0cae62
+./data/com.wonderappstore/files/a1c6be28932e8a64bbbd33699890dfdc
+./data/com.wonderappstore/files/a20c5abb867b6d0038d1cbf9a70427df
+./data/com.wonderappstore/files/a54d6c4c1d08f98f05c9b1e7f0cd842e
+./data/com.wonderappstore/files/d39abed4b7ff74729baa36b4477c56a0
+./data/com.wonderappstore/files/d8ebb0a5f30d022e5718c99f2d0f7fff
+./data/com.wonderappstore/lib/
+./data/com.wonderappstore/shared_prefs/
+./data/com.wonderappstore/shared_prefs/com.wonderappstore.appcheck.STATE.xml
+./data/com.wonderappstore/shared_prefs/com.wonderappstore.appcheck.xml
+./data/com.wonderappstore/shared_prefs/com.wonderappstore_preferences.xml
+./data/msn.droid.im/
+./data/msn.droid.im/cache/
+./data/msn.droid.im/cache/webviewCache/
+./data/msn.droid.im/cache/webviewCache/b1a7be8e
+./data/msn.droid.im/cache/webviewCache/b99f7269
+./data/msn.droid.im/cache/webviewCache/c2b4009d
+./data/msn.droid.im/databases/
+./data/msn.droid.im/databases/msn.db
+./data/msn.droid.im/databases/webview.db
+./data/msn.droid.im/databases/webviewCache.db
+./data/msn.droid.im/lib/
+./local/
+./local/tmp/
+./lost+found/
+./misc/
+./misc/dhcp/
+./misc/dhcp/dhcpcd-ra0.lease
+./misc/dhcp/dhcpcd-ra0.pid
+./misc/hcid/
+./misc/keystore/
+./misc/vpn/
+./misc/vpn/profiles/
+./misc/wifi/
+./property/
+./property/persist.sys.country
+./property/persist.sys.language
+./property/persist.sys.localevar
+./property/persist.sys.timezone
+./system/
+./system/appwidgets.xml
+./system/batterystats.bin
+./system/entropy.dat
+./system/packages.xml
+./system/sync/
+./system/syncmanager.prefs
+./system/sync/stats.bin
+./system/sync/status.bin
+./system/usagestats/
+./system/usagestats/usage-20000101
+./system/usagestats/usage-20101120
+./tombstones/
+./tombstones/tombstone_00
+./wmtpref/
+./wmtpref/etc/
+./wmtpref/etc/ppp/
+./wmtpref/etc/ppp/chap-secrets
+./wmtpref/etc/ppp/dialer
+./wmtpref/etc/ppp/pap-secrets
+./wmtpref/etc/sensor_shake
+./wmtpref/etc/tmp.jpg
+./wmtpref/etc/wifi/
+./wmtpref/etc/wifi/wpa_supplicant.conf
+./wmtpref/etc/Wireless/
+./wmtpref/etc/Wireless/RT2870STA/
+./wmtpref/etc/Wireless/RT2870STA/RT2870STA.dat
+./wmtpref/touchcal
+./wmtpref/touchcal_cs7146
+Copy Files to Data Partition OK
+FBInfo (800 x 480) bpp(32), Line(3200), Addr(0x4013f000)
+Umount Data Partition ...
+FBInfo (800 x 480) bpp(32), Line(3200), Addr(0x4013f000)
+EXT4-fs: mballoc: 17072 blocks 183 reqs (84 success)
+EXT4-fs: mballoc: 143 extents scanned, 22 goal hits, 94 2^N hits, 0 breaks, 0 lost
+EXT4-fs: mballoc: 1 generated and it took 0
+EXT4-fs: mballoc: 9866 preallocated, 9335 discarded
+Umount Data Partition OK
+FBInfo (800 x 480) bpp(32), Line(3200), Addr(0x4013f000)
+Format Cache Partition (EXT4)......
+FBInfo (800 x 480) bpp(32), Line(3200), Addr(0x4013f000)
+Filesystem label=
+OS type: Linux
+Block size=4096 (log=2)
+Fragment size=4096 (log=2)
+6416 inodes, 25648 blocks
+1282 blocks (5.00%) reserved for the super user
+First data block=0
+Maximum filesystem blocks=29360128
+1 block group
+32768 blocks per group, 32768 fragments per group
+6416 inodes per group
+
+Writing inode tables: 0/1done                            
+Creating journal (1024 blocks): done
+Writing superblocks and filesystem accounting information: done
+
+This filesystem will be automatically checked every 21 mounts or
+180 days, whichever comes first.  Use tune2fs -c or -i to override.
+Format Cache Partition OK
+FBInfo (800 x 480) bpp(32), Line(3200), Addr(0x4013f000)
+Update filesystem successful!
+FBInfo (800 x 480) bpp(32), Line(3200), Addr(0x4013f000)
+Format User Space (FAT32)......
+FBInfo (800 x 480) bpp(32), Line(3200), Addr(0x4013f000)
+mkdosfs 2.11 (12 Mar 2005)
+Format User Space OK
+FBInfo (800 x 480) bpp(32), Line(3200), Addr(0x4013f000)
+procfile_write get 0
+
+--> stop progress bar
+FBInfo (800 x 480) bpp(32), Line(3200), Addr(0x4013f000)
+FBInfo (800 x 480) bpp(32), Line(3200), Addr(0x4013f000)
+Please remove SD Card ......
+Please remove SD Card ......
+Please remove SD Card ......
+Please remove SD Card ......
+Please remove SD Card ......
+mmc0: card 0003 removed
+mmcblk0: error -110 sending status comand<3>mmcblk0: error -110 sending read/write command, response 0x0, card status 0x0
+mmcblk0: error -110 requesting status
+end_request: I/O error, dev mmcblk0, sector 53724
+Buffer I/O error on device mmcblk0p1, logical block 33244
+lost page write due to I/O error on mmcblk0p1
+Please remove SD Card ......
+mmcblk0: error -110 sending status comand<3>mmcblk0: error -110 sending read/write command, response 0x0, card status 0x0
+mmcblk0: error -110 requesting status
+end_request: I/O error, dev mmcblk0, sector 0
+Buffer I/O error on device mmcblk0p2, logical block 0
+lost page write due to I/O error on mmcblk0p2
+sd power down
+sd power up
+FBInfo (800 x 480) bpp(32), Line(3200), Addr(0x4013f000)
+FBInfo (800 x 480) bpp(32), Line(3200), Addr(0x4013f000)
+Power off...
+sd power down
+The system is going down NOW
+Sending SIGTERM to all processe
+Sending SIGKILL to all processe
+Requesting system powerof
+Power down.
+wmt_power_off
