@@ -1,0 +1,144 @@
+
+
+WonderMedia Technologies, Inc.
+W-Load Version : 0.19.00.01
+ethaddr............found
+
+
+U-Boot 1.1.4 (Oct 27 2010 - 11:14:28)
+WonderMedia Technologies, Inc.
+WMT U-Boot Version : 0.12.01.00.33
+U-Boot code: 03F80000 -> 03FCA86C  BSS: -> 0401BE84
+RAM Configuration:
+Bank #0: 00000000 128 MB
+boot from spi flash.
+flash:
+     Bank1: FFF80000 -- FFFFFFFF
+     Bank2: FF780000 -- FFF7FFFF
+Flash:  8.5 MB
+In:    serial
+Out:   serial
+Err:   serial
+bootcmd="usbinit;fatload usb 0 3c00000 logo.bmp;logo show;run text1"
+usb usb1: Product: USB Host Controller
+usb usb1: Manufacturer: Linux 2.6.10_dev-VT8610 ehci_hcd
+usb usb1: SerialNumber: pci-echi
+ 1-0:1.0: USB hub found
+ 1-0:1.0: 2 ports detected
+locktree(): line: 1024: this function not completed
+usb 1-: new high speed USB device using abc and address 2
+usb 1-: Product: Flash Disk      
+usb 1-: Manufacturer: Generic 
+usb 1-: SerialNumber: CCBB1012031148201242545304
+       scanning bus for storage devices... part_offset : 3f, cur_part : 1
+1 Storage Device(s) found
+usb 1-+11111111010010: new high speed USB device using abc and address 3
+usb 1-+11111111010010: Product: USB2.0 Hub
+       scanning bus for storage devices... 1 Storage Device(s) found
+part_offset : 3f, cur_part : 1
+reading logo.bmp
+Tina_Match: isdir 0x0######################
+mydata : 
+Size of clusters in sectors : 4
+The sector of the first cluster, can be negative : 97
+Current FAT buffer : 03f4d6fc
+fatbufnum : ffffffff
+Length of FAT in sectors : 3f
+Size of FAT in bits : 10
+Starting sector of the FAT : 1
+Start sector of root directory : 7f
+...........
+
+0x119436 bytes read
+show logo .....
+LCD param (setting): 1,30000,8,800,480,48,40,40,3,29,13
+PWM param (setting): 0,4,599,599
+LCD FrameBuffer = 0x07900000, BMP Address = 0x03C00000
+Loading BMP ..... 
+colorBits = 24
+logo_width = 800, logo_height= 480
+lcd_width= 800, lcd_height = 480
+ok
+no string .... 
+PWM0 input freq = 47916666 Hz, output freq = 19998 Hz
+PWM0 register setting: scalar = 3, period = 598, duty = 598
+"Uberoid" 
+REG32_VAL(0xd8000440) = 0x10101000
+memory size: 256MB
+### main_loop entered: bootdelay=1
+
+Execute register operation:
+  reg op: 0xD8110064 | 0x4
+  reg op: 0xD811008C | 0x4
+  reg op: 0xD81100B4 & 0xFFFFFFFB
+  reg op: 0xD8110064 | 0x8
+  reg op: 0xD811008C | 0x8
+  reg op: 0xD81100B4 | 0x8
+  reg op: 0xD8130054 | 0x1
+### main_loop: bootcmd="fatload usb 0 fc00000 animation.data;fatload usb 0 0 uzImage.bin;bootm 0"
+Hit Enter key to stop autoboot:  1  0 
+WMT # 
+WMT # mmcinit
+ATSMB Host 390KHz 
+
+SD2_0  : SDHC card!
+
+Init  : card selected !
+
+set blocklen fun. !
+
+SD:Four Bits Mode!
+SD Card High Speed!
+
+Initial SD Card OK!
+ATSMB Host 25MHz 
+SD clock is 25Mhz
+register mmc device
+part_offset : 5000, cur_part : 1
+WMT # fatload mmc 0 0 wload.bin
+part_offset : 5000, cur_part : 1
+reading wload.bin
+Tina_Match: isdir 0x0######################
+mydata : 
+Size of clusters in sectors : 1
+The sector of the first cluster, can be negative : 1fa0
+Current FAT buffer : 03f4d6fc
+fatbufnum : ffffffff
+Length of FAT in sectors : fc1
+Size of FAT in bits : 20
+Starting sector of the FAT : 20
+Start sector of root directory : 1fa2
+
+0xFFF8 bytes read
+WMT # erase ffff0000 +10000
+Erase Flash from 0xffff0000 to 0xffffffff in Bank # 1 
+Erasing sector  7 @ FFFF0000... ok.
+Erased 1 sectors
+WMT # cp.b 0 ffff0000 10000
+Copy to Flash... done
+WMT # fatload mmc 0 0 u-boot.bin
+part_offset : 5000, cur_part : 1
+reading u-boot.bin
+Tina_Match: isdir 0x0######################
+mydata : 
+Size of clusters in sectors : 1
+The sector of the first cluster, can be negative : 1fa0
+Current FAT buffer : 03f4d6fc
+fatbufnum : ffffffff
+Length of FAT in sectors : fc1
+Size of FAT in bits : 20
+Starting sector of the FAT : 20
+Start sector of root directory : 1fa2
+
+0x4A86C bytes read
+WMT # erase fff80000 +50000
+Erase Flash from 0xfff80000 to 0xfffcffff in Bank # 1 
+Erasing sector  0 @ FFF80000... ok.
+Erasing sector  1 @ FFF90000... ok.
+Erasing sector  2 @ FFFA0000... ok.
+Erasing sector  3 @ FFFB0000... ok.
+Erasing sector  4 @ FFFC0000... ok.
+Erased 5 sectors
+WMT # cp.b 0 fff80000 50000
+Copy to Flash... done
+WMT # 
