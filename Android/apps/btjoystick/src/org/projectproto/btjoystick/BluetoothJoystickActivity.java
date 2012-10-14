@@ -20,17 +20,23 @@ import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.preference.PreferenceManager;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class BluetoothJoystickActivity extends Activity {
+public class BluetoothJoystickActivity extends Activity implements OnSharedPreferenceChangeListener{
 	
 	// debug / logs
     private final boolean D = false;
@@ -60,26 +66,42 @@ public class BluetoothJoystickActivity extends Activity {
     
 	// Layout View
  	DualJoystickView mDualJoystick;
- 	private Button mConnectButton;
+ 	private Button mButtonA;
+ 	private Button mButtonB;
+ 	private Button mButtonC;
+ 	private Button mButtonD;
  	private TextView mTxtStatus;
  	private TextView mTxtDataL;
  	private TextView mTxtDataR;
+ 	
+ 	// Menu
+ 	private MenuItem mItemConnect;
+ 	private MenuItem mItemOptions;
+ 	private MenuItem mItemAbout;
  	
  	// polar coordinates
  	private double mRadiusL = 0, mRadiusR = 0;
  	private double mAngleL = 0, mAngleR = 0;
  	private boolean mCenterL = true, mCenterR = true;
  	
+ 	// button data
+ 	private String mStrA;
+ 	private String mStrB;
+ 	private String mStrC;
+ 	private String mStrD;
+ 	
  	private Timer mUpdateTimer;
  	private int mTimeoutCounter = 0;
- 	private static final int MaxTimeoutCount = 15; // actual timeout = count * updateperiod 
- 	private static final long UpdatePeriod = 200; // in milliseconds 	
+ 	private int mMaxTimeoutCount; // actual timeout = count * updateperiod 
+ 	private long mUpdatePeriod;
  	private static final byte  DATA_START = 0x55;
 	
  	/** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.main);
         
         // Get local Bluetooth adapter
@@ -109,20 +131,103 @@ public class BluetoothJoystickActivity extends Activity {
         mTxtDataL = (TextView) findViewById(R.id.txt_dataL);
         mTxtDataR = (TextView) findViewById(R.id.txt_dataR);
         
-        mConnectButton = (Button) findViewById(R.id.button_connect);
-        mConnectButton.setOnClickListener(new OnClickListener() {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        prefs.registerOnSharedPreferenceChangeListener(this);
+        
+        // mUpdatePeriod = prefs.getLong( "updates_interval", 200 ); // in milliseconds
+        mUpdatePeriod = Long.parseLong(prefs.getString( "updates_interval", "200" ));
+        mMaxTimeoutCount = Integer.parseInt(prefs.getString( "maxtimeout_count", "15" ));
+        
+        mStrA = prefs.getString( "btnA_data", "A" );
+        mStrB = prefs.getString( "btnB_data", "B" );
+        mStrC = prefs.getString( "btnC_data", "C" );
+        mStrD = prefs.getString( "btnD_data", "D" );
+        
+        mButtonA = (Button) findViewById(R.id.button_A);
+        mButtonA.setOnClickListener(new OnClickListener() {
         	public void onClick(View arg0) {
-        		BTConnect();
+        		sendMessage( mStrA );
         	}
         });
         
+        mButtonB = (Button) findViewById(R.id.button_B);
+        mButtonB.setOnClickListener(new OnClickListener() {
+        	public void onClick(View arg0) {
+        		sendMessage( mStrB );
+        	}
+        });
+        
+        mButtonC = (Button) findViewById(R.id.button_C);
+        mButtonC.setOnClickListener(new OnClickListener() {
+        	public void onClick(View arg0) {
+        		sendMessage( mStrC );
+        	}
+        });
+        
+        mButtonD = (Button) findViewById(R.id.button_D);
+        mButtonD.setOnClickListener(new OnClickListener() {
+        	public void onClick(View arg0) {
+        		sendMessage( mStrD );
+        	}
+        });
+        
+        // fix me: use Runnable class instead
         mUpdateTimer = new Timer();
         mUpdateTimer.schedule(new TimerTask() {
 				@Override
 				public void run() {
 					UpdateMethod();
 				}
-			}, 2000, UpdatePeriod);
+			}, 2000, mUpdatePeriod);
+    }
+    
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+    	mItemConnect = menu.add("Connect");
+    	mItemOptions = menu.add("Options");
+    	mItemAbout = menu.add("About");
+    	return (super.onCreateOptionsMenu(menu));
+    	
+    }
+    
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+    	if ( item == mItemConnect ) {
+    		BTConnect();
+    	} else if ( item == mItemOptions ) {
+    		startActivity( new Intent(this, OptionsActivity.class) );
+    	} else if ( item == mItemAbout ) {
+    		Toast msg = Toast.makeText(BluetoothJoystickActivity.this,
+                    "bluetooth joystick by 'yus", Toast.LENGTH_LONG);
+    		msg.show();
+    	}
+    	return super.onOptionsItemSelected(item);
+    }
+    
+    public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
+    	if ( key.equals("updates_interval") ) {
+    		// reschedule task
+    		mUpdateTimer.cancel();
+    		mUpdateTimer.purge();
+    		mUpdatePeriod = Long.parseLong(prefs.getString( "updates_interval", "200" ));
+    		mUpdateTimer = new Timer();
+    		mUpdateTimer.schedule(new TimerTask() {
+    				@Override
+    				public void run() {
+    					UpdateMethod();
+    				}
+            }, mUpdatePeriod, mUpdatePeriod);    		
+        }else if( key.equals("maxtimeout_count") ){
+        	mMaxTimeoutCount = Integer.parseInt(prefs.getString( "maxtimeout_count", "15" ));
+        }else if( key.equals("btnA_data") ){
+        	mStrA = prefs.getString( "btnA_data", "A" );
+        }else if( key.equals("btnB_data") ){
+        	mStrB = prefs.getString( "btnB_data", "B" );
+        }else if( key.equals("btnC_data") ){
+        	mStrC = prefs.getString( "btnC_data", "C" );
+        }else if( key.equals("btnD_data") ){
+        	mStrD = prefs.getString( "btnD_data", "D" );
+        }
     }
     
     @Override
@@ -147,8 +252,7 @@ public class BluetoothJoystickActivity extends Activity {
     
     private JoystickMovedListener _listenerLeft = new JoystickMovedListener() {
     	
-    	@Override
-		public void OnMoved(int pan, int tilt) {
+    	public void OnMoved(int pan, int tilt) {
     		mRadiusL = Math.sqrt((pan*pan) + (tilt*tilt));
     		// mAngleL = Math.atan2(pan, tilt);
     		mAngleL = Math.atan2(-pan, -tilt);
@@ -156,22 +260,20 @@ public class BluetoothJoystickActivity extends Activity {
     		mCenterL = false;
     	}
     	
-    	@Override
-		public void OnReleased() {
+    	public void OnReleased() {
     		// 
     	}
     	
     	public void OnReturnedToCenter() {
+    		mRadiusL = mAngleL = 0;
+    		UpdateMethod();
     		mCenterL = true;
-    		mRadiusL = 0;
-    		mAngleL = 0;
     	}
     };
     
     private JoystickMovedListener _listenerRight = new JoystickMovedListener() {
     	
-    	@Override
-		public void OnMoved(int pan, int tilt) {
+    	public void OnMoved(int pan, int tilt) {
     		mRadiusR = Math.sqrt((pan*pan) + (tilt*tilt));
     		// mAngleR = Math.atan2(pan, tilt);
     		mAngleR = Math.atan2(-pan, -tilt);
@@ -179,15 +281,14 @@ public class BluetoothJoystickActivity extends Activity {
     		mCenterR = false;
     	}
     	
-    	@Override
-		public void OnReleased() {
+    	public void OnReleased() {
     		//
     	}
     	
     	public void OnReturnedToCenter() {
+    		mRadiusR = mAngleR = 0;
+    		UpdateMethod();
     		mCenterR = true;
-    		mRadiusR = 0;
-    		mAngleR = 0;
     	}
     };
     
@@ -217,7 +318,7 @@ public class BluetoothJoystickActivity extends Activity {
     private void UpdateMethod() {
     	
     	// if either of the joysticks is not on the center, or timeout occurred
-    	if(!mCenterL || !mCenterR || mTimeoutCounter>=MaxTimeoutCount) {
+    	if(!mCenterL || !mCenterR || (mTimeoutCounter>=mMaxTimeoutCount && mMaxTimeoutCount>-1) ) {
     		// limit to {0..10}
 	    	byte radiusL = (byte) ( Math.min( mRadiusL, 10.0 ) );
 	    	byte radiusR = (byte) ( Math.min( mRadiusR, 10.0 ) );
@@ -303,3 +404,4 @@ public class BluetoothJoystickActivity extends Activity {
     	}
     };
 }
+
