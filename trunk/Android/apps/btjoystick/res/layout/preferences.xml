@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory 
+        android:title="Joysticks Data Intervals"
+        android:key="first_category">
+        
+        <ListPreference 
+            android:key="updates_interval"
+            android:title="Updates interval"
+            android:summary="intervals between joysticks data"
+            android:defaultValue="200" 
+            android:entries="@array/updateInterval"
+            android:entryValues="@array/updateIntervalValues"
+        />
+        
+        <ListPreference 
+            android:key="maxtimeout_count"
+            android:title="Max timeout count"
+            android:summary="option to send continuous data when idle"
+            android:defaultValue="20" 
+            android:entries="@array/timeoutCount"
+            android:entryValues="@array/timeoutCountValues"
+        /> 
+            
+    </PreferenceCategory>
+
+    <PreferenceCategory 
+        android:title="Buttons Data"
+        android:key="second_category">
+
+        <EditTextPreference
+            android:key="btnA_data"
+            android:title="Button A data" 
+            android:summary="data to be send when button A is pressed"
+            android:dialogTitle="Button A data"
+            android:dialogMessage="type message"
+            android:defaultValue="A" />
+        
+        <EditTextPreference
+            android:key="btnB_data"
+            android:title="Button B data" 
+            android:summary="data to be send when button B is pressed"
+            android:dialogTitle="Button B data"
+            android:dialogMessage="type message"
+            android:defaultValue="B" />
+        
+        <EditTextPreference
+            android:key="btnC_data"
+            android:title="Button C data" 
+            android:summary="data to be send when button C is pressed"
+            android:dialogTitle="Button C data"
+            android:dialogMessage="type message"
+            android:defaultValue="C" />
+        
+        <EditTextPreference
+            android:key="btnD_data"
+            android:title="Button D data" 
+            android:summary="data to be send when button D is pressed"
+            android:dialogTitle="Button D data"
+            android:dialogMessage="type message"
+            android:defaultValue="D" />
+
+    </PreferenceCategory>
+    
+</PreferenceScreen>
