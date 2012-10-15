@@ -264,6 +264,20 @@ public class BluetoothJoystickActivity extends Activity implements OnSharedPrefe
         super.onDestroy();
     }
     
+    @Override
+    public void onBackPressed() {
+    	new AlertDialog.Builder(this)
+    	.setTitle("Bluetooth Joystick")
+    	.setMessage("Close this controller?")
+    	.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int which) {
+				finish();				
+			}
+		})
+		.setNegativeButton("No", null)
+		.show();
+    }
+    
     private JoystickMovedListener _listenerLeft = new JoystickMovedListener() {
     	
     	public void OnMoved(int pan, int tilt) {
