@@ -2,7 +2,7 @@
  * 
  * Android Bluetooth Dual Joystick
  * yus - projectproto.blogspot.com
- * February 2012
+ * October 2012
  *  
  ***************************************/
 

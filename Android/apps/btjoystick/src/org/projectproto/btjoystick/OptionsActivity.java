@@ -1,3 +1,11 @@
+/***************************************
+ * 
+ * Android Bluetooth Dual Joystick
+ * yus - projectproto.blogspot.com
+ * October 2012
+ *  
+ ***************************************/
+
 package org.projectproto.btjoystick;
 
 import android.preference.PreferenceActivity;
@@ -10,4 +18,5 @@ public class OptionsActivity extends PreferenceActivity {
 		super.onCreate(savedInstanceState);
 		addPreferencesFromResource(R.layout.preferences);
 	}
+	
 }

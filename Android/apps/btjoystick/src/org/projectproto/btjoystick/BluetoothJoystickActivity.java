@@ -2,7 +2,7 @@
  * 
  * Android Bluetooth Dual Joystick
  * yus - projectproto.blogspot.com
- * February 2012
+ * October 2012
  *  
  ***************************************/
 
@@ -17,8 +17,10 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
@@ -83,6 +85,7 @@ public class BluetoothJoystickActivity extends Activity implements OnSharedPrefe
  	private double mRadiusL = 0, mRadiusR = 0;
  	private double mAngleL = 0, mAngleR = 0;
  	private boolean mCenterL = true, mCenterR = true;
+ 	private int mDataFormat;
  	
  	// button data
  	private String mStrA;
@@ -90,11 +93,12 @@ public class BluetoothJoystickActivity extends Activity implements OnSharedPrefe
  	private String mStrC;
  	private String mStrD;
  	
+ 	// timer task
  	private Timer mUpdateTimer;
  	private int mTimeoutCounter = 0;
  	private int mMaxTimeoutCount; // actual timeout = count * updateperiod 
  	private long mUpdatePeriod;
- 	private static final byte  DATA_START = 0x55;
+ 	
 	
  	/** Called when the activity is first created. */
     @Override
@@ -136,7 +140,8 @@ public class BluetoothJoystickActivity extends Activity implements OnSharedPrefe
         
         // mUpdatePeriod = prefs.getLong( "updates_interval", 200 ); // in milliseconds
         mUpdatePeriod = Long.parseLong(prefs.getString( "updates_interval", "200" ));
-        mMaxTimeoutCount = Integer.parseInt(prefs.getString( "maxtimeout_count", "15" ));
+        mMaxTimeoutCount = Integer.parseInt(prefs.getString( "maxtimeout_count", "20" ));
+        mDataFormat = Integer.parseInt(prefs.getString( "data_format", "5" ));
         
         mStrA = prefs.getString( "btnA_data", "A" );
         mStrB = prefs.getString( "btnB_data", "B" );
@@ -193,13 +198,20 @@ public class BluetoothJoystickActivity extends Activity implements OnSharedPrefe
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
     	if ( item == mItemConnect ) {
-    		BTConnect();
+    		Intent serverIntent = new Intent(this, DeviceListActivity.class);
+        	startActivityForResult(serverIntent, REQUEST_CONNECT_DEVICE);
     	} else if ( item == mItemOptions ) {
     		startActivity( new Intent(this, OptionsActivity.class) );
     	} else if ( item == mItemAbout ) {
-    		Toast msg = Toast.makeText(BluetoothJoystickActivity.this,
-                    "bluetooth joystick by 'yus", Toast.LENGTH_LONG);
-    		msg.show();
+    		AlertDialog about = new AlertDialog.Builder(this).create();
+    		about.setCancelable(false);
+    		about.setMessage("Bluetooth Dual-Joystick Controller v.2\n'yus - www.philrobotics.com/forum");
+    		about.setButton("OK", new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog, int which) {
+					dialog.dismiss();
+				}
+			});
+    		about.show();
     	}
     	return super.onOptionsItemSelected(item);
     }
@@ -212,13 +224,15 @@ public class BluetoothJoystickActivity extends Activity implements OnSharedPrefe
     		mUpdatePeriod = Long.parseLong(prefs.getString( "updates_interval", "200" ));
     		mUpdateTimer = new Timer();
     		mUpdateTimer.schedule(new TimerTask() {
-    				@Override
-    				public void run() {
-    					UpdateMethod();
-    				}
+    			@Override
+    			public void run() {
+    				UpdateMethod();
+    			}
             }, mUpdatePeriod, mUpdatePeriod);    		
         }else if( key.equals("maxtimeout_count") ){
-        	mMaxTimeoutCount = Integer.parseInt(prefs.getString( "maxtimeout_count", "15" ));
+        	mMaxTimeoutCount = Integer.parseInt(prefs.getString( "maxtimeout_count", "20" ));
+        }else if( key.equals("data_format") ){
+        	mDataFormat = Integer.parseInt(prefs.getString( "data_format", "5" ));        	
         }else if( key.equals("btnA_data") ){
         	mStrA = prefs.getString( "btnA_data", "A" );
         }else if( key.equals("btnB_data") ){
@@ -244,10 +258,10 @@ public class BluetoothJoystickActivity extends Activity implements OnSharedPrefe
     
     @Override
     public void onDestroy() {
-    	super.onDestroy();
+    	mUpdateTimer.cancel();
     	// Stop the Bluetooth RFCOMM services
         if (mRfcommClient != null) mRfcommClient.stop();
-        mUpdateTimer.cancel();
+        super.onDestroy();
     }
     
     private JoystickMovedListener _listenerLeft = new JoystickMovedListener() {
@@ -292,10 +306,6 @@ public class BluetoothJoystickActivity extends Activity implements OnSharedPrefe
     	}
     };
     
-    private void BTConnect(){
-    	Intent serverIntent = new Intent(this, DeviceListActivity.class);
-    	startActivityForResult(serverIntent, REQUEST_CONNECT_DEVICE);
-    }
     
     /**
      * Sends a message.
@@ -324,22 +334,33 @@ public class BluetoothJoystickActivity extends Activity implements OnSharedPrefe
 	    	byte radiusR = (byte) ( Math.min( mRadiusR, 10.0 ) );
     		// scale to {0..35}
 	    	byte angleL = (byte) ( mAngleL * 18.0 / Math.PI + 36.0 + 0.5 );
-	    	byte angleR = (byte) ( mAngleR * 18.0 / Math.PI + 36.0 + 0.5 );	    		    	
+	    	byte angleR = (byte) ( mAngleR * 18.0 / Math.PI + 36.0 + 0.5 );
 	    	if( angleL >= 36 )	angleL = (byte)(angleL-36);
 	    	if( angleR >= 36 )	angleR = (byte)(angleR-36);
 	    	
 	    	if (D) {
-	    		Log.d(TAG, String.format("%d, %d, %d, %d, %d",
-	    				DATA_START, radiusL, angleL, radiusR, angleR ) );
+	    		Log.d(TAG, String.format("%d, %d, %d, %d", radiusL, angleL, radiusR, angleR ) );
 	    	}
 	    	
-	    	sendMessage( new String(new byte[] {
-	    			DATA_START, radiusL, angleL, radiusR, angleR } ) );
+	    	if( mDataFormat==4 ) {
+	    		// raw 4 bytes
+	    		sendMessage( new String(new byte[] {
+		    			radiusL, angleL, radiusR, angleR } ) );
+	    	}else if( mDataFormat==5 ) {
+	    		// start with 0x55
+		    	sendMessage( new String(new byte[] {
+		    			0x55, radiusL, angleL, radiusR, angleR } ) );
+	    	}else if( mDataFormat==6 ) {
+	    		// use STX & ETX
+		    	sendMessage( new String(new byte[] {
+		    			0x02, radiusL, angleL, radiusR, angleR, 0x03 } ) );
+	    	}
 	    	
 	    	mTimeoutCounter = 0;
     	}
     	else{
-    		mTimeoutCounter++;
+    		if( mMaxTimeoutCount>-1 )
+    			mTimeoutCounter++;
     	}	
     }
     
@@ -359,7 +380,7 @@ public class BluetoothJoystickActivity extends Activity implements OnSharedPrefe
     	case REQUEST_ENABLE_BT:
     		// When the request to enable Bluetooth returns
     		if (resultCode != Activity.RESULT_OK) {
-            	// User did not enable Bluetooth or an error occured
+            	// User did not enable Bluetooth or an error occurred
                 Toast.makeText(this, R.string.bt_not_enabled_leaving, Toast.LENGTH_SHORT).show();
                 finish();
             }
