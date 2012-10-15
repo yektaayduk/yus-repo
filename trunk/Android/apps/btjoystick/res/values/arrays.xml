@@ -19,19 +19,31 @@
     </string-array>
     
     <string-array name="timeoutCount">
-        <item name="0">continuous</item>
-        <item name="10">After 10 intervals</item>
-        <item name="20">After 20 intervals</item>
-        <item name="50">After 50 intervals</item>
-        <item name="-1">Off</item>
+        <item name="0">Continually</item>
+        <item name="10">Every after 10 intervals</item>
+        <item name="20">Every after 20 intervals</item>
+        <item name="50">Every after 50 intervals</item>
+        <item name="-1">[Off]</item>
     </string-array>
     
     <string-array name="timeoutCountValues">
-        <item name="1">1</item>
+        <item name="0">0</item>
         <item name="10">10</item>
         <item name="20">20</item>
         <item name="50">50</item>
         <item name="-1">-1</item>
+    </string-array>
+    
+    <string-array name="dataFormat">
+        <item name="4">data only (4 bytes)</item>
+        <item name="5">precede by \'U\' (0x55)</item>
+        <item name="6">use STX(02) and ETX(03)</item>
+    </string-array>
+    
+    <string-array name="dataFormatValues">
+        <item name="4">4</item>
+        <item name="5">5</item>
+        <item name="6">6</item>
     </string-array>
 
 </resources>
