@@ -17,27 +17,32 @@ import org.opencv.android.CameraBridgeViewBase.CvCameraViewListener;
 import org.opencv.imgproc.Imgproc;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.telephony.SmsManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 public class LeafColorActivity extends Activity implements CvCameraViewListener {
     private static final String  TAG                 = "AndLCC";
 
     public static final int      VIEW_MODE_LEAF      = 0;
-    public static final int      VIEW_MODE_CANNY     = 1;
-    public static final int      VIEW_MODE_ZOOM      = 2;
+    public static final int      VIEW_MODE_ZOOM      = 1;
 
-    private MenuItem             mItemPreviewCanny;
-    private MenuItem             mItemPreviewZoom;
     private MenuItem             mItemPreviewLeaf;
+    private MenuItem             mItemPreviewZoom;
+    private MenuItem             mItemCalibrate;
+    private MenuItem             mItemSendData;
     private CameraBridgeViewBase mOpenCvCameraView;
 
     private Size                 mSizeRgba;
+    private Size                 mSizeLeafBox;
 
     private Mat                  mRgba;
     private Mat                  mIntermediateMat;
@@ -58,9 +63,14 @@ public class LeafColorActivity extends Activity implements CvCameraViewListener 
     private Mat                  mLeafWindow;
     
     // leaf/green hsv table
-    private int[]                mGreenHues;
-    private int[]                mGreenSats;
-    private int[]                mGreenVals;
+    private ColorTable           mColTable;
+    private Scalar               mHsvCal2;
+    private Scalar               mHsvCal5;
+    
+    private Scalar               mRGBmean;
+    private Scalar               mHSVmean;
+    private int                  mLeafLevel = -1;
+    private boolean              mbPause = false; 
 
     public static int           viewMode = VIEW_MODE_LEAF;
 
@@ -122,29 +132,103 @@ public class LeafColorActivity extends Activity implements CvCameraViewListener 
         if (mOpenCvCameraView != null)
             mOpenCvCameraView.disableView();
     }
+    
+    public void onBackPressed() {
+    	new AlertDialog.Builder(this)
+    	.setTitle("Green Mind")
+    	.setMessage("Close this Application?")
+    	.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int which) {
+				finish();				
+			}
+		})
+		.setNegativeButton("No", null)
+		.show();
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         Log.i(TAG, "called onCreateOptionsMenu");
-        mItemPreviewLeaf  = menu.add("Leaf Color");
-        mItemPreviewCanny = menu.add("Canny");
-        mItemPreviewZoom  = menu.add("Zoom");        
+        //mItemPreviewLeaf  = menu.add("Leaf Color");
+        mItemPreviewLeaf  = menu.add("Pause");
+        mItemPreviewZoom  = menu.add("Zoom");
+        mItemCalibrate  = menu.add("Calibrate");
+        mItemSendData  = menu.add("Send Data");
         return true;
+    }
+    
+    private void calibrate(int level){
+    	if(level==2){
+    		new AlertDialog.Builder(this)
+        	.setTitle("Calibrate level 2")
+        	.setMessage("now on position 2?")
+        	.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+    			public void onClick(DialogInterface dialog, int which) {
+    				mHsvCal2 = mHSVmean;
+    			}
+    		})
+    		.setNegativeButton("Cancel", null)
+    		.show();
+    	}
+    	else if(level==5){
+    		new AlertDialog.Builder(this)
+        	.setTitle("Calibrate level 5")
+        	.setMessage("now on position 5?")
+        	.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+    			public void onClick(DialogInterface dialog, int which) {
+    				mHsvCal5 = mHSVmean;
+    				mColTable.calibrate(mHsvCal2, mHsvCal5);
+    			}
+    		})
+    		.setNegativeButton("Cancel", null)
+    		.show();    		
+    	}
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         Log.i(TAG, "called onOptionsItemSelected; selected item: " + item);
-        if (item == mItemPreviewLeaf)
+        if (item == mItemPreviewLeaf){
             viewMode = VIEW_MODE_LEAF;
-        else if (item == mItemPreviewCanny)
-            viewMode = VIEW_MODE_CANNY;
+            if(mbPause){
+            	mbPause = false;
+            	mItemPreviewLeaf.setTitle("Pause");
+            }
+            else{
+            	mbPause = true;
+            	mItemPreviewLeaf.setTitle("Run Leaf Color");
+            }
+        }
         else if (item == mItemPreviewZoom)
             viewMode = VIEW_MODE_ZOOM;
+        else if (item == mItemCalibrate){
+        	calibrate(5);
+        	calibrate(2);
+        	//calibrate(5); //?!?
+        }
+        else if (item == mItemSendData){
+        	String phoneNo = "09217529353";
+        	//String sms = "hello garci";
+        	
+            //String phoneNo = "09396957027";
+        	String sms = String.format("Green Mind: Leaf color level = %.1f", ((double)mLeafLevel)/10.0);
+        	
+        	try {
+				SmsManager smsManager = SmsManager.getDefault();
+				smsManager.sendTextMessage(phoneNo, null, sms, null, null);
+				Toast.makeText(getApplicationContext(), "SMS Sent!",
+							Toast.LENGTH_LONG).show();
+			  } catch (Exception e) {
+				Toast.makeText(getApplicationContext(),
+					"SMS faild, please try again later!",
+					Toast.LENGTH_LONG).show();
+				e.printStackTrace();
+			  }
+        }
 
         return true;
     }
-
+    
     public void onCameraViewStarted(int width, int height) {
         mRgba = new Mat();
         mIntermediateMat = new Mat();
@@ -165,57 +249,21 @@ public class LeafColorActivity extends Activity implements CvCameraViewListener 
         mP1 = new Point();
         mP2 = new Point();
         
-        mGreenHues = new int[] {
-				71, 71, 71, 72, 72, 72, 73, 73, 74, 73,
-				74, 75, 75, 75, 76, 77, 77, 78, 78, 79,
-				80, 80, 81, 81, 82, 83, 83, 85, 86, 87,
-				87, 89, 90, 90, 92, 93, 95, 96, 97, 100,
-				100, 102, 104, 107, 108, 110, 114, 115, 118, 123,
-				126, 127, 132, 134, 136, 140, 142, 145, 148, 150 };
-        mGreenSats = new int[] {
-				211, 211, 209, 208, 208, 205, 205, 204, 202, 201,
-				201, 198, 197, 197, 195, 194, 193, 190, 189, 189,
-				188, 185, 184, 184, 180, 179, 178, 175, 174, 173,
-				169, 169, 167, 163, 162, 160, 157, 156, 154, 150,
-				147, 146, 145, 139, 138, 137, 131, 129, 128, 128,
-				132, 134, 138, 143, 144, 149, 155, 160, 162, 169 };
-        mGreenVals = new int[] {
-				145, 143, 142, 141, 139, 138, 137, 135, 134, 132,
-				131, 130, 128, 127, 126, 124, 123, 122, 120, 119,
-				118, 116, 115, 114, 112, 111, 109, 108, 107, 105,
-				104, 103, 101, 100, 99, 97, 96, 95, 93, 92, 
-				90, 89, 88, 86, 85, 84, 82, 81, 80, 78, 
-				77, 76, 74, 73, 71, 70, 69, 67, 66, 65 };
+        mColTable = new ColorTable();
+        mRGBmean = new Scalar(0,0,0);
+        mHSVmean = new Scalar(0,0,0);
     }
     
     private int GreenMatch(int bH, int bS, int bV){
-    	int ret = -1;
-    	
     	if( bV < 20 ) return -1; // black
 		
 		Core.putText(mRgba, String.format("HSV(%d,%d,%d)", bH, bS, bV),
         		new Point(5, mSizeRgba.height - 5),
     			Core.FONT_HERSHEY_PLAIN, 1, new Scalar(255, 255, 128, 255), 1);
 		
-		if( bH<50 || bH>170  ) return -1; // far from green hue
+		if( bH<30 || bH>115  ) return -1; // far from green hue
 		
-		// Color matching
-		double near = 128;		
-		for(int i=0; i<mGreenHues.length; i++){    		
-    		double distance = (bH-mGreenHues[i]) * (bH-mGreenHues[i]);
-    		distance += ( (bS-mGreenSats[i]) * (bS-mGreenSats[i]) );
-    		distance += ( (bV-mGreenVals[i]) * (bV-mGreenVals[i]) );
-    		distance = Math.sqrt(distance);
-    		
-    		if( distance < near ){
-    			near = distance;
-    			ret = i;
-    			Log.i(TAG, String.format("hsv(%d,%d,%d) err = %.1f, level = %d",
-    					bH, bS, bV, distance, i));
-    		}
-    	}
-    	
-    	return ret;
+		return mColTable.lookup(bH, bS, bV);
     }
 
     private void CreateAuxiliaryMats() {
@@ -244,6 +292,8 @@ public class LeafColorActivity extends Activity implements CvCameraViewListener 
         
         if (mLeafWindow == null)
         	mLeafWindow = mRgba.submat( rows / 10, 9 * rows / 10, cols / 2 - cols / 10, cols / 2 + cols / 10);
+        
+        mSizeLeafBox = mLeafWindow.size();
     }
 
     public void onCameraViewStopped() {
@@ -282,38 +332,31 @@ public class LeafColorActivity extends Activity implements CvCameraViewListener 
         	if ( (mLeafWindow == null) || (mSizeRgba == null) || (mRgba.cols() != mSizeRgba.width) || (mRgba.height() != mSizeRgba.height) )
                 CreateAuxiliaryMats();
 
-        	Size lsize = mLeafWindow.size();
-            Core.rectangle( mLeafWindow, new Point(0, 0), new Point(lsize.width - 1, lsize.height - 1), new Scalar(255, 0, 0, 255), 2 );
+        	Core.rectangle( mLeafWindow, new Point(0, 0), new Point(mSizeLeafBox.width - 1, mSizeLeafBox.height - 1), new Scalar(255, 0, 0, 255), 2 );
             
-            // RGB average values
-            Scalar rgb = Core.mean(mLeafWindow);            
-            Core.putText(mRgba, String.format("RGB(%.0f,%.0f,%.0f)", rgb.val[0], rgb.val[1], rgb.val[2]),
+        	if(!mbPause){ // recalculate
+        		// RGB average values
+                mRGBmean = Core.mean(mLeafWindow);
+                
+                // HSV color space
+                Imgproc.cvtColor(mLeafWindow, mIntermediateMat, Imgproc.COLOR_RGB2HSV_FULL);
+                
+                Imgproc.calcHist(Arrays.asList(mIntermediateMat), mChannels[0], mMat0, mHist, mHistSize, mRanges);
+                Core.normalize(mHist, mHist, mSizeRgba.height/2, 0, Core.NORM_INF);
+                mHist.get(0, 0, mBuff);
+                
+                // HSV average values
+                mHSVmean = Core.mean(mIntermediateMat);
+                
+                // color matching
+                mLeafLevel = GreenMatch((int)mHSVmean.val[0], (int)mHSVmean.val[1], (int)mHSVmean.val[2]);
+        	}
+        	
+            Core.putText(mRgba, String.format("RGB(%.0f,%.0f,%.0f)", mRGBmean.val[0], mRGBmean.val[1], mRGBmean.val[2]),
             		new Point(5, mSizeRgba.height - 20),
         			Core.FONT_HERSHEY_PLAIN, 1, new Scalar(255, 255, 128, 255), 1);
             
-            // HSV color space
-            Imgproc.cvtColor(mLeafWindow, mIntermediateMat, Imgproc.COLOR_RGB2HSV_FULL);
-            
-            // HSV average values
-            Scalar hsv = Core.mean(mIntermediateMat);
-            
-            // color matching
-            int level = GreenMatch((int)hsv.val[0], (int)hsv.val[1], (int)hsv.val[2]);
-            
-            // show arrow pointer
-            if( level>=0 ){
-            	double offset = level * ( (mSizeRgba.height-20) / mGreenHues.length); // fix me
-            	level += 5; // start with "0.5"
-            	Core.putText(mRgba, String.format("%.1f->", (double)level/10.0),
-            			new Point(mSizeRgba.width-100, mSizeRgba.height - offset),
-            			Core.FONT_HERSHEY_SCRIPT_SIMPLEX, 1, new Scalar(128, 255, 255, 255), 2);
-            }
-            
             // plot Hue histogram
-            Imgproc.calcHist(Arrays.asList(mIntermediateMat), mChannels[0], mMat0, mHist, mHistSize, mRanges);
-            Core.normalize(mHist, mHist, mSizeRgba.height/2, 0, Core.NORM_INF);
-            mHist.get(0, 0, mBuff);
-            
             int thickness = 5;
             for(int h=1; h<mHistSizeNum; h++) {
             	mP1.x = mP2.x = 10 + thickness*h; // offset
@@ -322,16 +365,17 @@ public class LeafColorActivity extends Activity implements CvCameraViewListener 
                 Core.line(mRgba, mP1, mP2, mColorsHue[h], thickness-1);
             }
             
+            // show arrow pointer
+            if( mLeafLevel>=0 ){
+            	double offset = mLeafLevel * ( (mSizeRgba.height-20) / mColTable.getLength()); // fix me
+            	Core.putText(mRgba, String.format("%.1f->", (double)mLeafLevel/10.0 + 0.5), // start with "0.5"
+            			new Point(mSizeRgba.width-100, mSizeRgba.height - offset),
+            			Core.FONT_HERSHEY_SCRIPT_SIMPLEX, 1, new Scalar(128, 255, 255, 255), 2);
+            }
+            
             break;
-        	
-        case LeafColorActivity.VIEW_MODE_CANNY:
-            if ((mRgbaInnerWindow == null) || (mGrayInnerWindow == null) || (mRgba.cols() != mSizeRgba.width) || (mRgba.height() != mSizeRgba.height))
-               CreateAuxiliaryMats();
-           Imgproc.Canny(mRgbaInnerWindow, mIntermediateMat, 80, 90);
-           Imgproc.cvtColor(mIntermediateMat, mRgbaInnerWindow, Imgproc.COLOR_GRAY2BGRA, 4);
-           break;
-
-       case LeafColorActivity.VIEW_MODE_ZOOM:
+            
+        case LeafColorActivity.VIEW_MODE_ZOOM:
            if ((mZoomCorner == null) || (mZoomWindow == null) || (mRgba.cols() != mSizeRgba.width) || (mRgba.height() != mSizeRgba.height))
                CreateAuxiliaryMats();
            Imgproc.resize(mZoomWindow, mZoomCorner, mZoomCorner.size());
@@ -339,8 +383,8 @@ public class LeafColorActivity extends Activity implements CvCameraViewListener 
            Size wsize = mZoomWindow.size();
            Core.rectangle(mZoomWindow, new Point(1, 1), new Point(wsize.width - 2, wsize.height - 2), new Scalar(255, 0, 0, 255), 2);
            break;
-        }
-
+        
+	    }
         return mRgba;
     }
 }
