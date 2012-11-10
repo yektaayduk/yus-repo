@@ -1,0 +1,20 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal" >
+
+    <org.opencv.android.JavaCameraView
+        android:id="@+id/leaf_color_activity_surface_view"
+        android:layout_width="360dp"
+        android:layout_height="fill_parent"
+        android:layout_gravity="left" />
+    
+    <ImageView
+        android:id="@+id/colorchartview"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:layout_gravity="right"
+        android:contentDescription="@string/chart_name" />
+
+</LinearLayout>
