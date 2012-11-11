@@ -19,24 +19,31 @@ import org.opencv.imgproc.Imgproc;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.telephony.SmsManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-public class LeafColorActivity extends Activity implements CvCameraViewListener {
+public class LeafColorActivity extends Activity implements CvCameraViewListener, SensorEventListener {
     private static final String  TAG                 = "AndLCC";
 
     public static final int      VIEW_MODE_LEAF      = 0;
     public static final int      VIEW_MODE_ZOOM      = 1;
+    public static final int      VIEW_MODE_LEVELING     = 2;
 
     private MenuItem             mItemPreviewLeaf;
     private MenuItem             mItemPreviewZoom;
+    private MenuItem             mItemPreviewLevel;
     private MenuItem             mItemCalibrate;
     private MenuItem             mItemSendData;
     private CameraBridgeViewBase mOpenCvCameraView;
@@ -62,6 +69,8 @@ public class LeafColorActivity extends Activity implements CvCameraViewListener 
     private Mat                  mZoomCorner;
     private Mat                  mLeafWindow;
     
+    private ImageView            mColorchartView;
+    
     // leaf/green hsv table
     private ColorTable           mColTable;
     private Scalar               mHsvCal2;
@@ -70,10 +79,16 @@ public class LeafColorActivity extends Activity implements CvCameraViewListener 
     private Scalar               mRGBmean;
     private Scalar               mHSVmean;
     private int                  mLeafLevel = -1;
-    private boolean              mbPause = false; 
+    private boolean              mbPause = false;
+    
+    // land leveling
+    private SensorManager        mSensorManager;
+    private int                  mOrientationSensor;
+    private float                mRollAngle;
+    private float                mPitchAngle;
 
     public static int           viewMode = VIEW_MODE_LEAF;
-
+    
     private BaseLoaderCallback  mLoaderCallback = new BaseLoaderCallback(this) {
         @Override
         public void onManagerConnected(int status) {
@@ -96,6 +111,7 @@ public class LeafColorActivity extends Activity implements CvCameraViewListener 
     }
 
     /** Called when the activity is first created. */
+    @SuppressWarnings("deprecation")
     @Override
     public void onCreate(Bundle savedInstanceState) {
         Log.i(TAG, "called onCreate");
@@ -108,8 +124,13 @@ public class LeafColorActivity extends Activity implements CvCameraViewListener 
         mOpenCvCameraView = (CameraBridgeViewBase) findViewById(R.id.leaf_color_activity_surface_view);
         mOpenCvCameraView.setCvCameraViewListener(this);
         
-        ImageView colorchartView = (ImageView)findViewById(R.id.colorchartview);
-        colorchartView.setImageResource(R.raw.six_panel_lcc);
+        mColorchartView = (ImageView)findViewById(R.id.colorchartview);
+        mColorchartView.setImageResource(R.raw.six_panel_lcc);
+        
+        mSensorManager = (SensorManager)getSystemService(SENSOR_SERVICE);
+        mOrientationSensor = Sensor.TYPE_ORIENTATION;
+        mSensorManager.registerListener(sensorEventListener,
+        		mSensorManager.getDefaultSensor(mOrientationSensor), mSensorManager.SENSOR_DELAY_GAME);
     }
 
     @Override
@@ -131,6 +152,8 @@ public class LeafColorActivity extends Activity implements CvCameraViewListener 
         super.onDestroy();
         if (mOpenCvCameraView != null)
             mOpenCvCameraView.disableView();
+        
+        mSensorManager.unregisterListener(sensorEventListener);
     }
     
     public void onBackPressed() {
@@ -152,6 +175,7 @@ public class LeafColorActivity extends Activity implements CvCameraViewListener 
         //mItemPreviewLeaf  = menu.add("Leaf Color");
         mItemPreviewLeaf  = menu.add("Pause");
         mItemPreviewZoom  = menu.add("Zoom");
+        mItemPreviewLevel = menu.add("Land Level");
         mItemCalibrate  = menu.add("Calibrate");
         mItemSendData  = menu.add("Send Data");
         return true;
@@ -199,19 +223,28 @@ public class LeafColorActivity extends Activity implements CvCameraViewListener 
             	mItemPreviewLeaf.setTitle("Run Leaf Color");
             }
         }
-        else if (item == mItemPreviewZoom)
+        else if (item == mItemPreviewZoom){
             viewMode = VIEW_MODE_ZOOM;
+        }
+        else if (item == mItemPreviewLevel){
+            viewMode = VIEW_MODE_LEVELING;
+        }
         else if (item == mItemCalibrate){
         	calibrate(5);
         	calibrate(2);
         	//calibrate(5); //?!?
         }
         else if (item == mItemSendData){
-        	String phoneNo = "09217529353";
+        	// pause view
+        	mbPause = true;
+        	mItemPreviewLeaf.setTitle("Run Leaf Color");
+        	
+        	//String phoneNo = "09217529353";
         	//String sms = "hello garci";
         	
-            //String phoneNo = "09396957027";
-        	String sms = String.format("Green Mind: Leaf color level = %.1f", ((double)mLeafLevel)/10.0);
+            String phoneNo = "09396957027";
+        	//String sms = String.format("[Green Mind] Leaf grade = %.1f", ((double)mLeafLevel)/10.0);
+            String sms = String.format("%.1f", ((double)mLeafLevel)/10.0);
         	
         	try {
 				SmsManager smsManager = SmsManager.getDefault();
@@ -383,8 +416,62 @@ public class LeafColorActivity extends Activity implements CvCameraViewListener 
            Size wsize = mZoomWindow.size();
            Core.rectangle(mZoomWindow, new Point(1, 1), new Point(wsize.width - 2, wsize.height - 2), new Scalar(255, 0, 0, 255), 2);
            break;
+           
+        case LeafColorActivity.VIEW_MODE_LEVELING:
+        	if ( (mSizeRgba == null) || (mRgba.cols() != mSizeRgba.width) || (mRgba.height() != mSizeRgba.height) )
+                CreateAuxiliaryMats();
+        	
+        	//mColorchartView.setVisibility(ImageView.INVISIBLE);
+        	
+        	Core.putText(mRgba,String.format("Roll (%.0f) Pitch (%.0f)", mRollAngle, mPitchAngle), new Point(5, mSizeRgba.height - 5),
+          			Core.FONT_HERSHEY_PLAIN, 1, new Scalar(255, 0, 0, 255), 1) ;
+        	
+        	double w = mSizeRgba.width/2;
+        	double h = mSizeRgba.height/2;
+        	double angle;
+        	
+        	Point p1 = new Point();
+        	angle = (double)(360-mRollAngle) * Math.PI/180;
+        	p1.x = Math.cos(angle) * w / 2;
+        	p1.y = Math.sin(angle) * h / 2;
+        	Core.line(mRgba, new Point(w+p1.x, h+p1.y), new Point(w-p1.x, h-p1.y), new Scalar(255,0,255,255), 2);
+        	
+        	angle = (double)(360+90-mRollAngle) * Math.PI/180;
+        	p1.x = Math.cos(angle) * w / 2;
+        	p1.y = Math.sin(angle) * h / 2;
+        	Core.line(mRgba, new Point(w+p1.x, h+p1.y), new Point(w-p1.x, h-p1.y), new Scalar(255,0,255,255), 2);
+        	
+        	break;
         
 	    }
         return mRgba;
     }
+    
+    final SensorEventListener sensorEventListener = new SensorEventListener() {
+		
+		@SuppressWarnings("deprecation")
+		public void onSensorChanged(SensorEvent event) {
+			if(event.sensor.getType() == Sensor.TYPE_ORIENTATION){
+				mRollAngle = event.values[0];
+				mPitchAngle = event.values[1];
+				
+				Log.i(TAG, "Roll: " + String.valueOf(mRollAngle));
+			}
+		}
+		
+		public void onAccuracyChanged(Sensor sensor, int accuracy) {
+			// TODO Auto-generated method stub
+			
+		}
+	};
+
+	public void onAccuracyChanged(Sensor sensor, int accuracy) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void onSensorChanged(SensorEvent event) {
+		// TODO Auto-generated method stub
+		
+	}
 }
