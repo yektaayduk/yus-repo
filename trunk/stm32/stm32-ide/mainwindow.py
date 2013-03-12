@@ -270,8 +270,8 @@ class AppMainWindow(QtGui.QMainWindow):
                 statusTip="Build the current project", triggered=self.startBuild)
         self.stopAct = QtGui.QAction(QtGui.QIcon("./images/stop.png"), "S&top",
                 self, statusTip="Cancel the build process", triggered=self.stopBuild)
-        self.programAct = QtGui.QAction(QtGui.QIcon("./images/load.png"), "&Bootloader",
-                self, statusTip="Download program to the board", triggered=self.programChip)
+        self.programAct = QtGui.QAction(QtGui.QIcon("./images/load.png"), "&Load",
+                self, statusTip="Download program to the board using bootloader", triggered=self.programChip)
          
         self.firmwareLibList = scanFirmwareLibs()
         self.firmwareLibActs = []
