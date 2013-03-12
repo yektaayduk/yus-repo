@@ -25,7 +25,8 @@
 
 '''
 
-import os, glob, pyclibrary
+import os, glob
+import clang.cindex as clang
 from configs import FirmwareConfig
 
 # library path
@@ -177,44 +178,41 @@ def getCompilerDefines():
         defines += ' -D' + flag + '=' + val
     return defines
 
+
+_clang_nodes=[]
+
+def find_typerefs(node, fname=None):
+    if str(node.location.file)==str(fname):
+        knd = node.kind
+        if knd!=clang.CursorKind.PARM_DECL and  knd!=clang.CursorKind.INCLUSION_DIRECTIVE:
+            #print node.kind, node.displayname, node.location
+            if node.spelling:
+                #print node.spelling
+                _clang_nodes.append(str(node.spelling))
+            else:
+                #print node.displayname
+                _clang_nodes.append(str(node.displayname))
+    for c in node.get_children():
+        find_typerefs(c, fname)
+
 def getLibraryKeywords(headerFiles=[]):
     if not len(headerFiles):
         # search default header files
         headerFiles = glob.glob( PRK_BSP_DIR + '/*.h' )
-        #headerFiles += glob.glob( STMLIB_DIR + '/inc/*.h' ) # large files!!
+        headerFiles += glob.glob( STMLIB_DIR + '/inc/*.h' ) # large files!!
         
-    #print header_files
-
+    #print headerFiles
     fwconfig.saveFwSettings()
-    #print fwconfig.getDefines()
+    #print getCompilerDefines()
     
-    # parse header files with CParser
-    parser = pyclibrary.CParser( headerFiles , macros=fwconfig.getDefines() )
-    parser.processAll()
-
-    functions = [] # C functions
-    for func, type in parser.defs['functions'].items():
-        functions.append( func )
-    #print 'functions:\n', functions
-
-    fnmacros = [] # function macros
-    for macro, type in parser.defs['fnmacros'].items():
-        fnmacros.append( macro )
-    #print 'fnmacros:\n', fnmacros
-
-    values = [] # variable defines
-    for val, type in parser.defs['values'].items():
-        if val.find('__') <> 0:
-            values.append( val )
-    #print 'values:\n', values
-
-    keywords = functions
-    keywords += fnmacros
-    keywords += values
-    keywords = list(set(keywords)) # remove duplicate items
+    del _clang_nodes[:]
+    index = clang.Index.create()
+    for fname in headerFiles:
+        tu = index.parse(fname, [getCompilerDefines()], [], 0xFF)
+        find_typerefs(tu.cursor, tu.spelling)
+    
+    keywords = list(set(_clang_nodes)) # remove duplicate items
     #print keywords
     #print 'found %d keywords' %len(keywords)
-
     return keywords
-
 
