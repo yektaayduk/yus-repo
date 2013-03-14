@@ -28,6 +28,7 @@
 import os
 from PyQt4 import QtGui, QtCore
 from cppeditor import CppEditor, PROJECT_ALIAS, PROJECT_EXT, PROJECT_NONAME
+from outline import OutLineView
 from finddialog import FindDialog
 from firmware import getLibraryKeywords, scanFirmwareLibs, getExampleProjects
 
@@ -60,6 +61,8 @@ class MultipleCppEditor(QtGui.QTabWidget):
             # print self.sampleProjects
         except:
             pass
+        
+        self.Outline = OutLineView(self)
         
         self.connect(self, QtCore.SIGNAL('tabCloseRequested(int)'), self.closeFile)
         
@@ -254,9 +257,13 @@ class MultipleCppEditor(QtGui.QTabWidget):
         return False
                 
     def onChildContentChanged(self):
-        title = self.tabText(self.currentIndex())
-        if not title.contains('*', QtCore.Qt.CaseInsensitive):
-            self.setTabText(self.currentIndex(), title + " * ")
+        child = self.currentWidget()
+        if child:
+            title = self.tabText(self.currentIndex())
+            if not title.contains('*', QtCore.Qt.CaseInsensitive):
+                self.setTabText(self.currentIndex(), title + " * ")
+            
+            self.Outline.update(child.text())
         
     def getDefaultKeywords(self):
         return self.DefaultKeywords
@@ -288,4 +295,6 @@ class MultipleCppEditor(QtGui.QTabWidget):
                 return False
         return True
 
+    def getOutLineView(self):
+        return self.Outline
         

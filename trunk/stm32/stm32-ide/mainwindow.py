@@ -67,6 +67,7 @@ class AppMainWindow(QtGui.QMainWindow):
                 
         self.Editor = MultipleCppEditor(self)        
         self.setCentralWidget(self.Editor)
+        self.addDockWidget(QtCore.Qt.RightDockWidgetArea, self.Editor.getOutLineView())
         
         self.Compiler = PicCompilerThread(self)
         self.pollCompilerTimerID = None
@@ -88,6 +89,7 @@ class AppMainWindow(QtGui.QMainWindow):
         
         self.aboutDlg.finish(self)
         print "IDE ready."
+        
         
     def about(self):
         self.aboutDlg.show()
@@ -439,7 +441,7 @@ class AppMainWindow(QtGui.QMainWindow):
         palette = QtGui.QPalette(QtGui.QColor(0, 0, 0))
         palette.setColor(QtGui.QPalette.Active, QtGui.QPalette.Base, QtGui.QColor(25, 10, 0))
         self.log.setPalette(palette)
-        logWindow = QtGui.QDockWidget(self)
+        logWindow = QtGui.QDockWidget("Log", self)
         logWindow.setWidget(self.log)
         self.addDockWidget(QtCore.Qt.BottomDockWidgetArea, logWindow)
     
