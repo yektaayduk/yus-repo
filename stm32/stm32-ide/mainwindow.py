@@ -149,6 +149,12 @@ class AppMainWindow(QtGui.QMainWindow):
             self.insertLog("nothing to stop.")
             
     def programChip(self):
+        if self.Editor.isCurrentFileModified():
+            self.insertLog('<font color=orange>Project was modified. Please re-build the project.</font>')
+            return
+        if not self.serialPortName:
+            self.insertLog('<font color=orange>Please select first a Serial Port.</font>')
+            return
         if self.Compiler.isRunning():
             self.insertLog('compiler busy... please wait...')
             return
