@@ -32,7 +32,7 @@ from configs import CompilerConfig
 from cppeditor import PROJECT_EXT
 
 # output directory 
-OUT_DIR = '.phr_out'
+OUT_DIR = '.output'
 # makefile filename
 MAKEFILE = 'Makefile'
 
