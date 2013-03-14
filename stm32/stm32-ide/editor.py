@@ -65,6 +65,7 @@ class MultipleCppEditor(QtGui.QTabWidget):
         self.Outline = OutLineView(self)
         
         self.connect(self, QtCore.SIGNAL('tabCloseRequested(int)'), self.closeFile)
+        self.connect(self, QtCore.SIGNAL('currentChanged(int)'), self.onCurrentChanged)
         
         if self.count()==0:
             self.newFile()
@@ -74,6 +75,7 @@ class MultipleCppEditor(QtGui.QTabWidget):
         self.addTab(child, PROJECT_NONAME + " * ")
         self.setCurrentIndex(self.count()-1)
         self.setTabToolTip(self.currentIndex(), child.currentFile())
+        self.Outline.update(child.text())
         
     def openFile(self, fileName=None):
         if fileName == None: # prompt open dialog if filename is not specified
@@ -96,6 +98,7 @@ class MultipleCppEditor(QtGui.QTabWidget):
         self.addTab(child, tabtext)
         self.setCurrentIndex(self.count()-1)
         self.setTabToolTip(self.currentIndex(), child.currentFile())
+        self.Outline.update(child.text())
         return True
     
     def saveFile(self):
@@ -110,6 +113,7 @@ class MultipleCppEditor(QtGui.QTabWidget):
                 tabtext = tabtext[:tabtext.lower().find(PROJECT_EXT)]
             self.setTabText(self.currentIndex(), tabtext)
             self.setTabToolTip(self.currentIndex(), fileName)
+            self.Outline.update(child.text())
             return True
         return False
     
@@ -123,6 +127,7 @@ class MultipleCppEditor(QtGui.QTabWidget):
                 tabtext = tabtext[:tabtext.lower().find(PROJECT_EXT)]
             self.setTabText(self.currentIndex(), tabtext)
             self.setTabToolTip(self.currentIndex(), fileName)
+            self.Outline.update(child.text())
             return True
         return False
     
@@ -297,4 +302,10 @@ class MultipleCppEditor(QtGui.QTabWidget):
 
     def getOutLineView(self):
         return self.Outline
+    
+    def onCurrentChanged(self, newIndex=0):
+        child = self.currentWidget()
+        if child:
+            self.Outline.update(child.text())
+            
         
