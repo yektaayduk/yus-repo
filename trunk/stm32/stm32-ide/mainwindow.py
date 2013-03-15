@@ -63,8 +63,6 @@ class AppMainWindow(QtGui.QMainWindow):
         self.setWindowIcon(QtGui.QIcon('images/app.png'))
         self.setMinimumSize(300, 400)
         
-        self.Configs = IdeConfig(self)
-                
         self.Editor = MultipleCppEditor(self)        
         self.setCentralWidget(self.Editor)
         self.addDockWidget(QtCore.Qt.BottomDockWidgetArea, self.Editor.getOutLineView())
@@ -82,6 +80,8 @@ class AppMainWindow(QtGui.QMainWindow):
         self.pollTblTimerID = None
         
         self.createLogWindow()
+        self.Configs = IdeConfig(self)
+        
         self.createActions()
         self.createMenus()
         self.createToolBars()

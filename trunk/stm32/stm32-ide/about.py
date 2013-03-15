@@ -31,7 +31,7 @@ from firmware import FirmwareLibUpdate
 SPLASH_IMAGE = 'images/about.png'
 
 SPLASH_NOTICE = '''
-  PhilRoboKit IDE  Copyright (C) 2012  PhilRobotics
+  PhilRoboKit IDE  Copyright (C) 2013  PhilRobotics
   This program comes with ABSOLUTELY NO WARRANTY.
   This is free software, and you are welcome
   to redistribute it under certain conditions.
