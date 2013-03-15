@@ -2,13 +2,13 @@
 '''
 
     @filename: serialport.py
-    @project : PhilRoboKit IDE
+    @project : STM32-GCC-ARM-IDE
 
     PhilRobotics | Philippine Electronics and Robotics Enthusiasts Club
     http://philrobotics.com | http://philrobotics.com/forum | http://facebook.com/philrobotics
     phirobotics.core@philrobotics.com
 
-    Copyright (C) 2012  Julius Constante
+    Copyright (C) 2013  Julius Constante
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
