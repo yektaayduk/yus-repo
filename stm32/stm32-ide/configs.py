@@ -39,7 +39,7 @@ FIRMWARE_CONFIG = CONFIG_DIR + 'firmware.ini'
 BOARD_CONFIG = CONFIG_DIR + 'board.ini'
 
 # default main window dimensions
-IDE_SIZE = [800, 600]
+IDE_SIZE = [550, 640]
 IDE_POS = [100, 100]
 
 # default toolchains (GCC-ARM)

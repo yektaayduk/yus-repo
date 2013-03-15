@@ -67,7 +67,7 @@ class AppMainWindow(QtGui.QMainWindow):
                 
         self.Editor = MultipleCppEditor(self)        
         self.setCentralWidget(self.Editor)
-        self.addDockWidget(QtCore.Qt.RightDockWidgetArea, self.Editor.getOutLineView())
+        self.addDockWidget(QtCore.Qt.BottomDockWidgetArea, self.Editor.getOutLineView())
         
         self.Compiler = PicCompilerThread(self)
         self.pollCompilerTimerID = None

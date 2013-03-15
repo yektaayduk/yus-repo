@@ -65,7 +65,7 @@ class MultipleCppEditor(QtGui.QTabWidget):
         self.Outline = OutLineView(self)
         
         self.connect(self, QtCore.SIGNAL('tabCloseRequested(int)'), self.closeFile)
-        self.connect(self, QtCore.SIGNAL('currentChanged(int)'), self.onCurrentChanged)
+        self.connect(self, QtCore.SIGNAL('currentChanged(int)'), self.Outline.update)
         
         if self.count()==0:
             self.newFile()
@@ -301,11 +301,5 @@ class MultipleCppEditor(QtGui.QTabWidget):
         return True
 
     def getOutLineView(self):
-        return self.Outline
-    
-    def onCurrentChanged(self, newIndex=0):
-        child = self.currentWidget()
-        if child:
-            self.Outline.update(child.text())
-            
+        return self.Outline        
         

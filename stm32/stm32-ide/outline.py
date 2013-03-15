@@ -26,6 +26,7 @@
 '''
 
 import clang.cindex as clang
+from firmware import getCompilerDefines
 from PyQt4 import QtGui, QtCore
 
 class CLangParserThread(QtCore.QThread):
@@ -38,7 +39,14 @@ class CLangParserThread(QtCore.QThread):
     
     def find_typerefs(self, node, fname=None, level=0):
         if str(node.location.file)==str(fname):
-            self.nodes.append((node, level))
+            knd = node.kind.name
+            if knd!="MACRO_INSTANTIATION" and \
+                    knd!="TYPE_REF" and \
+                    knd!="UNEXPOSED_EXPR" and \
+                    knd!="DECL_REF_EXPR" and \
+                    knd!="MEMBER_REF_EXPR" and \
+                    knd!="CALL_EXPR" :
+                self.nodes.append((node, level))
         for c in node.get_children():
             self.find_typerefs(c, fname, level+1)
     
@@ -46,7 +54,10 @@ class CLangParserThread(QtCore.QThread):
         self.msleep(200)
         del self.nodes[:]
         #print 'started parsing...'
-        tu = self.index.parse('a.cpp', [], [('a.cpp', self.parent.getRawContent())], 13)
+        tu = self.index.parse('a.cpp',
+                              getCompilerDefines().split(' '),
+                              [('a.cpp', self.parent.getRawContent())],
+                              13 )
         self.find_typerefs(tu.cursor, tu.spelling)
         #print 'done parsing.'
         self.msleep(200)
@@ -71,30 +82,35 @@ class CLangParserThread(QtCore.QThread):
 class OutLineView(QtGui.QDockWidget):
 
     def __init__(self, parent=None):
-        super(OutLineView, self).__init__("Outline", parent)
+        super(OutLineView, self).__init__("Outline Pending...", parent)
         self.parent = parent
         self.parser = CLangParserThread(self)
-        self.content = ""
         self.itemStack = []
         self.updated = True
         
         self.treeWidget = QtGui.QTreeWidget(self)
         self.treeWidget.setHeaderHidden(True)
-        self.treeWidget.itemDoubleClicked.connect(self.onItemDoubleClicked)
+        self.treeWidget.itemClicked.connect(self.onItemDoubleClicked)
         self.setWidget(self.treeWidget)
         
         self.startTimer(2000)
         
-    def update(self, str_to_parse=""):
+        
+    def update(self, newIndex=0):
         self.updated = False
-        self.content = str_to_parse
         if self.parser.isRunning():
             self.parser.setQueue()
             return
         self.parser.start()
         
     def getRawContent(self):
-        return str(self.content)
+        try:
+            child = self.parent.currentWidget()
+            if child:
+                return str( child.text() )
+        except:
+            pass
+        return 'empty'
     
     def onItemDoubleClicked(self, item=None, column=-1):
         if item:
@@ -165,6 +181,11 @@ class OutLineView(QtGui.QDockWidget):
                         print 'error adding %s, level(%d->%d), stack(%d)' %(label, previous_level, level, len(self.itemStack))
                     previous_level = level
                 
+                self.setWindowTitle("Outline")
+                self.updated = True
+                
+            elif self.parser.isFinished():
+                self.treeWidget.clear()
                 self.setWindowTitle("Outline")
                 self.updated = True
             
