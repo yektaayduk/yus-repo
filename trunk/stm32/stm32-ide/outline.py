@@ -72,7 +72,7 @@ class OutLineView(QtGui.QDockWidget):
 
     def __init__(self, parent=None):
         super(OutLineView, self).__init__("Outline", parent)
-        
+        self.parent = parent
         self.parser = CLangParserThread(self)
         self.content = ""
         self.itemStack = []
@@ -80,6 +80,7 @@ class OutLineView(QtGui.QDockWidget):
         
         self.treeWidget = QtGui.QTreeWidget(self)
         self.treeWidget.setHeaderHidden(True)
+        self.treeWidget.itemDoubleClicked.connect(self.onItemDoubleClicked)
         self.setWidget(self.treeWidget)
         
         self.startTimer(2000)
@@ -94,11 +95,26 @@ class OutLineView(QtGui.QDockWidget):
         
     def getRawContent(self):
         return str(self.content)
+    
+    def onItemDoubleClicked(self, item=None, column=-1):
+        if item:
+            try:
+                tip = str( item.toolTip(0) )
+                child = self.parent.currentWidget()
+                if child:
+                    line = int( tip[tip.find('[')+1:tip.rfind(',')] ) - 1
+                    col = int( tip[tip.rfind(' '):tip.rfind(']')] ) - 1
+                    if tip.find('INCLUSION_DIRECTIVE')>0:
+                        col += len('#include <')
+                    child.setSelection( line, col, line, col+len(item.text(0)) )
+            except:
+                print "error: editor setSelection() failed!"
         
     def timerEvent(self, *args, **kwargs):
         if not self.updated:
             previous_level = 0
             nodes = self.parser.getNodes()
+            self.setWindowTitle("Outline Pending...")
             if nodes:
                 self.treeWidget.clear()
                 for node, level in nodes:
@@ -148,7 +164,8 @@ class OutLineView(QtGui.QDockWidget):
                     except:
                         print 'error adding %s, level(%d->%d), stack(%d)' %(label, previous_level, level, len(self.itemStack))
                     previous_level = level
-                        
+                
+                self.setWindowTitle("Outline")
                 self.updated = True
             
         return QtGui.QDockWidget.timerEvent(self, *args, **kwargs)
