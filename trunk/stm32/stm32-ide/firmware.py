@@ -333,7 +333,7 @@ class FirmwareLibUpdate(QtCore.QThread):
                 href_pos = line.find(self.href_str)
                 if href_pos>=0:
                     fname = line[href_pos+len(self.href_str):line.find('">')]
-                    if not fname[0].isalpha():
+                    if not fname[0].isalnum():
                         continue
                     if fname.find('/')>0: # folder
                         self._browse(url+fname) # recursive
