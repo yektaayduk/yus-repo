@@ -26,6 +26,7 @@
 '''
 
 from PyQt4 import QtGui, QtCore
+from firmware import FirmwareLibUpdate
 
 SPLASH_IMAGE = 'images/about.png'
 
@@ -48,11 +49,37 @@ class AboutDialog(QtGui.QSplashScreen):
         self.setMask( self.pix.mask() )
         
         self.showMessage( SPLASH_NOTICE + '    loading modules . . .',
-            QtCore.Qt.AlignLeft | QtCore.Qt.AlignBottom, QtGui.QColor("#eecc77"));
+            QtCore.Qt.AlignLeft | QtCore.Qt.AlignBottom, QtGui.QColor("#eecc77"))
+            
+        self.fw_update = FirmwareLibUpdate(self)
+        self.input_dlg = QtGui.QInputDialog(self)
+        self.fw_update_timer_id = None
         
     def mousePressEvent(self, *args, **kwargs):
         # print 'you pressed me!'
-        self.close()
-        return QtGui.QSplashScreen.mousePressEvent(self, *args, **kwargs)
+        if not self.fw_update.isRunning():
+            self.close()
+            return QtGui.QSplashScreen.mousePressEvent(self, *args, **kwargs)
+        
+    def setMsg(self, msg):
+        self.showMessage( '[developer mode] '+ msg, QtCore.Qt.AlignLeft | QtCore.Qt.AlignBottom, QtGui.QColor("#eecc77"))
+        
+        
+    def showUpdateDialog(self):
+        rev, res = self.input_dlg.getInteger(self, 'Update FW Lib', 'Input version ("0" = get latest)', 0, 0, 10000)
+        if res:
+            self.fw_update.setDesiredRevision(rev)
+            self.fw_update.start()
+            self.fw_update_timer_id = self.startTimer(200)            
+    
+    def timerEvent(self, *args, **kwargs):
+        timerID = args[0].timerId()
+        if timerID == self.fw_update_timer_id:
+            msg = self.fw_update.getLog();
+            if msg:
+                self.setMsg(msg)
+            elif not self.fw_update.isRunning():
+                self.killTimer(self.fw_update_timer_id)
+        return QtGui.QSplashScreen.timerEvent(self, *args, **kwargs)
 
 
