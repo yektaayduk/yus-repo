@@ -55,7 +55,7 @@ class CLangParserThread(QtCore.QThread):
             self.queue = False
             self.run()
             return
-        print 'CLangParserThread done.'
+        # print 'CLangParserThread done.'
         
     def setQueue(self):
         if self.queue:
@@ -75,6 +75,7 @@ class OutLineView(QtGui.QDockWidget):
         
         self.parser = CLangParserThread(self)
         self.content = ""
+        self.itemStack = []
         self.updated = True
         
         self.treeWidget = QtGui.QTreeWidget(self)
@@ -96,8 +97,6 @@ class OutLineView(QtGui.QDockWidget):
         
     def timerEvent(self, *args, **kwargs):
         if not self.updated:
-            previous_parent = None
-            previous_item = None
             previous_level = 0
             nodes = self.parser.getNodes()
             if nodes:
@@ -110,20 +109,44 @@ class OutLineView(QtGui.QDockWidget):
                     else:
                         continue
                     
-                    print level, label, node.kind, node.location.line
                     try:
+                        tip = "%s : %s [%d, %d]"%(label, node.kind.name, node.location.line, node.location.column)
                         if level==1:
-                            previous_item = QtGui.QTreeWidgetItem(self.treeWidget, [label])
-                            self.treeWidget.addTopLevelItem(previous_item)                        
-                        elif previous_level!=level:
-                            print 'add child...'
-                            previous_parent = previous_item
-                            previous_parent.addChild( QtGui.QTreeWidgetItem([label]) )
-                        else:
-                            print 'add siblings..'
-                            previous_parent.addChild( QtGui.QTreeWidgetItem([label]) )
+                            del self.itemStack[:]
+                            item = QtGui.QTreeWidgetItem(self.treeWidget, [label])
+                            item.setToolTip(0, tip)
+                            #print 'add top...', label
+                            self.treeWidget.addTopLevelItem(item)
+                            self.itemStack.append(item)
+                        elif level>previous_level:
+                            while len(self.itemStack)<level-1:
+                                self.itemStack.append(self.itemStack[len(self.itemStack)-1])
+                            item = QtGui.QTreeWidgetItem([label])
+                            item.setToolTip(0, tip)
+                            #print 'add child...', self.itemStack[level-2].text(0)
+                            self.itemStack[level-2].addChild( item )
+                            self.itemStack.append( item )
+                        elif level==previous_level:
+                            item = QtGui.QTreeWidgetItem([label])
+                            item.setToolTip(0, tip)
+                            #print 'add sibling...', self.itemStack[level-2].text(0)
+                            self.itemStack[level-2].addChild( item )
+                            old_item = self.itemStack.pop()
+                            del old_item
+                            self.itemStack.append( item )
+                        else: # level>previous_level:
+                            while len(self.itemStack):
+                                old_item = self.itemStack.pop()
+                                del old_item
+                                if len(self.itemStack)<level:
+                                    item = QtGui.QTreeWidgetItem([label])
+                                    item.setToolTip(0, tip)
+                                    #print 'add to previous parent...', self.itemStack[level-2].text(0)
+                                    self.itemStack[level-2].addChild( item )
+                                    break;                            
+                        # print level, label, node.kind, node.location.line
                     except:
-                        pass
+                        print 'error adding %s, level(%d->%d), stack(%d)' %(label, previous_level, level, len(self.itemStack))
                     previous_level = level
                         
                 self.updated = True
