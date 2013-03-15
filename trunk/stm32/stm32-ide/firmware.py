@@ -183,8 +183,8 @@ _clang_nodes=[]
 
 def find_typerefs(node, fname=None):
     if str(node.location.file)==str(fname):
-        knd = node.kind
-        if knd!=clang.CursorKind.PARM_DECL and  knd!=clang.CursorKind.INCLUSION_DIRECTIVE:
+        knd = node.kind.name
+        if knd!="PARM_DECL" and  knd!="INCLUSION_DIRECTIVE":
             #print node.kind, node.displayname, node.location
             if node.spelling:
                 #print node.spelling

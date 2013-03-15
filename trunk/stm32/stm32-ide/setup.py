@@ -70,6 +70,8 @@ if os.sys.platform == 'win32':
     # add tool chain files
     files += glob.glob('tools/gccarm/*')
     files += glob.glob('tools/msys/*')
+    # add dll's
+    files += glob.glob('*.dll')
     # add PL2303 usb driver
     files += glob.glob('drivers/PL2303/windows/*')
     EXE = Executable(
@@ -82,6 +84,8 @@ if os.sys.platform == 'win32':
 elif os.sys.platform == 'linux2':
     # add tool chain files
     files += glob.glob('tools/gccarm/*')
+    # add dll's
+    files += glob.glob('*.so')
     EXE = Executable(
         script = 'main.pyw',
         targetName = 'stm32-ide',
