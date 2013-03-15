@@ -38,10 +38,6 @@ FIRMWARE_CONFIG = CONFIG_DIR + 'firmware.ini'
 # board settings file
 BOARD_CONFIG = CONFIG_DIR + 'board.ini'
 
-# default main window dimensions
-IDE_SIZE = [550, 640]
-IDE_POS = [100, 100]
-
 # default toolchains (GCC-ARM)
 DEFAULT_TCHAIN_WIN32 = 'tools\\gccarm\\bin\\arm-none-eabi-'
 DEFAULT_TCHAIN_LINUX = 'tools/gccarm/bin/arm-none-eabi-'
@@ -84,10 +80,8 @@ class IdeConfig:
     def restoreIdeSettings( self ):
         # reads settings from previous session
         self.ideCfg.beginGroup( "MainWindow" )
-        self.parent.resize( self.ideCfg.value( "size",
-                            QtCore.QVariant( QtCore.QSize(IDE_SIZE[0],IDE_SIZE[1]) ) ).toSize() )
-        self.parent.move( self.ideCfg.value( "position",
-                            QtCore.QVariant( QtCore.QPoint(IDE_POS[0],IDE_POS[1]) ) ).toPoint() )
+        self.parent.restoreGeometry(self.ideCfg.value("geometry").toByteArray());
+        self.parent.restoreState(self.ideCfg.value("windowState").toByteArray());
         self.ideCfg.endGroup()
         
         self.ideCfg.beginGroup( "SerialPort" )
@@ -101,8 +95,8 @@ class IdeConfig:
             return
         # save IDE settings.
         self.ideCfg.beginGroup( "MainWindow" )
-        self.ideCfg.setValue( "size", QtCore.QVariant( self.parent.size() ) )
-        self.ideCfg.setValue( "position", QtCore.QVariant( self.parent.pos() ) )
+        self.ideCfg.setValue("geometry", self.parent.saveGeometry());
+        self.ideCfg.setValue("windowState", self.parent.saveState());
         self.ideCfg.endGroup()
         
         if serialPortName:
