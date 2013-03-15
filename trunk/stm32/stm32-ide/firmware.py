@@ -25,9 +25,10 @@
 
 '''
 
-import os, glob
+import os, glob, shutil, urllib2
 import clang.cindex as clang
 from configs import FirmwareConfig
+from PyQt4 import QtCore
 
 # library path
 LIB_DIR = 'libraries'
@@ -216,3 +217,187 @@ def getLibraryKeywords(headerFiles=[]):
     #print 'found %d keywords' %len(keywords)
     return keywords
 
+class FirmwareLibUpdate(QtCore.QThread):
+    version_url = 'http://yus-repo.googlecode.com/svn/trunk/stm32/stm32-ide/hardware/cores/bsp/version'
+    history_url = 'http://yus-repo.googlecode.com/svn-history/'
+    
+    corelib = '/trunk/stm32/stm32-ide/hardware/cores/'
+    userlib = '/trunk/stm32/stm32-ide/libraries/'
+    examples = '/trunk/stm32/stm32-ide/examples/'
+    
+    href_str = '<li><a href="'
+    file_list = []
+    revision = 0
+    revisionList = []
+    
+    def __init__(self, parent=None):
+        QtCore.QThread.__init__(self, parent)
+        self.parent = parent
+        
+        self.LogList = QtCore.QStringList()
+    
+    def setDesiredRevision(self, rev):
+        self.revision = rev
+        
+    def getLog(self):
+        if self.LogList.count()>0:
+            return str(self.LogList.takeFirst())
+        return None
+    
+    def run(self):
+        self.LogList.clear()
+        self.LogList.append('searching STM32-GCC-ARM-IDE repository. please wait....')
+        latest_rev = self.latest_fwlib_svnrev()
+        # print 'latest_fwlib_svnrev = ', latest_rev
+        if latest_rev == -1: # e.g. network error
+            self.LogList.append('error: unable to reach repository!')
+            return
+        elif self.revision == 0:
+            self.LogList.append('updating to latest(svn-%s). please wait...' % self.revisionList[latest_rev] )
+            self.revision = latest_rev
+        elif self.revision <= latest_rev:
+            self.LogList.append('updating to svn-%s. please wait...' % self.revisionList[self.revision] )
+        else: # exceeds latest
+            self.LogList.append('abort update! latest is svn-%s '% self.revisionList[latest_rev] )
+            return
+        self.msleep(2000)
+        
+        dl_folder = 'tmp/fwlib_v%d_'%self.revision + str(QtCore.QDateTime.currentDateTime().toString('yyyyMMdd_hhmmss'))
+        if not os.path.exists(dl_folder):
+            try:
+                os.makedirs(dl_folder)
+            except:
+                self.LogList.append('unable to create temporary download folder!')
+                return
+        
+        done, total = 0, 0
+        self.LogList.append('downloading new files. please wait...')
+        updated, count = self.download_corelib(os.path.join(dl_folder,'hardware/cores'))
+        done += updated
+        total += count
+        updated, count = self.download_userlib(os.path.join(dl_folder,'libraries'))
+        done += updated
+        total += count
+        updated, count = self.download_examples(os.path.join(dl_folder,'examples'))
+        done += updated
+        total += count
+        
+        if total == 0:
+            self.LogList.append('error: no files saved!')
+            return
+        elif done < total:
+            self.LogList.append('error: failed to download all files!')
+            return
+        
+        bkp_folder = 'tmp/fwlib_backup_' + str(QtCore.QDateTime.currentDateTime().toString('yyyyMMdd_hhmmss'))
+        try:
+            shutil.move('hardware/cores', os.path.join(bkp_folder,'hardware/cores'))
+            shutil.move('libraries', os.path.join(bkp_folder,'libraries'))
+            shutil.move('examples', os.path.join(bkp_folder,'examples'))
+        except:
+            self.LogList.append('warning: failed to move previous library files to backup folder!')
+            
+        try:
+            shutil.copytree(os.path.join(dl_folder,'hardware/cores'), 'hardware/cores')
+            shutil.copytree(os.path.join(dl_folder,'libraries'), 'libraries')
+            shutil.copytree(os.path.join(dl_folder,'examples'), 'examples')
+        except:
+            self.LogList.append('error: failed to copy new library files!')
+            return
+        
+        self.LogList.append('done updating to svn-%s. ( %d/%d files saved. )'%(self.revisionList[self.revision], done, total))
+        self.msleep(2000)
+        
+    def latest_fwlib_svnrev(self):
+        del self.revisionList[:]
+        try:
+            ver_lines = urllib2.urlopen(self.version_url).readlines()
+            latest = -1
+            for line in ver_lines:
+                txt = line.strip()
+                if not txt:
+                    continue
+                if latest < 0:
+                    latest = int( txt.split(' ')[0] )
+                else:
+                    svnrev = txt.split(' ')[1]
+                    self.revisionList.insert( int( txt.split(' ')[0] ), svnrev[svnrev.rfind('r'):] )
+            # print self.revisionList
+            return latest
+        except:
+            return -1
+    
+    def _browse(self, url):
+        try:
+            for line in urllib2.urlopen(url).readlines():
+                href_pos = line.find(self.href_str)
+                if href_pos>=0:
+                    fname = line[href_pos+len(self.href_str):line.find('">')]
+                    if not fname[0].isalpha():
+                        continue
+                    if fname.find('/')>0: # folder
+                        self._browse(url+fname) # recursive
+                    else:
+                        self.file_list.append( url + fname )
+        except:
+            print 'unable to open: ', url
+            
+    def browse_corelib(self, rev=100):
+        if rev > len(self.revisionList):
+            return []
+        url = self.history_url + '%s'%self.revisionList[rev] + self.corelib
+        del self.file_list[:]
+        self._browse(url)
+        return self.file_list
+
+    def browse_userlib(self, rev=100):
+        if rev > len(self.revisionList):
+            return []
+        url = self.history_url + '%s'%self.revisionList[rev] + self.userlib
+        del self.file_list[:]
+        self._browse(url)
+        return self.file_list
+
+    def browse_examples(self, rev=100):
+        if rev > len(self.revisionList):
+            return []
+        url = self.history_url + '%s'%self.revisionList[rev] + self.examples
+        del self.file_list[:]
+        self._browse(url)
+        return self.file_list
+    
+    def _download(self, pre_url, folder):
+        updated = 0
+        for fname in self.file_list:
+            lib_pos = fname.find(pre_url)
+            if lib_pos>0:
+                dst = os.path.join(folder, fname[lib_pos+len(pre_url):])
+                dst_folder = os.path.dirname(dst)
+                if not os.path.exists(dst_folder):
+                    try:
+                        os.makedirs(dst_folder)
+                    except:
+                        print 'unable to create folder: ', dst_folder
+                try:
+                    fout = open(dst, 'wb')
+                    fout.write( urllib2.urlopen(fname).read() )
+                    fout.close()
+                    updated += 1
+                    self.LogList.append('updated (v%d): %s' %(self.revision, os.path.basename(dst)))                    
+                except:
+                    print 'unable to save: ', dst
+        return updated, len(self.file_list)
+
+    def download_corelib(self, folder='hardware/cores'):
+        self.browse_corelib(self.revision)
+        return self._download(self.corelib, folder)
+
+    def download_userlib(self, folder='libraries'):
+        self.browse_userlib(self.revision)
+        return self._download(self.userlib, folder)
+
+    def download_examples(self, folder='examples'):
+        self.browse_examples(self.revision)
+        return self._download(self.examples, folder)
+        
+        

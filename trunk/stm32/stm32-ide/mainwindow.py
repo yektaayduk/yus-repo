@@ -93,6 +93,11 @@ class AppMainWindow(QtGui.QMainWindow):
         
     def about(self):
         self.aboutDlg.show()
+        kdbMod = QtGui.QApplication.keyboardModifiers()
+        if kdbMod == QtCore.Qt.ShiftModifier:
+            self.aboutDlg.showMessage('[developer mode] update firmware library...', QtCore.Qt.AlignLeft | QtCore.Qt.AlignBottom, QtGui.QColor("#eecc77"))
+            self.aboutDlg.showUpdateDialog()
+            return
         # todo: other informations
         self.aboutDlg.showMessage("STM32 GCC-ARM IDE [ %s ]" % self.Configs.getVersions(),
                            QtCore.Qt.AlignLeft | QtCore.Qt.AlignBottom, QtGui.QColor("#eecc77"));
