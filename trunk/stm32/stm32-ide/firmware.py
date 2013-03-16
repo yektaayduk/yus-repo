@@ -111,7 +111,8 @@ def getCoreSourceFiles(userIncludes = []):
             pass
         
     for fname in required:
-        srcs.append( os.path.join(os.getcwd(), fname) )
+        #srcs.append( os.path.join(os.getcwd(), fname) )
+        srcs.append( fname )
         
     return srcs
 
@@ -119,7 +120,8 @@ def getIncludeDirs():
     dirs = [ PRK_BSP_DIR, STMLIB_DIR + '/inc', CM3_CORE_DIR, CM3_DEVICE_DIR ]
     includes = []
     for d in dirs:
-        includes.append('-I' + os.getcwd() + '/' + d)
+        #includes.append('-I' + os.getcwd() + '/' + d)
+        includes.append( '-I' + d )
     #print includes
     return includes
 
@@ -171,7 +173,8 @@ def parseUserCode(userCode=None, outPath=None, toolChain=''):
     return True, includes, sources
 
 def getLinkerScript():
-    return os.path.join( os.getcwd(), LINKER_SCRIPT )
+    #return os.path.join( os.getcwd(), LINKER_SCRIPT )
+    return LINKER_SCRIPT
 
 def getCompilerDefines():
     defines = ''

@@ -114,7 +114,7 @@ else:
 if EXE:
     setup( name = "STM32-IDE",
            description = 'STM32-GCC-ARM-Embedded Integrated Development Environment',
-           version = '0.2',
+           version = get_svn_revision(),
            author = 'PhilRobotics',
            options = {'build_exe': {
                                     'include_files' : files,
