@@ -197,7 +197,7 @@ class PicCompilerThread(QtCore.QThread):
             fout.write( 'TCHAIN = ' + self.TCHAIN.replace('\\','/') + '\n\n' )
             fout.write( 'INCLUDES =  \\\n' )
             for path in includePaths:
-                fout.write( '\t\t' + path + ' \\\n' )
+                fout.write( '\t' + path + ' \\\n' )
             fout.write( '\n\n' )
             fout.write( 'DEFINES = ' + getCompilerDefines() + '\n')
             fout.write( 'CFLAGS = ' + self.Configs.getCflags() + ' $(DEFINES)\n')
@@ -213,7 +213,7 @@ class PicCompilerThread(QtCore.QThread):
                 objdir = os.path.join(outPath, 'obj', newfolder)
                 if not os.path.exists(objdir): os.makedirs( objdir )
                 obj = '$(OUTPUT_DIR)/obj/' + newfolder + '/' + objname
-                fout.write( '\t\t' + obj + ' \\\n' )
+                fout.write( '\t' + obj + ' \\\n' )
                 objects.append(obj)
             fout.write( '\n\n' )
             fout.write( 'all : $(BIN_FILE)\n' )
@@ -236,29 +236,22 @@ class PicCompilerThread(QtCore.QThread):
                 fout.write( objects[i] + ' : ' + src + '\n')
                 src_ext = os.path.splitext(src)[1].lower()
                 if src_ext == PROJECT_EXT:
-                    fout.write( '\t@echo [CXX] $< \n' )
-                    if verbose:
-                        fout.write( '\t$(TCHAIN)gcc $(INCLUDES) $(CXXFLAGS) -x c++ $< -o $@\n\n')
-                    else:
-                        fout.write( '\t@$(TCHAIN)gcc $(INCLUDES) $(CXXFLAGS) -x c++ $< -o $@\n\n')
+                    fout.write( '\t@echo [CXX] $< \n\t' )
+                    if not verbose: fout.write( '@' )
+                    fout.write( '$(TCHAIN)gcc $(INCLUDES) $(CXXFLAGS) -x c++ $< -o $@\n\n')                        
                 elif src_ext == '.s':
-                    fout.write( '\t@echo [AS] $(<F)\n' )
-                    if verbose:
-                        fout.write( '\t$(TCHAIN)as $(AFLAGS) $< -o $@\n\n')
-                    else:
-                        fout.write( '\t@$(TCHAIN)as $(AFLAGS) $< -o $@\n\n')
+                    fout.write( '\t@echo [AS] $(<F)\n\t' )
+                    if not verbose: fout.write( '@' )
+                    fout.write( '$(TCHAIN)as $(AFLAGS) $< -o $@\n\n')
                 elif src_ext == '.c':
-                    fout.write( '\t@echo [CC] $(<F)\n' )
-                    if verbose:
-                        fout.write( '\t$(TCHAIN)gcc $(INCLUDES) $(CFLAGS) $< -o $@\n\n')
-                    else:
-                        fout.write( '\t@$(TCHAIN)gcc $(INCLUDES) $(CFLAGS) $< -o $@\n\n')
+                    fout.write( '\t@echo [CC] $(<F)\n\t' )
+                    if not verbose: fout.write( '@' )
+                    fout.write( '$(TCHAIN)gcc $(INCLUDES) $(CFLAGS) $< -o $@\n\n')
                 elif src_ext == '.cpp' or src_ext == '.cxx':
-                    fout.write( '\t@echo [CXX] $(<F)\n' )
-                    if verbose:
-                        fout.write( '\t$(TCHAIN)gcc $(INCLUDES) $(CXXFLAGS) $< -o $@\n\n')
-                    else:
-                        fout.write( '\t@$(TCHAIN)gcc $(INCLUDES) $(CXXFLAGS) $< -o $@\n\n')
+                    fout.write( '\t@echo [CPP] $(<F)\n\t' )
+                    if not verbose: fout.write( '@' )
+                    fout.write( '$(TCHAIN)gcc $(INCLUDES) $(CXXFLAGS) $< -o $@\n\n')
+                    
                 i += 1
             fout.close()
             return True

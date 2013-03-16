@@ -156,6 +156,10 @@ class CppEditor(QsciScintilla):
         return ret
     
     def saveFile(self, fileName):
+        if str(fileName).find(' ')>=0:
+            QtGui.QMessageBox.warning(self, PROJECT_ALIAS,
+                    'File path "%s" contains space(s). Please save to a valid location.'%fileName)
+            return None
         qfile = QtCore.QFile(fileName)
         if not qfile.open(QtCore.QFile.WriteOnly | QtCore.QFile.Text):
             QtGui.QMessageBox.warning(self, PROJECT_ALIAS,
@@ -166,7 +170,7 @@ class CppEditor(QsciScintilla):
             qfile.writeData(self.text())
         except:
             QtGui.QMessageBox.warning(self, PROJECT_ALIAS,
-                    "failed to save %s." % fileName )
+                    "Failed to save %s." % fileName )
             qfile.close()
             return None
         
@@ -179,7 +183,7 @@ class CppEditor(QsciScintilla):
     def saveAs(self):
         fileName = QtGui.QFileDialog.getSaveFileName(self, "Save As",
                 self.curFile, PROJECT_ALIAS + " (*" + PROJECT_EXT + ");;" + 
-                    "C source (*.c);;Text File (*.txt);;All files (*.*)" )
+                    "C source (*.c);;C++ source (*.cpp);;Text File (*.txt);;All files (*.*)" )
         if not fileName:
             return None
         return self.saveFile(fileName)

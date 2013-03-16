@@ -80,9 +80,9 @@ class MultipleCppEditor(QtGui.QTabWidget):
     def openFile(self, fileName=None):
         if fileName == None: # prompt open dialog if filename is not specified
             fileName = QtGui.QFileDialog.getOpenFileName(
-                                        self, self.tr("Open Source File"),
-                                        "", PROJECT_ALIAS + " (*" + PROJECT_EXT + ");;" 
-                                        "C Source File (*.c);;Text File (*.txt);;All files (*.*)" )
+                                self, self.tr("Open Source File"),
+                                "", PROJECT_ALIAS + " (*" + PROJECT_EXT + ");;" 
+                                "C Source File (*.c);;C++ Source File (*.cpp);;Text File (*.txt);;All files (*.*)" )
         if fileName == "":
             return False
         #check if it's already opened
@@ -281,7 +281,9 @@ class MultipleCppEditor(QtGui.QTabWidget):
     def dragEnterEvent(self, e):
         if e.mimeData().hasUrls():
             url = str( e.mimeData().urls()[0].toString() ).lower()
-            if url.rfind(PROJECT_EXT) == len(url) - len(PROJECT_EXT):
+            if url.rfind(PROJECT_EXT) == len(url) - len(PROJECT_EXT) or \
+                url.rfind('.cpp') == len(url) - len('.cpp') or \
+                url.rfind('.c') == len(url) - len('.c'):
                 e.accept()
                 return
         e.ignore() 
