@@ -8,13 +8,13 @@ N6100LCD mylcd(PA0, PA2, PA3, PA1);
 
 int main(void)
 {
-	Serial_begin(115200);
+	Serial.begin(115200);
 	
 	mylcd.init();
 	mylcd.setArea(0,131,0,131);
     
 	while(true)
 	{
-		mylcd.send(1, Serial_readbyte() );
+		mylcd.send(1, Serial.getc() );
 	}
 }
