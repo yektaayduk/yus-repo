@@ -3,11 +3,10 @@
 int main(void)
 {
 	pinMode(LED_PIN, OUTPUT);
+	setPinLow(LED_PIN);
 	while(1)
 	{
-		setPinHigh(LED_PIN);
-		delay_ms(500);
-		setPinLow(LED_PIN);
+		togglePin(LED_PIN);
 		delay_ms(500);
 	}
 }

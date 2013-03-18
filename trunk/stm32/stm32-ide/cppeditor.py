@@ -39,12 +39,12 @@ __default_content__ = '''#include <platform.h>
 
 int main(void)
 {
-    // setup
-    
-    while(true)
-    {
-        // loop
-    }
+\t// setup
+\t
+\twhile(true)
+\t{
+\t\t// loop
+\t}
 }
 '''
 

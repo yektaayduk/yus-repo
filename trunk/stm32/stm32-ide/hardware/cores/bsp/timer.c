@@ -2,12 +2,12 @@
 #include <stm32f10x.h>
 #include <timer.h>
 
-TIM_TimeBaseInitTypeDef TIM_TimeBaseStructure;
-
 void delaytimer_init(void) 
 {
+	TIM_TimeBaseInitTypeDef TIM_TimeBaseStructure;
+	
 	/* Enable timer clock */
-    RCC_APB2PeriphClockCmd(RCC_APB2Periph_TIM15 | RCC_APB2Periph_TIM17, ENABLE );
+	RCC_APB2PeriphClockCmd(RCC_APB2Periph_TIM15 | RCC_APB2Periph_TIM17, ENABLE );
 
 	/* Time base configuration */
 	TIM_TimeBaseStructure.TIM_Period = UINT16_MAX; 

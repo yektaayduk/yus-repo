@@ -4,7 +4,7 @@ uint8_t pushButton = PA0; // pin D2
 
 int main(void)
 {
-    Serial.begin(9600);
+	Serial.begin(115200);
 	pinMode(pushButton, INPUT_PULLUP);
     
 	while(true)

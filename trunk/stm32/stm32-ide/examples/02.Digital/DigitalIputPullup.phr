@@ -2,7 +2,7 @@
 
 int main(void)
 {
-    Serial_begin(9600);
+	Serial.begin(115200);
 	
 	pinMode(PA0, INPUT_PULLUP); // digital input pin2
 	pinMode(LED_PIN, OUTPUT);
@@ -10,7 +10,7 @@ int main(void)
 	while(true)
 	{
 	    bool sensorVal = getPinState(PA0);
-		printf("%d\n", sensorVal);
+		Serial.print("%d\n", sensorVal);
 		if(sensorVal)
 			setPinHigh(LED_PIN);
 		else
