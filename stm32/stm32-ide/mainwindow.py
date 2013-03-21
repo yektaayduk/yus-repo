@@ -65,7 +65,10 @@ class AppMainWindow(QtGui.QMainWindow):
         
         self.Editor = MultipleCppEditor(self)        
         self.setCentralWidget(self.Editor)
-        self.addDockWidget(QtCore.Qt.BottomDockWidgetArea, self.Editor.getOutLineView())
+        
+        self.OutLineView =  self.Editor.getOutLineView()
+        self.OutLineView.setObjectName("OutLineView")
+        self.addDockWidget(QtCore.Qt.BottomDockWidgetArea, self.OutLineView)
         
         self.Compiler = PicCompilerThread(self)
         self.pollCompilerTimerID = None
@@ -79,13 +82,15 @@ class AppMainWindow(QtGui.QMainWindow):
         self.flashLoader = FlashLoaderThread(self)
         self.pollTblTimerID = None
         
-        self.createLogWindow()
         self.Configs = IdeConfig(self)
         
+        self.createLogWindow()
         self.createActions()
-        self.createMenus()
         self.createToolBars()
         self.createStatusBar()
+        
+        self.Configs.restoreIdeSettings()
+        self.createMenus()
         
         self.aboutDlg.finish(self)
         print "IDE ready."
@@ -422,16 +427,19 @@ class AppMainWindow(QtGui.QMainWindow):
     
     def createToolBars(self):
         self.fileToolBar = self.addToolBar("File")
+        self.fileToolBar.setObjectName("FileToolBar")
         self.fileToolBar.addAction(self.newAct)
         self.fileToolBar.addAction(self.openAct)
         self.fileToolBar.addAction(self.saveAct)
         
         self.projectToolBar = self.addToolBar("Project")
+        self.projectToolBar.setObjectName("ProjectToolBar")
         self.projectToolBar.addAction(self.compileAct)
         self.projectToolBar.addAction(self.stopAct)
         self.projectToolBar.addAction(self.programAct)
         
         self.serialToolBar = self.addToolBar("Serial Port")
+        self.serialToolBar.setObjectName("SerialPortToolBar")
         self.serialToolBar.addAction(self.serialMonitorAct)
         self.serialToolBar.addWidget(self.serialPortLabel)
         
@@ -447,6 +455,7 @@ class AppMainWindow(QtGui.QMainWindow):
         palette.setColor(QtGui.QPalette.Active, QtGui.QPalette.Base, QtGui.QColor(25, 10, 0))
         self.log.setPalette(palette)
         logWindow = QtGui.QDockWidget("Log", self)
+        logWindow.setObjectName("LogView")
         logWindow.setWidget(self.log)
         self.addDockWidget(QtCore.Qt.BottomDockWidgetArea, logWindow)
     
