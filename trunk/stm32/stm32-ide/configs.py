@@ -74,7 +74,6 @@ class IdeConfig:
         '''
         self.parent = parent # QMainWindow parent        
         self.ideCfg = QtCore.QSettings(IDE_CONFIG, QtCore.QSettings.IniFormat, self.parent)        
-        self.restoreIdeSettings()
         self.defaults = False
         
     def restoreIdeSettings( self ):
