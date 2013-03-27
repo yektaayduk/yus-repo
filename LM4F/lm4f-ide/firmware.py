@@ -220,12 +220,12 @@ def getLibraryKeywords(headerFiles=[]):
     return keywords
 
 class FirmwareLibUpdate(QtCore.QThread):
-    version_url = 'http://yus-repo.googlecode.com/svn/trunk/stm32/stm32-ide/hardware/cores/bsp/version'
+    version_url = 'http://yus-repo.googlecode.com/svn/trunk/LM4F/lm4f-ide/hardware/cores/version'
     history_url = 'http://yus-repo.googlecode.com/svn-history/'
     
-    corelib = '/trunk/stm32/stm32-ide/hardware/cores/'
-    userlib = '/trunk/stm32/stm32-ide/libraries/'
-    examples = '/trunk/stm32/stm32-ide/examples/'
+    corelib = '/trunk/LM4F/lm4f-ide/hardware/cores/'
+    userlib = '/trunk/LM4F/lm4f-ide/libraries/'
+    examples = '/trunk/LM4F/lm4f-ide/examples/'
     
     href_str = '<li><a href="'
     file_list = []
@@ -248,7 +248,7 @@ class FirmwareLibUpdate(QtCore.QThread):
     
     def run(self):
         self.LogList.clear()
-        self.LogList.append('searching STM32-GCC-ARM-IDE repository. please wait....')
+        self.LogList.append('searching LM4F-GCC-ARM-IDE repository. please wait....')
         latest_rev = self.latest_fwlib_svnrev()
         # print 'latest_fwlib_svnrev = ', latest_rev
         if latest_rev == -1: # e.g. network error
