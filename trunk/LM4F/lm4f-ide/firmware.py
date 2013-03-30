@@ -41,9 +41,7 @@ LM4F_DRIVERLIB_DIR = LM4F_DIR + '/driverlib'
 LM4F_USBLIB_DIR = LM4F_DIR + '/usblib'
 LM4F_UTILS_DIR = LM4F_DIR + '/utils'
 
-BSP_DIR = CORE_LIB_DIR + '/bsp/lm4f120xl'
-STARTUP_CODE = BSP_DIR + '/startup_gcc.c'
-LINKER_SCRIPT = BSP_DIR + '/lm4f120xl.ld'
+BSP_DIR = CORE_LIB_DIR + '/bsp'
 
 # Example Projects
 EXAMPLES_DIR = 'examples'
@@ -85,12 +83,12 @@ def getExampleProjects(libFolders=[]):
     #print sampleProjects
     return sorted(sampleProjects.items(), key=lambda x: x[1]) # sort according to keys (folder name)
 
-def getCoreSourceFiles(userIncludes = []):
+def getCoreSourceFiles(userIncludes = [], board='lm4f120xl'):
     # scan all *.c files
     srcs = []
-    required = glob.glob(BSP_DIR + '/*.s') \
-                   + glob.glob(BSP_DIR + '/*.c') \
-                   + glob.glob(BSP_DIR + '/*.cpp') \
+    required = glob.glob(BSP_DIR + '/%s/*.s'%board) \
+                   + glob.glob(BSP_DIR + '/%s/*.c'%board) \
+                   + glob.glob(BSP_DIR + '/%s/*.cpp'%board) \
                    + glob.glob(LM4F_DRIVERLIB_DIR + '/*.c')
     
     for include in userIncludes:
@@ -170,9 +168,9 @@ def parseUserCode(userCode=None, outPath=None, toolChain=''):
     
     return True, includes, sources
 
-def getLinkerScript():
+def getLinkerScript(board='lm4f120xl'):
     #return os.path.join( os.getcwd(), LINKER_SCRIPT )
-    return LINKER_SCRIPT
+    return '%s/%s/%s.ld'%(BSP_DIR, board, board)
 
 def getCompilerDefines():
     defines = ''
