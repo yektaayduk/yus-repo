@@ -126,7 +126,7 @@ class LM4FlashThread(QtCore.QThread):
         self.BinFile = binFile
         self.start()
         
-        return True, "lm4flash tool running. please wait..."
+        return True, "LM4flash tool running. Please wait..."
     
     
     def pollBootLoadProcess(self):

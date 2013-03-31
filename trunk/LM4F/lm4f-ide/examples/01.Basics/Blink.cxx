@@ -3,15 +3,12 @@
 void delay()
 {
 	volatile unsigned long cnt;
-	for(cnt = 0; cnt < 0xFFFFF; cnt++) {}
+	for(cnt = 0; cnt < 0x1FFFFF; cnt++) {}
 }
 
 int main(void)
 {
 	unsigned long colors[3];
-	
-	ROM_SysCtlClockSet(SYSCTL_SYSDIV_4 | SYSCTL_USE_PLL | SYSCTL_XTAL_16MHZ |
-                       SYSCTL_OSC_MAIN);
 	
 	RGBInit(1);
 	RGBIntensitySet(0.2f);

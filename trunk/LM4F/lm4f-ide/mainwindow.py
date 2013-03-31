@@ -77,10 +77,8 @@ class AppMainWindow(QtGui.QMainWindow):
         self.serialPortLabel = QtGui.QLabel('<font color=red><i>(select port)</i></font>')
         self.SerialPortMonitorDialog = SerialPortMonitor(self)
         
-        self.pollPK2TimerID = None
-        
         self.flashLoader = LM4FlashThread(self)
-        self.pollTblTimerID = None
+        self.pollLoaderTimerID = None
         
         self.Configs = IdeConfig(self)
         
@@ -174,9 +172,9 @@ class AppMainWindow(QtGui.QMainWindow):
         ret, msg = self.flashLoader.programDevice( binfile )
         if ret:
             self.insertLog("<font color=green>Bootload/Program Device:</font>", True)
-            self.insertLog(msg)
-            self.pollTblTimerID = self.startTimer(0.5) # relatively fast!
-            if not self.pollTblTimerID:
+            self.insertLog("<font color=lightblue><i>   %s   </i></font>"%msg)
+            self.pollLoaderTimerID = self.startTimer(0.5) # relatively fast!
+            if not self.pollLoaderTimerID:
                 self.insertLog("<font color=red>Unable to start Timer.</font>")
         else:
             self.insertLog("<font color=red>%s</font>"%msg)
@@ -323,12 +321,12 @@ class AppMainWindow(QtGui.QMainWindow):
         # todo: board names??
         #self.boardAnitoAct = QtGui.QAction("PhilRobokit &Anito",  self,
         #        checkable=True, statusTip="Select PhilRobokit Anito board" )
-        self.boardEpicpicmoAct = QtGui.QAction("EK-&LM4F120XL",  self,
+        self.boardStellarisAct = QtGui.QAction("EK-&LM4F120XL",  self,
                 checkable=True, statusTip="Select TI Stellaris LM4F120 LaunchPad" )
         self.boardGroup = QtGui.QActionGroup(self)
         #self.boardGroup.addAction(self.boardAnitoAct)
-        self.boardGroup.addAction(self.boardEpicpicmoAct)
-        self.boardEpicpicmoAct.setChecked(True)
+        self.boardGroup.addAction(self.boardStellarisAct)
+        self.boardStellarisAct.setChecked(True)
         
         self.restoreDefaultsAct = QtGui.QAction("Restore Defaults",  self,
                 statusTip="Clear configuration files", triggered=self.Configs.setDefaults)
@@ -404,7 +402,7 @@ class AppMainWindow(QtGui.QMainWindow):
         self.toolsMenu.addSeparator()
         self.boardMenu = self.toolsMenu.addMenu("&Board")
         #self.boardMenu.addAction(self.boardAnitoAct)
-        self.boardMenu.addAction(self.boardEpicpicmoAct)
+        self.boardMenu.addAction(self.boardStellarisAct)
         self.serialPortMenu = self.toolsMenu.addMenu("&Serial Port")
         self.serialPortGroup = QtGui.QActionGroup(self)
         self.connect(self.serialPortMenu, QtCore.SIGNAL("aboutToShow ()"), self.updateSerialPortList )
@@ -469,22 +467,14 @@ class AppMainWindow(QtGui.QMainWindow):
             else:
                 self.killTimer(timerID)
                 self.pollCompilerTimerID = None
-        if timerID == self.pollPK2TimerID:
-            ret, msg = self.PK2Programmer.pollPK2Process()
-            if ret:
-                if len(msg):
-                    self.insertLog( "<font color=lightgreen>%s</font>" % msg )
-            else:
-                self.killTimer(timerID)
-                self.pollPK2TimerID = None
-        if timerID == self.pollTblTimerID:
+        if timerID == self.pollLoaderTimerID:
             ret, msg = self.flashLoader.pollBootLoadProcess()
             if ret:
                 if len(msg):
-                    self.insertLog( "<font color=lightgreen>%s</font>" % msg )
+                    self.insertLog( msg )
             else:
                 self.killTimer(timerID)
-                self.pollTblTimerID = None
+                self.pollLoaderTimerID = None
 
         return QtGui.QMainWindow.timerEvent(self, *args, **kwargs)
         
