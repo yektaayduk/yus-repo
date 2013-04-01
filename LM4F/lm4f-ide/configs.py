@@ -39,8 +39,7 @@ FIRMWARE_CONFIG = CONFIG_DIR + 'firmware.ini'
 BOARD_CONFIG = CONFIG_DIR + 'board.ini'
 
 # default toolchains (GCC-ARM)
-#DEFAULT_TCHAIN_WIN32 = 'tools\\gccarm\\bin\\arm-none-eabi-'
-DEFAULT_TCHAIN_WIN32 = 'C:\\gnuarm\\bin\\arm-none-eabi-'
+DEFAULT_TCHAIN_WIN32 = 'tools\\gccarm\\bin\\arm-none-eabi-'
 DEFAULT_TCHAIN_LINUX = 'tools/gccarm/bin/arm-none-eabi-'
 DEFAULT_TCHAIN_OSX   = 'tools/gccarm/bin/arm-none-eabi-'
 # make command
