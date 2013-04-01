@@ -41,7 +41,7 @@ SPLASH_NOTICE = '''
 '''
 
 class AboutDialog(QtGui.QSplashScreen):
-    ide_revision = "unknown"
+    ide_revision = "(unknown)"
     def __init__(self, parent=None):
         QtGui.QSplashScreen.__init__(self, parent, flags=QtCore.Qt.WindowStaysOnTopHint)
         

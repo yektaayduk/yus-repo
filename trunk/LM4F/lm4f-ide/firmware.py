@@ -195,10 +195,11 @@ def find_typerefs(node, fname=None):
     for c in node.get_children():
         find_typerefs(c, fname)
 
-def getLibraryKeywords(headerFiles=[]):
+def getLibraryKeywords(headerFiles=[], board='lm4f120xl'):
     if not len(headerFiles):
         # search default header files
         headerFiles = glob.glob( BSP_DIR + '/*.h' )
+        headerFiles = glob.glob( BSP_DIR + '/%s/*.h'%board )
         headerFiles += glob.glob( LM4F_INC_DIR + '/*.h' ) # large files!!
         headerFiles += glob.glob( LM4F_DRIVERLIB_DIR + '/*.h' ) # large files!!
         

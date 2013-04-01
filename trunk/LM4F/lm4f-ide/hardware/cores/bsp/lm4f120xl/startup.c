@@ -25,9 +25,6 @@
 #include "inc/hw_nvic.h"
 #include "inc/hw_types.h"
 
-#include "driverlib/sysctl.h"
-#include "driverlib/rom.h"
-
 //*****************************************************************************
 //
 // Forward declaration of the default fault handlers.
@@ -43,6 +40,7 @@ static void IntDefaultHandler(void);
 // The entry point for the application.
 //
 //*****************************************************************************
+extern void bsp_init(void);
 extern int main(void);
 
 //*****************************************************************************
@@ -283,12 +281,10 @@ ResetISR(void)
                          ~(NVIC_CPAC_CP10_M | NVIC_CPAC_CP11_M)) |
                         NVIC_CPAC_CP10_FULL | NVIC_CPAC_CP11_FULL);
 
-
-    // set 80MHz clock
-    ROM_SysCtlClockSet(SYSCTL_SYSDIV_2_5 | SYSCTL_USE_PLL | SYSCTL_OSC_MAIN | SYSCTL_XTAL_16MHZ);
     //
     // Call the application's entry point.
     //
+    bsp_init();
     main();
 }
 
