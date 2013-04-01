@@ -1,9 +1,11 @@
-@ECHO OFF
+@echo off
+
+title build LM4F IDE
 
 C:\Python27\python setup.py build
 
-ECHO.
-ECHO Done creating Win32 executable.
-ECHO -- PhilRobotics --
-ECHO.
-PAUSE
+echo.
+echo Done creating Win32 executable.
+echo -- PhilRobotics --
+echo.
+pause

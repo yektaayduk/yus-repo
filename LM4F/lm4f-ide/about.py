@@ -41,6 +41,7 @@ SPLASH_NOTICE = '''
 '''
 
 class AboutDialog(QtGui.QSplashScreen):
+    ide_revision = "unknown"
     def __init__(self, parent=None):
         QtGui.QSplashScreen.__init__(self, parent, flags=QtCore.Qt.WindowStaysOnTopHint)
         
@@ -54,6 +55,10 @@ class AboutDialog(QtGui.QSplashScreen):
         self.fw_update = FirmwareLibUpdate(self)
         self.input_dlg = QtGui.QInputDialog(self)
         self.fw_update_timer_id = None
+        
+    def getVersions(self):
+        fw_rev = self.fw_update.getCurrentRevision()
+        return 'build: %s   Library: %s' %(self.ide_revision, fw_rev)
         
     def mousePressEvent(self, *args, **kwargs):
         # print 'you pressed me!'
