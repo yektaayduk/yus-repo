@@ -5,6 +5,7 @@
 #include <inc/lm4f120h5qr.h>
 
 #include <stdlib.h>
+#include <stdint.h>
 #include <string.h>
 
 #include "inc/hw_types.h"
@@ -21,5 +22,6 @@
 
 #include <lm4f120xl/buttons.h>
 #include <lm4f120xl/rgb.h>
+#include <lm4f120xl/timer.h>
 
 #endif // __LM4F120XL_H__

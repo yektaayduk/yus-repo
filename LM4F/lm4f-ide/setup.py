@@ -54,7 +54,7 @@ files += glob.glob('examples/*')
 svn_rev = get_svn_revision()
 if svn_rev:
     today = datetime.datetime.now()
-    unknown = 'ide_revision = "unknown"'
+    unknown = 'ide_revision = "(unknown)"'
     revision = 'ide_revision = "%s (%s)"' %(today.strftime("%b %d, %Y"), svn_rev)
     print revision
     old_file = open('about.py')
