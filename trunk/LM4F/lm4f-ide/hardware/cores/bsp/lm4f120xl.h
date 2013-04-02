@@ -6,6 +6,7 @@
 
 #include <stdlib.h>
 #include <stdint.h>
+#include <stdbool.h>
 #include <string.h>
 
 #include <inc/hw_types.h>
@@ -20,9 +21,9 @@
 #include <driverlib/interrupt.h>
 #include <driverlib/hibernate.h>
 
-#include <lm4f120xl/buttons.h>
+#include <lm4f120xl/gpio.h>
 #include <lm4f120xl/rgb.h>
 #include <lm4f120xl/timer.h>
-#include <lm4f120xl/gpio.h>
+
 
 #endif // __LM4F120XL_H__

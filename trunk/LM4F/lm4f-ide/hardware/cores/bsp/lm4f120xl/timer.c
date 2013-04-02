@@ -8,7 +8,7 @@
 
 #include "timer.h"
 
-void delaytimer_init(void)
+void bsp_timer_init(void)
 {
 #if(DELAY_TIMER_BASE==WTIMER0_BASE)
 	ROM_SysCtlPeripheralEnable(SYSCTL_PERIPH_WTIMER0);
