@@ -2,17 +2,20 @@
 #ifndef __BSP_TIMER_H__
 #define __BSP_TIMER_H__
 
+// 32-bit timer base
+#define DELAY_TIMER_BASE	WTIMER4_BASE
+
+// 1MHz
+#define micros()	( 0xFFFFFFFF - HWREG(DELAY_TIMER_BASE + TIMER_O_TAR) )
+// 2kHz / 2
+#define millis()	( (0xFFFFFFFF - HWREG(DELAY_TIMER_BASE + TIMER_O_TBR)) >> 1 )
+
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-void delay_us(uint16_t count);
-void delay_ms(uint16_t count);
-
-// 1MHz
-#define micros()	((uint16_t)0)
-// 1kHz
-#define millis()	((uint16_t)0)
+void delay_us(unsigned long count);
+void delay_ms(unsigned long count);
 
 #ifdef __cplusplus
 }
