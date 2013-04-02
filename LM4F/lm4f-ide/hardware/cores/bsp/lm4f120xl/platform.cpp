@@ -6,16 +6,20 @@
 #include "driverlib/sysctl.h"
 #include "driverlib/rom.h"
 
-extern "C" { void delaytimer_init(void) ; }
+extern "C" { void bsp_timer_init(void) ; }
+extern "C" { void bsp_gpio_init(void) ; }
 extern "C" { void bsp_init(void) ; }
 
 void bsp_init(void)
 {
-	// set 80MHz clock
+	/* set 80MHz clock */
 	ROM_SysCtlClockSet(SYSCTL_SYSDIV_2_5 | SYSCTL_USE_PLL | SYSCTL_OSC_MAIN | SYSCTL_XTAL_16MHZ);
 	
+	/* Enable GPIO peripherals */
+	bsp_gpio_init();
+	
 	/* Enable delay counters */
-	delaytimer_init();
+	bsp_timer_init();
 }
 
 /*

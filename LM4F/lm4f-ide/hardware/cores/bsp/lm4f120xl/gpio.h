@@ -24,11 +24,11 @@
 #define PE1		(0xE0 + 1)
 #define PE2		(0xE0 + 2)
 #define PE3		(0xE0 + 3)
-#define PF1		(0xF0 + 1) // RED_LED
+//#define PF1	(0xF0 + 1) // RED_LED
 
 /*** J4 ***/
-#define PF2		(0xF0 + 2) // BLUE_LED
-#define PF3		(0xF0 + 3) // GREEN_LED
+//#define PF2	(0xF0 + 2) // BLUE_LED
+//#define PF3	(0xF0 + 3) // GREEN_LED
 #define PB3		(0xB0 + 3)
 #define PC4		(0xC0 + 4)
 #define PC5		(0xC0 + 5)
@@ -36,13 +36,13 @@
 #define PC7		(0xC0 + 7)
 #define PD6		(0xD0 + 6)
 #define PD7		(0xD0 + 7)
-#define PF4		(0xF0 + 4) // PUSH1
+//#define PF4	(0xF0 + 4) // PUSH1
 
 /*** J2 ***/
 // GND
 #define PB2		(0xB0 + 2)
 #define PE0		(0xE0 + 0)
-#define PF0		(0xF0 + 0) // PUSH2
+//#define PF0	(0xF0 + 0) // PUSH2
 // RST
 #define PB7		(0xB0 + 7)
 #define PB6		(0xB0 + 6)
@@ -52,19 +52,19 @@
 
 
 // LED's
-#define LED_RED_PIN		PF1
-#define LED_GREEN_PIN	PF3
-#define LED_BLUE_PIN	PF2
+#define LED_RED_PIN		(0xF0 + 1)
+#define LED_GREEN_PIN	(0xF0 + 3)
+#define LED_BLUE_PIN	(0xF0 + 2)
 // push buttons
-#define BUTTON_SW1_PIN	PF4
-#define BUTTON_SW2_PIN	PF0
+#define BUTTON_SW1_PIN	(0xF0 + 4)
+#define BUTTON_SW2_PIN	(0xF0 + 0)
 
 
 // pin modes
-#define INPUT_ANALOG		0
+//#define INPUT_ANALOG		0
 #define INPUT_FLOATING		1
-#define INPUT_PULLDOWN		2
-#define INPUT_PULLUP		3
+#define INPUT_PULLUP		2
+#define INPUT_PULLDOWN		3
 #define OUTPUT_OPENDRAIN	4
 #define OUTPUT_PUSHPULL		5
 
@@ -76,6 +76,10 @@ extern "C" {
 #endif
 
 void pinMode(uint8_t pin, uint8_t mode);
+void setPinHigh(uint8_t pin);
+void setPinLow(uint8_t pin);
+void setPinState(uint8_t pin, bool state);
+bool getPinState(uint8_t pin);
 
 #ifdef __cplusplus
 }
