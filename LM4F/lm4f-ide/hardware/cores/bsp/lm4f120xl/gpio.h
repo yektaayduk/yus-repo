@@ -17,8 +17,8 @@
 /*** J3 ***/
 // VBUS
 // GND
-#define PD0		(0xD0 + 0)
-#define PD1		(0xD0 + 1)
+#define PD0		(0xD0 + 0) // 0R w/ PB6
+#define PD1		(0xD0 + 1) // 0R w/ PB7
 #define PD2		(0xD0 + 2)
 #define PD3		(0xD0 + 3)
 #define PE1		(0xE0 + 1)
@@ -44,8 +44,8 @@
 #define PE0		(0xE0 + 0)
 //#define PF0	(0xF0 + 0) // PUSH2
 // RST
-#define PB7		(0xB0 + 7)
-#define PB6		(0xB0 + 6)
+#define PB7		(0xB0 + 7) // 0R w/ PD1
+#define PB6		(0xB0 + 6) // 0R w/ PD0
 #define PA4		(0xA0 + 4)
 #define PA3		(0xA0 + 3)
 #define PA2		(0xA0 + 2)
