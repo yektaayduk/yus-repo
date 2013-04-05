@@ -14,8 +14,8 @@
 extern "C" {
 #endif
 
-void delay_us(unsigned long count);
-void delay_ms(unsigned long count);
+void delay_us(uint32_t count);
+void delay_ms(uint32_t count);
 
 #ifdef __cplusplus
 }
