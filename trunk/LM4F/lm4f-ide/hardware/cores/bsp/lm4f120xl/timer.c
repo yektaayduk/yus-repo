@@ -1,4 +1,5 @@
 
+#include <stdint.h>
 #include <inc/hw_memmap.h>
 #include <inc/hw_timer.h>
 #include <inc/hw_types.h>
@@ -37,14 +38,14 @@ void bsp_timer_init(void)
 	ROM_TimerEnable(DELAY_TIMER_BASE, TIMER_BOTH);
 }
 
-void delay_us(unsigned long count)
+void delay_us(uint32_t count)
 {
-	volatile unsigned long start = HWREG(DELAY_TIMER_BASE + TIMER_O_TAR);
-	while((unsigned long)(start - HWREG(DELAY_TIMER_BASE + TIMER_O_TAR)) <= count);
+	volatile uint32_t start = HWREG(DELAY_TIMER_BASE + TIMER_O_TAR);
+	while((uint32_t)(start - HWREG(DELAY_TIMER_BASE + TIMER_O_TAR)) <= count);
 }
 
-void delay_ms(unsigned long count)
+void delay_ms(uint32_t count)
 {
-	volatile unsigned long start = HWREG(DELAY_TIMER_BASE + TIMER_O_TBR);
-	while((unsigned long)(start - HWREG(DELAY_TIMER_BASE + TIMER_O_TBR)) <= (count<<1));
+	volatile uint32_t start = HWREG(DELAY_TIMER_BASE + TIMER_O_TBR);
+	while((uint32_t)(start - HWREG(DELAY_TIMER_BASE + TIMER_O_TBR)) <= (count<<1));
 }

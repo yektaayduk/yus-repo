@@ -1,6 +1,6 @@
 //*****************************************************************************
 //
-// startup_gcc.c - Startup code for use with GNU tools.
+// startup.c - Startup code for use with GNU tools.
 //
 // Copyright (c) 2012 Texas Instruments Incorporated.  All rights reserved.
 // Software License Agreement
@@ -18,8 +18,6 @@
 // CIRCUMSTANCES, BE LIABLE FOR SPECIAL, INCIDENTAL, OR CONSEQUENTIAL
 // DAMAGES, FOR ANY REASON WHATSOEVER.
 // 
-// This is part of revision 9453 of the EK-LM4F120XL Firmware Package.
-//
 //*****************************************************************************
 
 #include "inc/hw_nvic.h"
@@ -40,15 +38,14 @@ static void IntDefaultHandler(void);
 // The entry point for the application.
 //
 //*****************************************************************************
-extern void bsp_init(void);
 extern int main(void);
 
 //*****************************************************************************
 //
-// Reserve space for the system stack.
+// System stack start determined by ldscript, normally highest ram address
 //
 //*****************************************************************************
-static unsigned long pulStack[64];
+extern unsigned _estack;
 
 //*****************************************************************************
 //
@@ -59,8 +56,7 @@ static unsigned long pulStack[64];
 __attribute__ ((section(".isr_vector")))
 void (* const g_pfnVectors[])(void) =
 {
-    (void (*)(void))((unsigned long)pulStack + sizeof(pulStack)),
-                                            // The initial stack pointer
+    (void *)&_estack,                       // The initial stack pointer
     ResetISR,                               // The reset handler
     NmiSR,                                  // The NMI handler
     FaultISR,                               // The hard fault handler
@@ -232,6 +228,13 @@ extern unsigned long _ebss;
 
 //*****************************************************************************
 //
+// libc.a: constructors of static objects
+//
+//*****************************************************************************
+extern void __libc_init_array(void);
+
+//*****************************************************************************
+//
 // This is the code that gets called when the processor first starts execution
 // following a reset event.  Only the absolutely necessary set is performed,
 // after which the application supplied entry() routine is called.  Any fancy
@@ -266,6 +269,11 @@ ResetISR(void)
           "        it      lt\n"
           "        strlt   r2, [r0], #4\n"
           "        blt     zero_loop");
+    
+    //
+    // call static constructors
+    //
+    __libc_init_array();
 
     //
     // Enable the floating-point unit.  This must be done here to handle the
@@ -284,7 +292,6 @@ ResetISR(void)
     //
     // Call the application's entry point.
     //
-    bsp_init();
     main();
 }
 

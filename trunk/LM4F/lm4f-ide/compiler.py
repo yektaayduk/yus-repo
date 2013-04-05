@@ -203,10 +203,11 @@ class PicCompilerThread(QtCore.QThread):
             fout.write( 'CXXFLAGS = ' + self.Configs.getCxxflags() + ' $(DEFINES)\n')
             fout.write( 'AFLAGS = ' + self.Configs.getAflags() + '\n' )
             fout.write( 'LFLAGS = ' + self.Configs.getLflags() + '\n\n' )
-            fout.write( 'LIBGCC=${shell ${TCHAIN}gcc ${CFLAGS} -print-libgcc-file-name}\n' )
-            fout.write( 'LIBC=${shell ${TCHAIN}gcc ${CFLAGS} -print-file-name=libc.a}\n' )
-            fout.write( 'LIBM=${shell ${TCHAIN}gcc ${CFLAGS} -print-file-name=libm.a}\n' )
-            fout.write( 'LIBCPP=${shell ${TCHAIN}g++ ${CXXFLAGS} -print-file-name=libstdc++.a}\n\n\n' )
+            fout.write( 'LIBGCC = ${shell ${TCHAIN}gcc ${CFLAGS} -print-libgcc-file-name}\n' )
+            fout.write( 'LIBC = ${shell ${TCHAIN}gcc ${CFLAGS} -print-file-name=libc.a}\n' )
+            fout.write( 'LIBM = ${shell ${TCHAIN}gcc ${CFLAGS} -print-file-name=libm.a}\n' )
+            fout.write( 'LIBNOSYS = ${shell ${TCHAIN}gcc ${CXXFLAGS} -print-file-name=libnosys.a}\n' )
+            fout.write( 'LIBCPP = ${shell ${TCHAIN}g++ ${CXXFLAGS} -print-file-name=libstdc++.a}\n\n\n' )
             fout.write( 'RM = ' + self.Configs.getRmCmd() + '\n\n\n' )
             fout.write( 'OBJECTS =  \\\n' )
             for src in sourceFiles:
@@ -230,8 +231,7 @@ class PicCompilerThread(QtCore.QThread):
             
             fout.write( '\t@echo [LINKER] $(@F)\n\t')
             if not verbose: fout.write( '@' )
-            #fout.write( '$(TCHAIN)ld $(LFLAGS) $^ -o $@\n\n' )
-            fout.write( '$(TCHAIN)ld $(LFLAGS) $^ -o $@ $(LIBGCC) $(LIBC) $(LIBM) $(LIBCPP)\n\n' )
+            fout.write( '$(TCHAIN)ld $(LFLAGS) $^ -o $@ $(LIBGCC) $(LIBC) $(LIBM) $(LIBNOSYS) $(LIBCPP)\n\n' )
             
             fout.write( '$(BIN_FILE): $(ELF_FILE)\n' )
             fout.write( '\t@echo [BIN Copy] $(@F)\n')

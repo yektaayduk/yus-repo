@@ -1,16 +1,14 @@
 
 #include <stdlib.h>
-#include <sys/types.h>
-
 #include "inc/hw_types.h"
 #include "driverlib/sysctl.h"
 #include "driverlib/rom.h"
 
 extern "C" { void bsp_timer_init(void) ; }
 extern "C" { void bsp_gpio_init(void) ; }
-extern "C" { void bsp_init(void) ; }
+extern "C" { void _init(void) ; }
 
-void bsp_init(void)
+void _init(void) // void bsp_init(void)
 {
 	/* set 80MHz clock */
 	ROM_SysCtlClockSet(SYSCTL_SYSDIV_2_5 | SYSCTL_USE_PLL | SYSCTL_OSC_MAIN | SYSCTL_XTAL_16MHZ);
@@ -22,9 +20,10 @@ void bsp_init(void)
 	bsp_timer_init();
 }
 
+
 /*
  * C++ tweaks
- * http://andybrown.me.uk/wk/2011/12/28/stm32plus-a-c-library-for-stm32-development
+ *
  */
 
 namespace __gnu_cxx {

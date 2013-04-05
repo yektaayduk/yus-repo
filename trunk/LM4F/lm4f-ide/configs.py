@@ -52,27 +52,20 @@ DEFAULT_RMCMD_LINUX = 'rm'
 DEFAULT_RMCMD_OSX   = 'rm'
 
 # compiler defines (used also for header parser)
-#DEFAULT_COMPILER_DEFINES = 'USE_STDPERIPH_DRIVER:1;STM32F10X_MD_VL:1'
 DEFAULT_COMPILER_DEFINES = 'PART_LM4F120H5QR:1;TARGET_IS_BLIZZARD_RA1:1'
 
 # default flags
-#COMMON_FLAGS     = '-mcpu=cortex-m3 -mthumb'
-COMMON_FLAGS     = '-mthumb -mcpu=cortex-m4'
+COMMON_FLAGS     = '-mcpu=cortex-m4 -mthumb '
 
-#DEFAULT_CFLAGS   = COMMON_FLAGS + ' -Os -c -g -Wall -Wl,--gc-sections -Wno-psabi'
-#DEFAULT_CFLAGS  += ' -mfix-cortex-m3-ldrd -fno-common -ffunction-sections -fdata-sections'
-#DEFAULT_CXXFLAGS = DEFAULT_CFLAGS + ' -fno-rtti -fno-exceptions'
-#DEFAULT_LFLAGS   = '-T$(LKR_SCRIPT) -Wl,-Map=$(MAP_FILE),--cref,--gc-sections'
-#DEFAULT_LFLAGS  += ' -lc -lm -lgcc -lstdc++'
-
-DEFAULT_CFLAGS    = COMMON_FLAGS + ' -c -Os -MD -std=c99 -Wall -pedantic'
+#DEFAULT_CFLAGS    = COMMON_FLAGS + ' -c -Os -MD -std=c99 -Wall -pedantic'
+DEFAULT_CFLAGS    = COMMON_FLAGS + ' -c -Os -MD -std=c99 -Wall -Wl,--gc-sections -Wno-psabi'
 DEFAULT_CFLAGS   += ' -mfpu=fpv4-sp-d16 -mfloat-abi=softfp -ffunction-sections -fdata-sections'
-DEFAULT_CXXFLAGS  = COMMON_FLAGS + ' -c -Os -MD -Wall -pedantic'
+#DEFAULT_CXXFLAGS  = COMMON_FLAGS + ' -c -Os -MD -Wall -pedantic'
+DEFAULT_CXXFLAGS  = COMMON_FLAGS + ' -c -Os -MD -Wall -Wl,--gc-sections -Wno-psabi'
 DEFAULT_CXXFLAGS += ' -mfpu=fpv4-sp-d16 -mfloat-abi=softfp -ffunction-sections -fdata-sections'
 DEFAULT_CXXFLAGS += ' -fno-rtti -fno-exceptions'
 DEFAULT_AFLAGS    = COMMON_FLAGS + ' -MD'
-DEFAULT_LFLAGS    = '-T$(LKR_SCRIPT) --entry ResetISR --gc-sections -Map=$(MAP_FILE)'
- 
+DEFAULT_LFLAGS    = '-T$(LKR_SCRIPT) -nostartfiles --gc-sections -Map=$(MAP_FILE)'
 
 
 class IdeConfig:
