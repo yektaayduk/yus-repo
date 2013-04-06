@@ -13,7 +13,6 @@
 #include <driverlib/sysctl.h>
 #include <driverlib/uart.h>
 
-#include "gpio.h"
 #include "uart.h"
 
 HardwareUart Serial0( 0 );
@@ -27,9 +26,7 @@ HardwareUart Serial7( 7 );
 
 extern "C"
 {
-	void UARTStdioIntHandler(void);
 	void UART0IntHandler(void) { Serial0.ISR(&Serial0); }
-	//void UART0IntHandler(void) { UARTStdioIntHandler(); }
 	void UART1IntHandler(void) { Serial1.ISR(&Serial1); }
 	void UART2IntHandler(void) { Serial2.ISR(&Serial2); }
 	void UART3IntHandler(void) { Serial3.ISR(&Serial3); }
@@ -39,6 +36,7 @@ extern "C"
 	void UART7IntHandler(void) { Serial7.ISR(&Serial7); }
 }
 
+// UART peripherals
 static const unsigned long g_UARTPeriph[] =
 {
 	SYSCTL_PERIPH_UART0, SYSCTL_PERIPH_UART1,
@@ -47,16 +45,39 @@ static const unsigned long g_UARTPeriph[] =
 	SYSCTL_PERIPH_UART6, SYSCTL_PERIPH_UART7
 };
 
+// base addresses for the console UART
 static const unsigned long g_UARTBase[] =
 {
 	UART0_BASE, UART1_BASE, UART2_BASE, UART3_BASE,
 	UART4_BASE, UART5_BASE, UART6_BASE, UART7_BASE
 };
 
+// interrupts for the console UART
 static const unsigned long g_UARTInt[] =
 {
 	INT_UART0, INT_UART1, INT_UART2, INT_UART3,
 	INT_UART4, INT_UART5, INT_UART6, INT_UART7
+};
+
+// UART gpio configurations
+static const unsigned long g_UARTConfig[8][2] =
+{
+	{GPIO_PA0_U0RX, GPIO_PA1_U0TX}, {GPIO_PB0_U1RX, GPIO_PB1_U1TX},
+	{GPIO_PD6_U2RX, GPIO_PD7_U2TX}, {GPIO_PC6_U3RX, GPIO_PC7_U3TX},
+	{GPIO_PC4_U4RX, GPIO_PC5_U4TX},	{GPIO_PE4_U5RX, GPIO_PE5_U5TX},
+	{GPIO_PD4_U6RX, GPIO_PD5_U6TX},	{GPIO_PE0_U7RX, GPIO_PE1_U7TX}
+};
+static const unsigned long g_UARTPort[8] =
+{
+	GPIO_PORTA_BASE, GPIO_PORTB_BASE, GPIO_PORTD_BASE, GPIO_PORTC_BASE,
+	GPIO_PORTC_BASE, GPIO_PORTE_BASE, GPIO_PORTD_BASE, GPIO_PORTE_BASE
+};
+static const unsigned long g_UARTPins[8] =
+{
+	GPIO_PIN_0 | GPIO_PIN_1, GPIO_PIN_0 | GPIO_PIN_1,
+	GPIO_PIN_6 | GPIO_PIN_7, GPIO_PIN_6 | GPIO_PIN_7,
+	GPIO_PIN_4 | GPIO_PIN_5, GPIO_PIN_4 | GPIO_PIN_5,
+	GPIO_PIN_4 | GPIO_PIN_5, GPIO_PIN_0 | GPIO_PIN_1
 };
 
 HardwareUart::HardwareUart( uint8_t portNum )
@@ -72,10 +93,10 @@ void HardwareUart::begin( uint32_t baud )
 
 	m_uartBase = g_UARTBase[m_portNum];
 	
-	// todo
-	ROM_GPIOPinConfigure(GPIO_PA0_U0RX);
-    ROM_GPIOPinConfigure(GPIO_PA1_U0TX);
-    ROM_GPIOPinTypeUART(GPIO_PORTA_BASE, GPIO_PIN_0 | GPIO_PIN_1);
+	// Configure RX-TX pins
+	ROM_GPIOPinConfigure( g_UARTConfig[m_portNum][0] );
+	ROM_GPIOPinConfigure( g_UARTConfig[m_portNum][1] );
+	ROM_GPIOPinTypeUART( g_UARTPort[m_portNum], g_UARTPins[m_portNum] );
 	
 	// Enable the UART peripheral
 	ROM_SysCtlPeripheralEnable( g_UARTPeriph[m_portNum] );
@@ -97,7 +118,6 @@ void HardwareUart::begin( uint32_t baud )
 	ROM_IntEnable( g_UARTInt[m_portNum] );
 	
 	ROM_IntMasterEnable();
-	TxRun = 0;
 	
 	// Enable the UART operation
 	ROM_UARTEnable( m_uartBase );
@@ -113,47 +133,36 @@ void HardwareUart::end()
 	// Disable the UART operation
 	ROM_UARTDisable( m_uartBase );
 	// Disable the UART peripheral
-	ROM_SysCtlPeripheralDisable( g_UARTPeriph[m_portNum] );	
+	ROM_SysCtlPeripheralDisable( g_UARTPeriph[m_portNum] );
+	
+	m_uartBase = 0;
 }
 
 void HardwareUart::putc(uint8_t c)
 {
 	if(!m_uartBase) return;
-#if 0
+
 	// wait until buffer has an empty slot.
 	while (( (TxFifo.inptr+1) & UART_BUFF_MASK) == TxFifo.outptr)
 			continue;
-	//place character in buffer
+	
+	ROM_IntDisable(g_UARTInt[m_portNum]);
+	// place character in buffer
 	TxFifo.buff[TxFifo.inptr] = c;
 	// increment in index
-	TxFifo.inptr = (TxFifo.inptr + 1) & UART_BUFF_MASK;
-	// start the TX sequence if not yet running
-	if (!TxRun) {
-		TxRun = 1;
-		ROM_UARTIntEnable( m_uartBase, UART_INT_TX ); // enable TX interrupt;		
-	}
-#elif 1
-	// if(!TX_BUFFER_FULL)
-	if( !(((TxFifo.inptr + 1) % UART_BUFF_SIZE) == TxFifo.outptr) )
+	TxFifo.inptr = (TxFifo.inptr+1) & UART_BUFF_MASK;
+	
+	while(ROM_UARTSpaceAvail(m_uartBase) && !(TxFifo.outptr == TxFifo.inptr)) // FIFO space available
 	{
-		TxFifo.buff[TxFifo.inptr] = c;
-		TxFifo.inptr = (TxFifo.inptr+1) % UART_BUFF_SIZE;
+		ROM_UARTCharPutNonBlocking(m_uartBase, TxFifo.buff[TxFifo.outptr]);
+		TxFifo.outptr = (TxFifo.outptr+1) & UART_BUFF_MASK;
 	}
-	//if(!TX_BUFFER_EMPTY)
-	if(!(TxFifo.outptr == TxFifo.inptr))
-    {
-		ROM_IntDisable(g_UARTInt[m_portNum]);
-		while(ROM_UARTSpaceAvail(m_uartBase) && !(TxFifo.outptr == TxFifo.inptr))
-		{
-			ROM_UARTCharPutNonBlocking(m_uartBase, TxFifo.buff[TxFifo.outptr]);
-			TxFifo.outptr = (TxFifo.outptr+1) % UART_BUFF_SIZE;
-		}
-		ROM_IntEnable(g_UARTInt[m_portNum]);
-	    ROM_UARTIntEnable(m_uartBase, UART_INT_TX);
-    }
-#else
-	ROM_UARTCharPutNonBlocking( m_uartBase, c );
-#endif
+	
+	ROM_IntEnable(g_UARTInt[m_portNum]);
+	if(!(TxFifo.outptr == TxFifo.inptr)) // if TX buffer still not empty
+	{
+		ROM_UARTIntEnable(m_uartBase, UART_INT_TX); // (re)enable TX interrupt
+	}
 }
 
 void HardwareUart::print(char ch)
@@ -196,67 +205,38 @@ uint8_t HardwareUart::getc()
 
 void HardwareUart::ISR(HardwareUart *uart)
 {
-	//uint16_t temp;
-	long lChar;
 	// get and clear the interrupt status
 	uint32_t status = ROM_UARTIntStatus( uart->m_uartBase, true );
 	ROM_UARTIntClear( uart->m_uartBase, status );
 	
 	if( status & (UART_INT_RX | UART_INT_RT) )
 	{
-#if 0
-		// byte read and save to buffer
-		uart->RxFifo.buff[uart->RxFifo.inptr] = UARTCharGetNonBlocking( uart->m_uartBase ) & 0xFF;
-		temp = (uart->RxFifo.inptr+1) & UART_BUFF_MASK;
-		if(temp != uart->RxFifo.outptr){	// avoid buffer overrun
-			uart->RxFifo.inptr = temp;
-		}
-#else
-        while(ROM_UARTCharsAvail(uart->m_uartBase)) // Get all the available characters from the UART.
-        {
-            lChar = ROM_UARTCharGetNonBlocking(uart->m_uartBase);
-            //if(!RX_BUFFER_FULL)
-			if(!(((uart->RxFifo.inptr + 1) % UART_BUFF_SIZE) == uart->RxFifo.outptr))
+        while(ROM_UARTCharsAvail(uart->m_uartBase))
+        {	// Get all the available characters from the UART
+            long lChar = ROM_UARTCharGetNonBlocking(uart->m_uartBase);
+            if(!(((uart->RxFifo.inptr + 1) & UART_BUFF_MASK) == uart->RxFifo.outptr))
             {
                 uart->RxFifo.buff[uart->RxFifo.inptr] = (unsigned char)(lChar & 0xFF);
                 uart->RxFifo.inptr = (uart->RxFifo.inptr+1)%UART_BUFF_SIZE;
             }
         }
-#endif
 	}
 	if( status & UART_INT_TX )
 	{
-#if 0
 		// disable the UART interrupt
-		ROM_IntDisable( g_UARTInt[uart->m_portNum] );		
-		// place the character to the data register
-		ROM_UARTCharPutNonBlocking( uart->m_uartBase, uart->TxFifo.buff[uart->TxFifo.outptr++] );
+		ROM_IntDisable(g_UARTInt[uart->m_portNum]);
+		while(ROM_UARTSpaceAvail(uart->m_uartBase) && !(uart->TxFifo.outptr == uart->TxFifo.inptr))
+		{	// place the character to the data register
+			ROM_UARTCharPutNonBlocking(uart->m_uartBase, uart->TxFifo.buff[uart->TxFifo.outptr]);
+			uart->TxFifo.outptr = (uart->TxFifo.outptr+1)%UART_BUFF_SIZE;
+		}
 		// reenable the UART interrupt
-		ROM_IntEnable( g_UARTInt[uart->m_portNum] );
+		ROM_IntEnable(g_UARTInt[uart->m_portNum]);
 		
-		uart->TxFifo.outptr &= UART_BUFF_MASK; // circular FIFO
-		if(uart->TxFifo.outptr==uart->TxFifo.inptr){ // if buffer empty
-			ROM_UARTIntDisable( uart->m_uartBase, UART_INT_TX ); // disable TX interrupt
-			uart->TxRun = 0; // clear the flag
-		}
-#else
-		//if(!TX_BUFFER_EMPTY)
-		if( !(uart->TxFifo.outptr == uart->TxFifo.inptr) )
-		{
-			ROM_IntDisable(g_UARTInt[uart->m_portNum]);
-			//while(ROM_UARTSpaceAvail(uart->m_uartBase) && !TX_BUFFER_EMPTY)
-			while(ROM_UARTSpaceAvail(uart->m_uartBase) && !(uart->TxFifo.outptr == uart->TxFifo.inptr))
-			{
-				ROM_UARTCharPutNonBlocking(uart->m_uartBase, uart->TxFifo.buff[uart->TxFifo.outptr]);
-				uart->TxFifo.outptr = (uart->TxFifo.outptr+1)%UART_BUFF_SIZE;
-			}
-			ROM_IntEnable(g_UARTInt[uart->m_portNum]);
-		}
 		if(uart->TxFifo.outptr == uart->TxFifo.inptr) //if(TX_BUFFER_EMPTY)
         {	// If the output buffer is empty, turn off the transmit interrupt.
             ROM_UARTIntDisable(uart->m_uartBase, UART_INT_TX);
         }
-#endif
 	}
 }
 
