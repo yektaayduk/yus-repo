@@ -1,4 +1,5 @@
 #include <lm4f120xl.h>
+#include <RGB.h>
 
 int main(void)
 {
