@@ -23,7 +23,6 @@
 #include <driverlib/hibernate.h>
 
 #include <lm4f120xl/gpio.h>
-#include <lm4f120xl/rgb.h>
 #include <lm4f120xl/timer.h>
 #include <lm4f120xl/uart.h>
 

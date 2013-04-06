@@ -22,14 +22,14 @@
 //
 //*****************************************************************************
 
-#include "inc/hw_types.h"
-#include "inc/hw_memmap.h"
-#include "inc/hw_timer.h"
-#include "driverlib/sysctl.h"
-#include "driverlib/rom.h"
-#include "driverlib/pin_map.h"
-#include "driverlib/timer.h"
-#include "driverlib/gpio.h"
+#include <inc/hw_types.h>
+#include <inc/hw_memmap.h>
+#include <inc/hw_timer.h>
+#include <driverlib/sysctl.h>
+#include <driverlib/rom.h>
+#include <driverlib/pin_map.h>
+#include <driverlib/timer.h>
+#include <driverlib/gpio.h>
 #include "rgb.h"
 
 //*****************************************************************************
