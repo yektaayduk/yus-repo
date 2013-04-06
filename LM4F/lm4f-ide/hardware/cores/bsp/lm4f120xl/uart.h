@@ -90,12 +90,10 @@ public:
 private:
 	volatile uint8_t m_portNum;
 	volatile uint32_t m_uartBase;
-	
 	volatile struct {
 		uint16_t	inptr, outptr;			/* in/out index */
 		uint8_t		buff[UART_BUFF_SIZE];	/* receive/transmit buffer */
 	} TxFifo, RxFifo;
-	volatile uint8_t TxRun;		/* TX running flag */
 };
 
 extern HardwareUart Serial0;
