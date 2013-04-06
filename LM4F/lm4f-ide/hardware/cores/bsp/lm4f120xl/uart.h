@@ -58,7 +58,7 @@
 // PA3
 // PA2
 
-#define UART_BUFF_SIZE		128
+#define UART_BUFF_SIZE		256
 #define	UART_BUFF_MASK		(UART_BUFF_SIZE-1)
 
 

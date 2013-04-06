@@ -27,7 +27,9 @@ HardwareUart Serial7( 7 );
 
 extern "C"
 {
+	void UARTStdioIntHandler(void);
 	void UART0IntHandler(void) { Serial0.ISR(&Serial0); }
+	//void UART0IntHandler(void) { UARTStdioIntHandler(); }
 	void UART1IntHandler(void) { Serial1.ISR(&Serial1); }
 	void UART2IntHandler(void) { Serial2.ISR(&Serial2); }
 	void UART3IntHandler(void) { Serial3.ISR(&Serial3); }
@@ -84,8 +86,8 @@ void HardwareUart::begin( uint32_t baud )
 	
 	// interrupt whenever the TX FIFO is almost empty or when any character is received
 	ROM_UARTFIFOLevelSet(m_uartBase, UART_FIFO_TX1_8, UART_FIFO_RX1_8);
-	ROM_UARTTxIntModeSet(m_uartBase, UART_TXINT_MODE_EOT);
 	
+	ROM_IntMasterDisable();
 	// clear FIFO buffers
 	TxFifo.inptr = TxFifo.outptr = RxFifo.inptr = RxFifo.outptr = 0;
 	
@@ -117,7 +119,7 @@ void HardwareUart::end()
 void HardwareUart::putc(uint8_t c)
 {
 	if(!m_uartBase) return;
-#if 1
+#if 0
 	// wait until buffer has an empty slot.
 	while (( (TxFifo.inptr+1) & UART_BUFF_MASK) == TxFifo.outptr)
 			continue;
@@ -130,6 +132,25 @@ void HardwareUart::putc(uint8_t c)
 		TxRun = 1;
 		ROM_UARTIntEnable( m_uartBase, UART_INT_TX ); // enable TX interrupt;		
 	}
+#elif 1
+	// if(!TX_BUFFER_FULL)
+	if( !(((TxFifo.inptr + 1) % UART_BUFF_SIZE) == TxFifo.outptr) )
+	{
+		TxFifo.buff[TxFifo.inptr] = c;
+		TxFifo.inptr = (TxFifo.inptr+1) % UART_BUFF_SIZE;
+	}
+	//if(!TX_BUFFER_EMPTY)
+	if(!(TxFifo.outptr == TxFifo.inptr))
+    {
+		ROM_IntDisable(g_UARTInt[m_portNum]);
+		while(ROM_UARTSpaceAvail(m_uartBase) && !(TxFifo.outptr == TxFifo.inptr))
+		{
+			ROM_UARTCharPutNonBlocking(m_uartBase, TxFifo.buff[TxFifo.outptr]);
+			TxFifo.outptr = (TxFifo.outptr+1) % UART_BUFF_SIZE;
+		}
+		ROM_IntEnable(g_UARTInt[m_portNum]);
+	    ROM_UARTIntEnable(m_uartBase, UART_INT_TX);
+    }
 #else
 	ROM_UARTCharPutNonBlocking( m_uartBase, c );
 #endif
@@ -175,22 +196,37 @@ uint8_t HardwareUart::getc()
 
 void HardwareUart::ISR(HardwareUart *uart)
 {
-	uint16_t temp;
+	//uint16_t temp;
+	long lChar;
 	// get and clear the interrupt status
 	uint32_t status = ROM_UARTIntStatus( uart->m_uartBase, true );
 	ROM_UARTIntClear( uart->m_uartBase, status );
 	
 	if( status & (UART_INT_RX | UART_INT_RT) )
 	{
+#if 0
 		// byte read and save to buffer
 		uart->RxFifo.buff[uart->RxFifo.inptr] = UARTCharGetNonBlocking( uart->m_uartBase ) & 0xFF;
 		temp = (uart->RxFifo.inptr+1) & UART_BUFF_MASK;
 		if(temp != uart->RxFifo.outptr){	// avoid buffer overrun
 			uart->RxFifo.inptr = temp;
 		}
+#else
+        while(ROM_UARTCharsAvail(uart->m_uartBase)) // Get all the available characters from the UART.
+        {
+            lChar = ROM_UARTCharGetNonBlocking(uart->m_uartBase);
+            //if(!RX_BUFFER_FULL)
+			if(!(((uart->RxFifo.inptr + 1) % UART_BUFF_SIZE) == uart->RxFifo.outptr))
+            {
+                uart->RxFifo.buff[uart->RxFifo.inptr] = (unsigned char)(lChar & 0xFF);
+                uart->RxFifo.inptr = (uart->RxFifo.inptr+1)%UART_BUFF_SIZE;
+            }
+        }
+#endif
 	}
 	if( status & UART_INT_TX )
 	{
+#if 0
 		// disable the UART interrupt
 		ROM_IntDisable( g_UARTInt[uart->m_portNum] );		
 		// place the character to the data register
@@ -203,6 +239,24 @@ void HardwareUart::ISR(HardwareUart *uart)
 			ROM_UARTIntDisable( uart->m_uartBase, UART_INT_TX ); // disable TX interrupt
 			uart->TxRun = 0; // clear the flag
 		}
+#else
+		//if(!TX_BUFFER_EMPTY)
+		if( !(uart->TxFifo.outptr == uart->TxFifo.inptr) )
+		{
+			ROM_IntDisable(g_UARTInt[uart->m_portNum]);
+			//while(ROM_UARTSpaceAvail(uart->m_uartBase) && !TX_BUFFER_EMPTY)
+			while(ROM_UARTSpaceAvail(uart->m_uartBase) && !(uart->TxFifo.outptr == uart->TxFifo.inptr))
+			{
+				ROM_UARTCharPutNonBlocking(uart->m_uartBase, uart->TxFifo.buff[uart->TxFifo.outptr]);
+				uart->TxFifo.outptr = (uart->TxFifo.outptr+1)%UART_BUFF_SIZE;
+			}
+			ROM_IntEnable(g_UARTInt[uart->m_portNum]);
+		}
+		if(uart->TxFifo.outptr == uart->TxFifo.inptr) //if(TX_BUFFER_EMPTY)
+        {	// If the output buffer is empty, turn off the transmit interrupt.
+            ROM_UARTIntDisable(uart->m_uartBase, UART_INT_TX);
+        }
+#endif
 	}
 }
 
