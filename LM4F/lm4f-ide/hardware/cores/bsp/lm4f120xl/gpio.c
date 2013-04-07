@@ -90,6 +90,14 @@ void setPinState(uint8_t pin, bool state)
 	ROM_GPIOPinWrite(port_base[(pin>>4)-0xA], bit, state? bit:0);
 }
 
+void togglePin(uint8_t pin)
+{
+	uint32_t base = port_base[(pin>>4)-0xA];
+	uint8_t bit = 1<<(pin&0xF);
+	uint8_t state = (uint8_t) ( ROM_GPIOPinRead(base, bit) & 0xFF );
+	ROM_GPIOPinWrite(base, bit, state^bit);
+}
+
 bool getPinState(uint8_t pin)
 {
 	return ROM_GPIOPinRead(port_base[(pin>>4)-0xA], 1<<(pin&0xF))? true:false;
