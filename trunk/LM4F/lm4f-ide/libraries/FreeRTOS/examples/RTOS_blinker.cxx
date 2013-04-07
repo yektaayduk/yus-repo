@@ -11,9 +11,7 @@ static void LEDTask(void *pvParameters)
 	pinMode(LED_BLUE_PIN, OUTPUT);
 	while(1)
 	{
-		setPinHigh(LED_BLUE_PIN);
-		vTaskDelayUntil(&ulWakeTime, LED_TOGGLE_DELAY / portTICK_RATE_MS);
-		setPinLow(LED_BLUE_PIN);
+		togglePin(LED_BLUE_PIN);
 		vTaskDelayUntil(&ulWakeTime, LED_TOGGLE_DELAY / portTICK_RATE_MS);
 	}
 }

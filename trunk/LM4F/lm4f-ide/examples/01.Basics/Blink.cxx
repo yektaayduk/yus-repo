@@ -6,9 +6,7 @@ int main(void)
 	
 	while(true)
 	{
-		setPinHigh(LED_BLUE_PIN);
-		delay_ms(500);
-		setPinLow(LED_BLUE_PIN);
+		togglePin(LED_BLUE_PIN);
 		delay_ms(500);
 	}
 }

@@ -79,6 +79,7 @@ void pinMode(uint8_t pin, uint8_t mode);
 void setPinHigh(uint8_t pin);
 void setPinLow(uint8_t pin);
 void setPinState(uint8_t pin, bool state);
+void togglePin(uint8_t pin);
 bool getPinState(uint8_t pin);
 
 #ifdef __cplusplus
