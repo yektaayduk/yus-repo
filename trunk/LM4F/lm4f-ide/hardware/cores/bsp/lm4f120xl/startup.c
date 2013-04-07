@@ -38,7 +38,9 @@ static void IntDefaultHandler(void);
 // overridable interrupt handlers
 //
 //*****************************************************************************
-// __attribute__((weak)) void UART0IntHandler(void) { while(1){} }
+__attribute__((weak)) void SVCIntHandler(void) { while(1) {} }
+__attribute__((weak)) void PendSVIntHandler(void) { while(1) {} }
+__attribute__((weak)) void SysTickIntHandler(void) { while(1) {} }
 
 //*****************************************************************************
 //
@@ -83,11 +85,11 @@ void (* const g_pfnVectors[])(void) =
     0,                                      // Reserved
     0,                                      // Reserved
     0,                                      // Reserved
-    IntDefaultHandler,                      // SVCall handler
+    SVCIntHandler,                          // SVCall handler
     IntDefaultHandler,                      // Debug monitor handler
     0,                                      // Reserved
-    IntDefaultHandler,                      // The PendSV handler
-    IntDefaultHandler,                      // The SysTick handler
+    PendSVIntHandler,                       // The PendSV handler
+    SysTickIntHandler,                      // The SysTick handler
     IntDefaultHandler,                      // GPIO Port A
     IntDefaultHandler,                      // GPIO Port B
     IntDefaultHandler,                      // GPIO Port C

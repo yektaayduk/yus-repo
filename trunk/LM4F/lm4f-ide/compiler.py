@@ -112,6 +112,7 @@ class PicCompilerThread(QtCore.QThread):
                     # todo: other error messages
                     elif msg_lowered.find("error:") >= 0 \
                             or msg_lowered.find("make: ***") >= 0 \
+                            or msg_lowered.find(": multiple definition") >= 0 \
                             or msg_lowered.find("undefined reference to") >= 0:                    
                         self.LogList.append( "<font color=red>%s</font>" % msg )
                         error_count += 1

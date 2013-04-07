@@ -150,13 +150,12 @@ def parseUserCode(userCode=None, outPath=None, toolChain=''):
                 # check the folder and the header file if they exist
                 if os.path.exists( libpath ) and os.path.isfile(libpath + '/' + header):
                     # print libpath
-                    # todo: scan header file
                     include = '-I' + libpath
                     if not (include in includes): # include only once
                         includes.append( include )
-                        sources += glob.glob(libpath + '/*.c') # compile all *.c files
-                        sources += glob.glob(libpath + '/*.cpp') # compile all *.cpp files
-                        sources += glob.glob(libpath + '/*.cxx') # compile all *.cxx files
+                        for folder in ['/', '/Source/', '/src/']:
+                            for ext in ['*.c', '*.cpp', '*.cxx']: # compile all *.c, *.cpp, *.cxx files
+                                sources += glob.glob(libpath + folder + ext);
         fin.close()
     except:
         return False, [], []
