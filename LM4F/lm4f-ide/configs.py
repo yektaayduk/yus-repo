@@ -52,7 +52,7 @@ DEFAULT_RMCMD_LINUX = 'rm'
 DEFAULT_RMCMD_OSX   = 'rm'
 
 # compiler defines (used also for header parser)
-DEFAULT_COMPILER_DEFINES = 'PART_LM4F120H5QR:1;TARGET_IS_BLIZZARD_RA1:1'
+DEFAULT_COMPILER_DEFINES = 'PART_LM4F120H5QR:1;TARGET_IS_BLIZZARD_RA1:1;gcc:1'
 
 # default flags
 COMMON_FLAGS     = '-mcpu=cortex-m4 -mthumb '
