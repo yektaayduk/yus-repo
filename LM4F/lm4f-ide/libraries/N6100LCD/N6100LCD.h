@@ -38,12 +38,12 @@ public:
 	
 	void init(void);
 	void send(uint8_t cd, uint8_t data);
-	void setArea(uint8_t x1, uint8_t x2, uint8_t y1, uint8_t y2);
+	void setArea(uint8_t x1=0, uint8_t x2=131, uint8_t y1=0, uint8_t y2=131);
 	void rectFill(uint8_t x1, uint8_t x2, uint8_t y1, uint8_t y2, uint8_t color);
-	void clear(uint8_t color);
+	void clear(uint8_t color=LCD_WHITE);
 	
-	void putc(char c, uint8_t fontColor, uint8_t bgColor);
-	void text(const char *s, uint8_t x, uint8_t y, uint8_t fontColor, uint8_t bgColor);
+	void putc(char c, uint8_t fontColor=LCD_RED, uint8_t bgColor=LCD_WHITE);
+	void text(const char *s, uint8_t x, uint8_t y, uint8_t fontColor=LCD_RED, uint8_t bgColor=LCD_WHITE);
 	
 	void setPixel(uint8_t x, uint8_t y, uint8_t color);
 	void line(int16_t x1, int16_t y1, int16_t x2, int16_t y2, uint8_t color);
