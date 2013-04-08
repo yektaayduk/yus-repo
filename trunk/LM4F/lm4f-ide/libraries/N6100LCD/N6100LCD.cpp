@@ -60,19 +60,29 @@ N6100LCD::N6100LCD(uint8_t DAT_PIN, uint8_t CLK_PIN, uint8_t CS_PIN, uint8_t RST
 	_rst = RST_PIN;
 }
 
+#if 1
+#define clk_delay()		delay_us(1)
+#else
+#define clk_delay()
+#endif
+
 void N6100LCD::send(uint8_t cd, uint8_t data)
 {
 	uint8_t i=8;
 	CS0(); CLK0();
+	//clk_delay();
 	if(cd) DAT1();
 	else DAT0();
 	CLK1();
+	//clk_delay();
 	while(i--){
 		CLK0();
+		//clk_delay();
 		if(data & 0x80)	DAT1();
 		else DAT0();
 		CLK1();
 		data = data<<1;
+		clk_delay();
 	}
 	CS1();
 }

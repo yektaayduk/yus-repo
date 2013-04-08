@@ -38,11 +38,110 @@ static void IntDefaultHandler(void);
 // overridable interrupt handlers
 //
 //*****************************************************************************
+__attribute__((weak)) void MPUFaultHandler(void) { while(1) {} }
 __attribute__((weak)) void SVCIntHandler(void) { while(1) {} }
 __attribute__((weak)) void PendSVIntHandler(void) { while(1) {} }
 __attribute__((weak)) void SysTickIntHandler(void) { while(1) {} }
-
+__attribute__((weak)) void GPIOAIntHandler(void) { while(1) {} }
+__attribute__((weak)) void GPIOBIntHandler(void) { while(1) {} }
+__attribute__((weak)) void GPIOCIntHandler(void) { while(1) {} }
+__attribute__((weak)) void GPIODIntHandler(void) { while(1) {} }
+__attribute__((weak)) void GPIOEIntHandler(void) { while(1) {} }
+__attribute__((weak)) void UART0IntHandler(void) { while(1) {} }
+__attribute__((weak)) void UART1IntHandler(void) { while(1) {} }
+__attribute__((weak)) void SSI0IntHandler(void) { while(1) {} }
+__attribute__((weak)) void I2C0IntHandler(void) { while(1) {} }
+//__attribute__((weak)) void PWM0FaultIntHandler(void) { while(1) {} }
+//__attribute__((weak)) void PWM0Gen0IntHandler(void) { while(1) {} }
+//__attribute__((weak)) void PWM0Gen1IntHandler(void) { while(1) {} }
+//__attribute__((weak)) void PWM0Gen2IntHandler(void) { while(1) {} }
+//__attribute__((weak)) void QuadratureEncoder0IntHandler(void) { while(1) {} }
+__attribute__((weak)) void ADC0Sequence0IntHandler(void) { while(1) {} }
+__attribute__((weak)) void ADC0Sequence1IntHandler(void) { while(1) {} }
+__attribute__((weak)) void ADC0Sequence2IntHandler(void) { while(1) {} }
+__attribute__((weak)) void ADC0Sequence3IntHandler(void) { while(1) {} }
+__attribute__((weak)) void WatchdogTimerIntHandler(void) { while(1) {} }
+__attribute__((weak)) void Timer0AIntHandler(void) { while(1) {} }
+__attribute__((weak)) void Timer0BIntHandler(void) { while(1) {} }
+__attribute__((weak)) void Timer1AIntHandler(void) { while(1) {} }
+__attribute__((weak)) void Timer1BIntHandler(void) { while(1) {} }
+__attribute__((weak)) void Timer2AIntHandler(void) { while(1) {} }
+__attribute__((weak)) void Timer2BIntHandler(void) { while(1) {} }
+__attribute__((weak)) void AnalogComparator0IntHandler(void) { while(1) {} }
+__attribute__((weak)) void AnalogComparator1IntHandler(void) { while(1) {} }
+//__attribute__((weak)) void AnalogComparator2IntHandler(void) { while(1) {} }
+//__attribute__((weak)) void SystemControlIntHandler(void) { while(1) {} }
+//__attribute__((weak)) void FLASHControlIntHandler(void) { while(1) {} }
+__attribute__((weak)) void GPIOFIntHandler(void) { while(1) {} }
+//__attribute__((weak)) void GPIOGIntHandler(void) { while(1) {} }
+//__attribute__((weak)) void GPIOHIntHandler(void) { while(1) {} }
+__attribute__((weak)) void UART2IntHandler(void) { while(1) {} }
+__attribute__((weak)) void SSI1IntHandler(void) { while(1) {} }
+__attribute__((weak)) void Timer3AIntHandler(void) { while(1) {} }
+__attribute__((weak)) void Timer3BIntHandler(void) { while(1) {} }
+__attribute__((weak)) void I2C1IntHandler(void) { while(1) {} }
+//__attribute__((weak)) void QuadratureEncoder1IntHandler(void) { while(1) {} }
+__attribute__((weak)) void CAN0IntHandler(void) { while(1) {} }
+//__attribute__((weak)) void CAN1IntHandler(void) { while(1) {} }
+//__attribute__((weak)) void CAN2IntHandler(void) { while(1) {} }
+//__attribute__((weak)) void EthernetIntHandler(void) { while(1) {} }
+__attribute__((weak)) void HibernateIntHandler(void) { while(1) {} }
 __attribute__((weak)) void USB0DeviceIntHandler(void) { while(1) {} }
+//__attribute__((weak)) void PWM0Gen3IntHandler(void) { while(1) {} }
+__attribute__((weak)) void uDMASoftTransferIntHandler(void) { while(1) {} }
+__attribute__((weak)) void uDMAErrorIntHandler(void) { while(1) {} }
+__attribute__((weak)) void ADC1Sequence0IntHandler(void) { while(1) {} }
+__attribute__((weak)) void ADC1Sequence1IntHandler(void) { while(1) {} }
+__attribute__((weak)) void ADC1Sequence2IntHandler(void) { while(1) {} }
+__attribute__((weak)) void ADC1Sequence3IntHandler(void) { while(1) {} }
+//__attribute__((weak)) void I2S0IntHandler(void) { while(1) {} }
+//__attribute__((weak)) void ExtBusInterface0IntHandler(void) { while(1) {} }
+//__attribute__((weak)) void GPIOJIntHandler(void) { while(1) {} }
+//__attribute__((weak)) void GPIOKIntHandler(void) { while(1) {} }
+//__attribute__((weak)) void GPIOLIntHandler(void) { while(1) {} }
+__attribute__((weak)) void SSI2IntHandler(void) { while(1) {} }
+__attribute__((weak)) void SSI3IntHandler(void) { while(1) {} }
+__attribute__((weak)) void UART3IntHandler(void) { while(1) {} }
+__attribute__((weak)) void UART4IntHandler(void) { while(1) {} }
+__attribute__((weak)) void UART5IntHandler(void) { while(1) {} }
+__attribute__((weak)) void UART6IntHandler(void) { while(1) {} }
+__attribute__((weak)) void UART7IntHandler(void) { while(1) {} }
+__attribute__((weak)) void I2C2IntHandler(void) { while(1) {} }
+__attribute__((weak)) void I2C3IntHandler(void) { while(1) {} }
+__attribute__((weak)) void Timer4AIntHandler(void) { while(1) {} }
+__attribute__((weak)) void Timer4BIntHandler(void) { while(1) {} }
+__attribute__((weak)) void Timer5AIntHandler(void) { while(1) {} }
+__attribute__((weak)) void Timer5BIntHandler(void) { while(1) {} }
+__attribute__((weak)) void WTimer0AIntHandler(void) { while(1) {} }
+__attribute__((weak)) void WTimer0BIntHandler(void) { while(1) {} }
+__attribute__((weak)) void WTimer1AIntHandler(void) { while(1) {} }
+__attribute__((weak)) void WTimer1BIntHandler(void) { while(1) {} }
+__attribute__((weak)) void WTimer2AIntHandler(void) { while(1) {} }
+__attribute__((weak)) void WTimer2BIntHandler(void) { while(1) {} }
+__attribute__((weak)) void WTimer3AIntHandler(void) { while(1) {} }
+__attribute__((weak)) void WTimer3BIntHandler(void) { while(1) {} }
+//__attribute__((weak)) void WTimer4AIntHandler(void) { while(1) {} }
+//__attribute__((weak)) void WTimer4BIntHandler(void) { while(1) {} }
+__attribute__((weak)) void WTimer5AIntHandler(void) { while(1) {} }
+__attribute__((weak)) void WTimer5BIntHandler(void) { while(1) {} }
+__attribute__((weak)) void FPUIntHandler(void) { while(1) {} }
+//__attribute__((weak)) void PECI0IntHandler(void) { while(1) {} }
+//__attribute__((weak)) void LPC0IntHandler(void) { while(1) {} }
+//__attribute__((weak)) void I2C4IntHandler(void) { while(1) {} }
+//__attribute__((weak)) void I2C5IntHandler(void) { while(1) {} }
+//__attribute__((weak)) void GPIOMIntHandler(void) { while(1) {} }
+//__attribute__((weak)) void GPIONIntHandler(void) { while(1) {} }
+//__attribute__((weak)) void QuadratureEncoder2IntHandler(void) { while(1) {} }
+//__attribute__((weak)) void Fan0IntHandler(void) { while(1) {} }
+//__attribute__((weak)) void GPIOPIntHandler(void) { while(1) {} }
+//__attribute__((weak)) void GPIOQIntHandler(void) { while(1) {} }
+//__attribute__((weak)) void GPIORIntHandler(void) { while(1) {} }
+//__attribute__((weak)) void GPIOSIntHandler(void) { while(1) {} }
+//__attribute__((weak)) void PWM1Gen0IntHandler(void) { while(1) {} }
+//__attribute__((weak)) void PWM1Gen1IntHandler(void) { while(1) {} }
+//__attribute__((weak)) void PWM1Gen2IntHandler(void) { while(1) {} }
+//__attribute__((weak)) void PWM1Gen3IntHandler(void) { while(1) {} }
+//__attribute__((weak)) void PWM1FaultIntHandler(void) { while(1) {} }
 
 //*****************************************************************************
 //
@@ -51,14 +150,6 @@ __attribute__((weak)) void USB0DeviceIntHandler(void) { while(1) {} }
 //*****************************************************************************
 extern int main(void);
 
-extern void UART0IntHandler(void);
-extern void UART1IntHandler(void);
-extern void UART2IntHandler(void);
-extern void UART3IntHandler(void);
-extern void UART4IntHandler(void);
-extern void UART5IntHandler(void);
-extern void UART6IntHandler(void);
-extern void UART7IntHandler(void);
 
 //*****************************************************************************
 //
@@ -80,7 +171,7 @@ void (* const g_pfnVectors[])(void) =
     ResetISR,                               // The reset handler
     NmiSR,                                  // The NMI handler
     FaultISR,                               // The hard fault handler
-    IntDefaultHandler,                      // The MPU fault handler
+    MPUFaultHandler,                        // The MPU fault handler
     IntDefaultHandler,                      // The bus fault handler
     IntDefaultHandler,                      // The usage fault handler
     0,                                      // Reserved
@@ -92,65 +183,65 @@ void (* const g_pfnVectors[])(void) =
     0,                                      // Reserved
     PendSVIntHandler,                       // The PendSV handler
     SysTickIntHandler,                      // The SysTick handler
-    IntDefaultHandler,                      // GPIO Port A
-    IntDefaultHandler,                      // GPIO Port B
-    IntDefaultHandler,                      // GPIO Port C
-    IntDefaultHandler,                      // GPIO Port D
-    IntDefaultHandler,                      // GPIO Port E
+    GPIOAIntHandler,                        // GPIO Port A
+    GPIOBIntHandler,                        // GPIO Port B
+    GPIOCIntHandler,                        // GPIO Port C
+    GPIODIntHandler,                        // GPIO Port D
+    GPIOEIntHandler,                        // GPIO Port E
     UART0IntHandler,                        // UART0 Rx and Tx
     UART1IntHandler,                        // UART1 Rx and Tx
-    IntDefaultHandler,                      // SSI0 Rx and Tx
-    IntDefaultHandler,                      // I2C0 Master and Slave
+    SSI0IntHandler,                         // SSI0 Rx and Tx
+    I2C0IntHandler,                         // I2C0 Master and Slave
     IntDefaultHandler,                      // PWM Fault
     IntDefaultHandler,                      // PWM Generator 0
     IntDefaultHandler,                      // PWM Generator 1
     IntDefaultHandler,                      // PWM Generator 2
     IntDefaultHandler,                      // Quadrature Encoder 0
-    IntDefaultHandler,                      // ADC Sequence 0
-    IntDefaultHandler,                      // ADC Sequence 1
-    IntDefaultHandler,                      // ADC Sequence 2
-    IntDefaultHandler,                      // ADC Sequence 3
-    IntDefaultHandler,                      // Watchdog timer
-    IntDefaultHandler,                      // Timer 0 subtimer A
-    IntDefaultHandler,                      // Timer 0 subtimer B
-    IntDefaultHandler,                      // Timer 1 subtimer A
-    IntDefaultHandler,                      // Timer 1 subtimer B
-    IntDefaultHandler,                      // Timer 2 subtimer A
-    IntDefaultHandler,                      // Timer 2 subtimer B
-    IntDefaultHandler,                      // Analog Comparator 0
-    IntDefaultHandler,                      // Analog Comparator 1
+    ADC0Sequence0IntHandler,                // ADC Sequence 0
+    ADC0Sequence1IntHandler,                // ADC Sequence 1
+    ADC0Sequence2IntHandler,                // ADC Sequence 2
+    ADC0Sequence3IntHandler,                // ADC Sequence 3
+    WatchdogTimerIntHandler,                // Watchdog timer
+    Timer0AIntHandler,                      // Timer 0 subtimer A
+    Timer0BIntHandler,                      // Timer 0 subtimer B
+    Timer1AIntHandler,                      // Timer 1 subtimer A
+    Timer1BIntHandler,                      // Timer 1 subtimer B
+    Timer2AIntHandler,                      // Timer 2 subtimer A
+    Timer2BIntHandler,                      // Timer 2 subtimer B
+    AnalogComparator0IntHandler,            // Analog Comparator 0
+    AnalogComparator1IntHandler,            // Analog Comparator 1
     IntDefaultHandler,                      // Analog Comparator 2
     IntDefaultHandler,                      // System Control (PLL, OSC, BO)
     IntDefaultHandler,                      // FLASH Control
-    IntDefaultHandler,                      // GPIO Port F
+    GPIOFIntHandler,                        // GPIO Port F
     IntDefaultHandler,                      // GPIO Port G
     IntDefaultHandler,                      // GPIO Port H
     UART2IntHandler,                        // UART2 Rx and Tx
-    IntDefaultHandler,                      // SSI1 Rx and Tx
-    IntDefaultHandler,                      // Timer 3 subtimer A
-    IntDefaultHandler,                      // Timer 3 subtimer B
-    IntDefaultHandler,                      // I2C1 Master and Slave
+    SSI1IntHandler,                         // SSI1 Rx and Tx
+    Timer3AIntHandler,                      // Timer 3 subtimer A
+    Timer3BIntHandler,                      // Timer 3 subtimer B
+    I2C1IntHandler,                         // I2C1 Master and Slave
     IntDefaultHandler,                      // Quadrature Encoder 1
-    IntDefaultHandler,                      // CAN0
+    CAN0IntHandler,                         // CAN0
     IntDefaultHandler,                      // CAN1
     IntDefaultHandler,                      // CAN2
     IntDefaultHandler,                      // Ethernet
-    IntDefaultHandler,                      // Hibernate
+    HibernateIntHandler,                    // Hibernate
     USB0DeviceIntHandler,                   // USB0
     IntDefaultHandler,                      // PWM Generator 3
-    IntDefaultHandler,                      // uDMA Software Transfer
-    IntDefaultHandler,                      // uDMA Error
-    IntDefaultHandler,                      // ADC1 Sequence 0
-    IntDefaultHandler,                      // ADC1 Sequence 1
-    IntDefaultHandler,                      // ADC1 Sequence 2
-    IntDefaultHandler,                      // ADC1 Sequence 3
+    uDMASoftTransferIntHandler,             // uDMA Software Transfer
+    uDMAErrorIntHandler,                    // uDMA Error
+    ADC1Sequence0IntHandler,                // ADC1 Sequence 0
+    ADC1Sequence1IntHandler,                // ADC1 Sequence 1
+    ADC1Sequence2IntHandler,                // ADC1 Sequence 2
+    ADC1Sequence3IntHandler,                // ADC1 Sequence 3
     IntDefaultHandler,                      // I2S0
     IntDefaultHandler,                      // External Bus Interface 0
     IntDefaultHandler,                      // GPIO Port J
     IntDefaultHandler,                      // GPIO Port K
     IntDefaultHandler,                      // GPIO Port L
-    IntDefaultHandler,                      // SSI2 Rx and Tx
-    IntDefaultHandler,                      // SSI3 Rx and Tx
+    SSI2IntHandler,                         // SSI2 Rx and Tx
+    SSI3IntHandler,                         // SSI3 Rx and Tx
     UART3IntHandler,                        // UART3 Rx and Tx
     UART4IntHandler,                        // UART4 Rx and Tx
     UART5IntHandler,                        // UART5 Rx and Tx
@@ -160,10 +251,10 @@ void (* const g_pfnVectors[])(void) =
     0,                                      // Reserved
     0,                                      // Reserved
     0,                                      // Reserved
-    IntDefaultHandler,                      // I2C2 Master and Slave
-    IntDefaultHandler,                      // I2C3 Master and Slave
-    IntDefaultHandler,                      // Timer 4 subtimer A
-    IntDefaultHandler,                      // Timer 4 subtimer B
+    I2C2IntHandler,                         // I2C2 Master and Slave
+    I2C3IntHandler,                         // I2C3 Master and Slave
+    Timer4AIntHandler,                      // Timer 4 subtimer A
+    Timer4BIntHandler,                      // Timer 4 subtimer B
     0,                                      // Reserved
     0,                                      // Reserved
     0,                                      // Reserved
@@ -184,21 +275,21 @@ void (* const g_pfnVectors[])(void) =
     0,                                      // Reserved
     0,                                      // Reserved
     0,                                      // Reserved
-    IntDefaultHandler,                      // Timer 5 subtimer A
-    IntDefaultHandler,                      // Timer 5 subtimer B
-    IntDefaultHandler,                      // Wide Timer 0 subtimer A
-    IntDefaultHandler,                      // Wide Timer 0 subtimer B
-    IntDefaultHandler,                      // Wide Timer 1 subtimer A
-    IntDefaultHandler,                      // Wide Timer 1 subtimer B
-    IntDefaultHandler,                      // Wide Timer 2 subtimer A
-    IntDefaultHandler,                      // Wide Timer 2 subtimer B
-    IntDefaultHandler,                      // Wide Timer 3 subtimer A
-    IntDefaultHandler,                      // Wide Timer 3 subtimer B
+    Timer5AIntHandler,                      // Timer 5 subtimer A
+    Timer5AIntHandler,                      // Timer 5 subtimer B
+    WTimer0AIntHandler,                     // Wide Timer 0 subtimer A
+    WTimer0BIntHandler,                     // Wide Timer 0 subtimer B
+    WTimer1AIntHandler,                     // Wide Timer 1 subtimer A
+    WTimer1BIntHandler,                     // Wide Timer 1 subtimer B
+    WTimer2AIntHandler,                     // Wide Timer 2 subtimer A
+    WTimer2BIntHandler,                     // Wide Timer 2 subtimer B
+    WTimer3AIntHandler,                     // Wide Timer 3 subtimer A
+    WTimer3BIntHandler,                     // Wide Timer 3 subtimer B
     IntDefaultHandler,                      // Wide Timer 4 subtimer A
     IntDefaultHandler,                      // Wide Timer 4 subtimer B
-    IntDefaultHandler,                      // Wide Timer 5 subtimer A
-    IntDefaultHandler,                      // Wide Timer 5 subtimer B
-    IntDefaultHandler,                      // FPU
+    WTimer5AIntHandler,                     // Wide Timer 5 subtimer A
+    WTimer5BIntHandler,                     // Wide Timer 5 subtimer B
+    FPUIntHandler,                          // FPU
     IntDefaultHandler,                      // PECI 0
     IntDefaultHandler,                      // LPC 0
     IntDefaultHandler,                      // I2C4 Master and Slave
