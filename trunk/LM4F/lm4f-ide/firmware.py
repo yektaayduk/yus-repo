@@ -113,7 +113,7 @@ def getCoreSourceFiles(userIncludes = [], board='lm4f120xl'):
     return srcs
 
 def getIncludeDirs():
-    dirs = [ BSP_DIR, LM4F_DIR ]
+    dirs = [ BSP_DIR, LM4F_DIR, USER_LIB_DIR ]
     includes = []
     for d in dirs:
         #includes.append('-I' + os.getcwd() + '/' + d)
@@ -153,7 +153,7 @@ def parseUserCode(userCode=None, outPath=None, toolChain=''):
                     include = '-I' + libpath
                     if not (include in includes): # include only once
                         includes.append( include )
-                        for folder in ['/', '/Source/', '/src/']:
+                        for folder in ['/', '/Source/', '/src/', '/device/', '/host/']:
                             for ext in ['*.c', '*.cpp', '*.cxx']: # compile all *.c, *.cpp, *.cxx files
                                 sources += glob.glob(libpath + folder + ext);
         fin.close()
