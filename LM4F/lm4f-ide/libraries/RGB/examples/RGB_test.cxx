@@ -6,7 +6,7 @@ int main(void)
 	unsigned long colors[3];
 	
 	RGBInit(1);
-	RGBIntensitySet(0.05f);
+	RGBIntensitySet(0.2f);
 	
 	while(true)
 	{
@@ -20,7 +20,7 @@ int main(void)
 		memset(colors, 0, sizeof(colors));
 		RGBColorSet(colors);
 		delay_ms(500);
-		colors[1] = 0x8000;
+		colors[1] = 0x2000;
 		RGBColorSet(colors);
 		delay_ms(500);
 		
