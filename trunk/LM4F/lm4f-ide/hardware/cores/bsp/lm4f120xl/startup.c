@@ -42,6 +42,8 @@ __attribute__((weak)) void SVCIntHandler(void) { while(1) {} }
 __attribute__((weak)) void PendSVIntHandler(void) { while(1) {} }
 __attribute__((weak)) void SysTickIntHandler(void) { while(1) {} }
 
+__attribute__((weak)) void USB0DeviceIntHandler(void) { while(1) {} }
+
 //*****************************************************************************
 //
 // The entry point for the application.
@@ -134,7 +136,7 @@ void (* const g_pfnVectors[])(void) =
     IntDefaultHandler,                      // CAN2
     IntDefaultHandler,                      // Ethernet
     IntDefaultHandler,                      // Hibernate
-    IntDefaultHandler,                      // USB0
+    USB0DeviceIntHandler,                   // USB0
     IntDefaultHandler,                      // PWM Generator 3
     IntDefaultHandler,                      // uDMA Software Transfer
     IntDefaultHandler,                      // uDMA Error
