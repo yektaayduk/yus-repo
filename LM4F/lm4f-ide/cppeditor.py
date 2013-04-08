@@ -234,8 +234,21 @@ class CppEditor(QsciScintilla):
         self.libraryAPIs.prepare()
         self.lexer.setAPIs(self.libraryAPIs)
     
-    def insertIncludeDirective(self, library=''):        
+    def insertIncludeDirective(self, library=''):
         directive =  '#include <' + library + '.h>\r\n'
-        self.insertAt(directive, 0, 0) # insert at first line
+        insert_pos = 0
+        found_inc = False
+        for line in range(self.lines()):
+            txt = str(self.text(line)).strip()
+            if txt.find('int') == 0: # e.g. reached "int main()"
+                insert_pos = line - 1
+                break
+            elif txt.find('#include') == 0:
+                found_inc = True
+            elif found_inc:
+                insert_pos = line
+                break
+        if insert_pos < 0 or insert_pos >= self.lines():
+            insert_pos = 0
+        self.insertAt(directive, insert_pos, 0)
         self.updateApiKeywords()
-
