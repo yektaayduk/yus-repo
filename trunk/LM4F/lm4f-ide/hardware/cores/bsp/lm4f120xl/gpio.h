@@ -71,6 +71,14 @@
 #define INPUT	INPUT_FLOATING
 #define OUTPUT	OUTPUT_PUSHPULL
 
+// pin states
+#ifndef HIGH
+#define HIGH	1
+#endif
+#ifndef LOW
+#define LOW		0
+#endif
+
 #ifdef __cplusplus
 extern "C" {
 #endif
