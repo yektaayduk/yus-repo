@@ -214,10 +214,11 @@ class PicCompilerThread(QtCore.QThread):
             for src in sourceFiles:
                 src = str(src)
                 folder, objname = os.path.split( src[:src.rfind('.')] + '.o' )
-                newfolder = os.path.split(folder)[1]
-                objdir = os.path.join(outPath, 'obj', newfolder)
+                if folder.find('libraries')!=0 and folder.find('hardware')!=0:
+                    folder = 'user'
+                objdir = os.path.join(outPath, 'obj', folder)
                 if not os.path.exists(objdir): os.makedirs( objdir )
-                obj = '$(OUTPUT_DIR)/obj/' + newfolder + '/' + objname
+                obj = '$(OUTPUT_DIR)/obj/' + folder + '/' + objname
                 fout.write( '\t' + obj + ' \\\n' )
                 objects.append(obj)
             fout.write( '\n\n' )

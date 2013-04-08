@@ -77,6 +77,8 @@ if os.sys.platform == 'win32':
     files += glob.glob('*.dll')
     # add drivers
     files += glob.glob('drivers/*')
+    # add lm4tools
+    files += glob.glob('tools/lm4tools/*')
     EXE = Executable(
         script = 'main.pyw',
         base = 'Win32GUI',
@@ -89,6 +91,8 @@ elif os.sys.platform == 'linux2':
     files += glob.glob('tools/gccarm/*')
     # add dll's
     files += glob.glob('*.so')
+    # add lm4tools
+    files += glob.glob('tools/lm4tools/*')
     EXE = Executable(
         script = 'main.pyw',
         targetName = 'LM4F-IDE',
@@ -101,8 +105,10 @@ elif os.sys.platform == 'darwin': # note: use cx_Freeze 4.3 or later
     script_exe = False
     # add tool chain files
     files += glob.glob('tools/gccarm/*')
-    # add PL2303 usb driver
-    files += glob.glob('drivers/PL2303/macosx/*')
+    # add dll's
+    files += glob.glob('*.so')
+    # add lm4tools
+    files += glob.glob('tools/lm4tools/*')
     EXE = Executable(
         script = 'main.pyw',
         targetName = 'LM4F-IDE',
