@@ -282,7 +282,8 @@ class AppMainWindow(QtGui.QMainWindow):
         self.stopAct = QtGui.QAction(QtGui.QIcon("./images/stop.png"), "S&top",
                 self, statusTip="Cancel the build process", triggered=self.stopBuild)
         self.programAct = QtGui.QAction(QtGui.QIcon("./images/load.png"), "&Load",
-                self, statusTip="Download program to the board using bootloader", triggered=self.programChip)
+                self, shortcut=QtGui.QKeySequence("Ctrl+R"), 
+                statusTip="Download program to the board using bootloader", triggered=self.programChip)
          
         self.firmwareLibList = scanFirmwareLibs()
         self.firmwareLibActs = []
