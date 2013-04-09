@@ -143,6 +143,8 @@ class OutLineView(QtGui.QDockWidget):
                     
                     try:
                         tip = "%s : %s [%d, %d]"%(label, node.kind.name, node.location.line, node.location.column)
+                        if node.kind.name=='VAR_DECL' and level>3:
+                            level = level - 2
                         if level==1:
                             del self.itemStack[:]
                             item = QtGui.QTreeWidgetItem(self.treeWidget, [label])

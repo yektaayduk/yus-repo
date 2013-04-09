@@ -205,12 +205,13 @@ volatile tBoolean g_bSuspended = false;
 
 #define MAX_SEND_DELAY          50
 
-volatile enum
+typedef enum
 {
     STATE_UNCONFIGURED,
 	STATE_IDLE,
 	STATE_SENDING
-} g_eKeyboardState = STATE_UNCONFIGURED;
+}eKeyboardState_t;
+volatile eKeyboardState_t g_eKeyboardState = STATE_UNCONFIGURED;
 
 // Sends a string of characters via the USB HID keyboard interface.
 void SendString(char *pcStr);
