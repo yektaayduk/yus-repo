@@ -1,0 +1,9 @@
+Stellaris® ICDI Drivers (usb)
+
+official download site:
+http://www.ti.com/tool/stellaris_icdi_drivers
+
+
+since revision r155, these files are not anymore include in the IDE package.
+cached link:
+http://yus-repo.googlecode.com/svn-history/r154/trunk/LM4F/lm4f-ide/drivers/
