@@ -29,7 +29,7 @@ import os, functools
 from PyQt4 import QtGui, QtCore
 from editor import MultipleCppEditor
 from firmware import scanFirmwareLibs, getExampleProjects
-from compiler import PicCompilerThread
+from compiler import GccCompilerThread
 from configs import IdeConfig
 from serialport import scan_serialports, SerialPortMonitor
 from lm4flash import LM4FlashThread
@@ -70,7 +70,7 @@ class AppMainWindow(QtGui.QMainWindow):
         self.OutLineView.setObjectName("OutLineView")
         self.addDockWidget(QtCore.Qt.BottomDockWidgetArea, self.OutLineView)
         
-        self.Compiler = PicCompilerThread(self)
+        self.Compiler = GccCompilerThread(self)
         self.pollCompilerTimerID = None
         
         self.serialPortName = None
@@ -104,9 +104,14 @@ class AppMainWindow(QtGui.QMainWindow):
         # todo: other informations
         self.aboutDlg.showMessage("LM4F GCC-ARM IDE [ %s ]" % self.aboutDlg.getVersions(),
                            QtCore.Qt.AlignLeft | QtCore.Qt.AlignBottom, QtGui.QColor("#eecc77"));
+                           
+    def openProjectProtoSite(self):
+        QtGui.QDesktopServices.openUrl( QtCore.QUrl("http://projectproto.blogspot.com") )
+    
     def openPhilRoboticsSite(self):
         # todo: change to .ORG
-        QtGui.QDesktopServices.openUrl( QtCore.QUrl("http://www.philrobotics.com/") )
+        QtGui.QDesktopServices.openUrl( QtCore.QUrl("http://www.philrobotics.com") )
+        
     def aboutCompiler(self):
         info = self.Compiler.getCompilerInfo()
         #self.log.append(info)
@@ -336,11 +341,13 @@ class AppMainWindow(QtGui.QMainWindow):
         self.aboutAct = QtGui.QAction("&About", self, shortcut=QtGui.QKeySequence("F1"),
                 statusTip="About the IDE", triggered=self.about)        
         self.aboutCompilerAct = QtGui.QAction("About &Compiler", self,
-                statusTip="About PICC tool", triggered=self.aboutCompiler)
+                statusTip="About GNU tools for ARM Embedded", triggered=self.aboutCompiler)
         self.aboutQtAct = QtGui.QAction("About &Qt", self,
                 statusTip="Show the Qt library's About box", triggered=QtGui.qApp.aboutQt)
-        self.visitSiteAct = QtGui.QAction("Visit &PhilRobotics", self,
-                statusTip="Open PhilRobotics Website", triggered=self.openPhilRoboticsSite)
+        self.visitProjectprotoSiteAct = QtGui.QAction("Visit &ProjectProto", self,
+                statusTip="Open ProjectProto blog site (yus' projects)", triggered=self.openProjectProtoSite)
+        self.visitPhilroboticsSiteAct = QtGui.QAction("Visit Phil&Robotics", self,
+                statusTip="Open PhilRobotics website", triggered=self.openPhilRoboticsSite)
         
     def createMenus(self):
         ### File Menu ###
@@ -414,7 +421,8 @@ class AppMainWindow(QtGui.QMainWindow):
         
         ### Help Menu ###
         self.helpMenu = self.menuBar().addMenu("&Help")
-        self.helpMenu.addAction(self.visitSiteAct)
+        self.helpMenu.addAction(self.visitProjectprotoSiteAct)
+        self.helpMenu.addAction(self.visitPhilroboticsSiteAct)
         self.helpMenu.addAction(self.aboutCompilerAct)
         self.helpMenu.addAction(self.aboutQtAct)
         self.helpMenu.addAction(self.aboutAct)

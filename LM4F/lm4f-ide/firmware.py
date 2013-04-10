@@ -91,6 +91,8 @@ def getCoreSourceFiles(userIncludes = [], board='lm4f120xl'):
                    + glob.glob(BSP_DIR + '/%s/*.cpp'%board) \
                    + glob.glob(LM4F_DRIVERLIB_DIR + '/*.c')
     
+    '''
+    # todo
     for include in userIncludes:
         userheader = os.path.join( include[2:], os.path.split(include[2:])[1] + '.h' )
         try:
@@ -99,12 +101,13 @@ def getCoreSourceFiles(userIncludes = [], board='lm4f120xl'):
                 if line.replace(' ', '').find('#include') == 0: # found an '#include' directive
                     temp = line.strip()[len('#includes')-1 : ].strip()
                     header = temp[1:-1].strip() # get the header file
-                    src = LM4F_DIR + '/src/' + header[:-2] + '.c'
+                    src = LM4F_DIR + '/driverlib/' + header[:-2] + '.c'
                     if os.path.isfile(src) and not (src in required):
                         required.append( src )
             fin.close()
         except:
             pass
+    '''
         
     for fname in required:
         #srcs.append( os.path.join(os.getcwd(), fname) )

@@ -122,9 +122,9 @@ else:
 ##################### cx_freeze ##################################
 if EXE:
     setup( name = "LM4F-IDE",
-           description = 'STM32-GCC-ARM-Embedded Integrated Development Environment',
-           version = get_svn_revision(),
-           author = 'PhilRobotics',
+           description = 'LM4F-GCC-ARM-Embedded Integrated Development Environment',
+           version = svn_rev,
+           author = 'Julius Constante',
            options = {'build_exe': {
                                     'include_files' : files,
                                     'includes' : includes,

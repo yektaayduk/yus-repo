@@ -35,7 +35,7 @@ OUT_DIR = '.output'
 # makefile filename
 MAKEFILE = 'Makefile'
 
-class PicCompilerThread(QtCore.QThread):
+class GccCompilerThread(QtCore.QThread):
     '''
     classdocs
     '''
