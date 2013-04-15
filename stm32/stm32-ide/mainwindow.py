@@ -29,7 +29,7 @@ import os, functools
 from PyQt4 import QtGui, QtCore
 from editor import MultipleCppEditor
 from firmware import scanFirmwareLibs, getExampleProjects
-from compiler import PicCompilerThread
+from compiler import GccCompilerThread
 from configs import IdeConfig
 from serialport import scan_serialports, SerialPortMonitor
 from flashloader import FlashLoaderThread
@@ -70,17 +70,15 @@ class AppMainWindow(QtGui.QMainWindow):
         self.OutLineView.setObjectName("OutLineView")
         self.addDockWidget(QtCore.Qt.BottomDockWidgetArea, self.OutLineView)
         
-        self.Compiler = PicCompilerThread(self)
+        self.Compiler = GccCompilerThread(self)
         self.pollCompilerTimerID = None
         
         self.serialPortName = None
         self.serialPortLabel = QtGui.QLabel('<font color=red><i>(select port)</i></font>')
         self.SerialPortMonitorDialog = SerialPortMonitor(self)
         
-        self.pollPK2TimerID = None
-        
         self.flashLoader = FlashLoaderThread(self)
-        self.pollTblTimerID = None
+        self.pollLoaderTimerID = None
         
         self.Configs = IdeConfig(self)
         
@@ -180,8 +178,8 @@ class AppMainWindow(QtGui.QMainWindow):
         if ret:
             self.insertLog("<font color=green>Bootload/Program Device:</font>", True)
             self.insertLog(msg)
-            self.pollTblTimerID = self.startTimer(0.5) # relatively fast!
-            if not self.pollTblTimerID:
+            self.pollLoaderTimerID = self.startTimer(0.5) # relatively fast!
+            if not self.pollLoaderTimerID:
                 self.insertLog("<font color=red>Unable to start Timer.</font>")
         else:
             self.insertLog("<font color=red>%s</font>"%msg)
@@ -474,22 +472,15 @@ class AppMainWindow(QtGui.QMainWindow):
             else:
                 self.killTimer(timerID)
                 self.pollCompilerTimerID = None
-        if timerID == self.pollPK2TimerID:
-            ret, msg = self.PK2Programmer.pollPK2Process()
-            if ret:
-                if len(msg):
-                    self.insertLog( "<font color=lightgreen>%s</font>" % msg )
-            else:
-                self.killTimer(timerID)
-                self.pollPK2TimerID = None
-        if timerID == self.pollTblTimerID:
+        
+        if timerID == self.pollLoaderTimerID:
             ret, msg = self.flashLoader.pollBootLoadProcess()
             if ret:
                 if len(msg):
                     self.insertLog( "<font color=lightgreen>%s</font>" % msg )
             else:
                 self.killTimer(timerID)
-                self.pollTblTimerID = None
+                self.pollLoaderTimerID = None
 
         return QtGui.QMainWindow.timerEvent(self, *args, **kwargs)
         

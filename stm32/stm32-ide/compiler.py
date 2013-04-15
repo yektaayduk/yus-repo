@@ -27,16 +27,15 @@
 
 import os, subprocess
 from PyQt4 import QtCore
-from firmware import parseUserCode, getLinkerScript, getCompilerDefines
+from firmware import USER_CODE_EXT, parseUserCode, getLinkerScript, getCompilerDefines
 from configs import CompilerConfig
-from cppeditor import PROJECT_EXT
 
 # output directory 
 OUT_DIR = '.output'
 # makefile filename
 MAKEFILE = 'Makefile'
 
-class PicCompilerThread(QtCore.QThread):
+class GccCompilerThread(QtCore.QThread):
     '''
     classdocs
     '''
@@ -113,6 +112,7 @@ class PicCompilerThread(QtCore.QThread):
                     # todo: other error messages
                     elif msg_lowered.find("error:") >= 0 \
                             or msg_lowered.find("make: ***") >= 0 \
+                            or msg_lowered.find(": multiple definition") >= 0 \
                             or msg_lowered.find("undefined reference to") >= 0:                    
                         self.LogList.append( "<font color=red>%s</font>" % msg )
                         error_count += 1
@@ -209,10 +209,11 @@ class PicCompilerThread(QtCore.QThread):
             for src in sourceFiles:
                 src = str(src)
                 folder, objname = os.path.split( src[:src.rfind('.')] + '.o' )
-                newfolder = os.path.split(folder)[1]
-                objdir = os.path.join(outPath, 'obj', newfolder)
+                if folder.find('libraries')!=0 and folder.find('hardware')!=0:
+                    folder = 'user'
+                objdir = os.path.join(outPath, 'obj', folder)
                 if not os.path.exists(objdir): os.makedirs( objdir )
-                obj = '$(OUTPUT_DIR)/obj/' + newfolder + '/' + objname
+                obj = '$(OUTPUT_DIR)/obj/' + folder + '/' + objname
                 fout.write( '\t' + obj + ' \\\n' )
                 objects.append(obj)
             fout.write( '\n\n' )
@@ -235,7 +236,7 @@ class PicCompilerThread(QtCore.QThread):
                 src = str(src)
                 fout.write( objects[i] + ' : ' + src + '\n')
                 src_ext = os.path.splitext(src)[1].lower()
-                if src_ext == PROJECT_EXT:
+                if src_ext == USER_CODE_EXT:
                     fout.write( '\t@echo [CXX] $< \n\t' )
                     if not verbose: fout.write( '@' )
                     fout.write( '$(TCHAIN)gcc $(INCLUDES) $(CXXFLAGS) -x c++ $< -o $@\n\n')                        
@@ -247,7 +248,7 @@ class PicCompilerThread(QtCore.QThread):
                     fout.write( '\t@echo [CC] $(<F)\n\t' )
                     if not verbose: fout.write( '@' )
                     fout.write( '$(TCHAIN)gcc $(INCLUDES) $(CFLAGS) $< -o $@\n\n')
-                elif src_ext == '.cpp' or src_ext == '.cxx':
+                elif src_ext == '.cpp':
                     fout.write( '\t@echo [CPP] $(<F)\n\t' )
                     if not verbose: fout.write( '@' )
                     fout.write( '$(TCHAIN)gcc $(INCLUDES) $(CXXFLAGS) $< -o $@\n\n')

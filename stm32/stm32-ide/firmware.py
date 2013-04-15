@@ -30,8 +30,8 @@ import clang.cindex as clang
 from configs import FirmwareConfig
 from PyQt4 import QtCore
 
-# library path
-LIB_DIR = 'libraries'
+# User library path
+USER_LIB_DIR = 'libraries'
 # PhilRobokit Library
 PRK_CORE_DIR = 'hardware/cores'
 PRK_BSP_DIR = PRK_CORE_DIR + '/bsp'
@@ -45,16 +45,18 @@ LINKER_SCRIPT = PRK_BSP_DIR + '/stm32_flash_md_vl.ld'
 
 # Example Projects
 EXAMPLES_DIR = 'examples'
-# required header file(s)
-REQUIRED_INCLUDES = ['#include <stm32f10x.h>']
+# required header file
+REQUIRED_INCLUDE = '#include <platform.h>'
+# user project/source code extension name
+USER_CODE_EXT = '.cxx'
 
 fwconfig = FirmwareConfig()
 
 def scanFirmwareLibs():
     libraries = []
-    folders = glob.glob(LIB_DIR + '/*') # scan all folders inside LIB_DIR
+    folders = glob.glob(USER_LIB_DIR + '/*') # scan all folders inside LIB_DIR
     for folder in folders:
-        libname = folder[len(LIB_DIR)+1:]
+        libname = folder[len(USER_LIB_DIR)+1:]
         headerfile = folder + '/' + libname + '.h' # header filename must be based on its folder name
         if os.path.isfile(headerfile): # check if header file exists
             libraries.append( libname )
@@ -66,14 +68,14 @@ def getExampleProjects(libFolders=[]):
     sampleFolders = os.walk(EXAMPLES_DIR).next()[1] # get intermediate subfolders
     for lib in sampleFolders:
         if lib[0] != '.': # skip hidden folders
-            projects = glob.glob(EXAMPLES_DIR + '/' + lib +'/*.phr') # scan phr files
+            projects = glob.glob(EXAMPLES_DIR + '/' + lib + '/*' + USER_CODE_EXT )
             if len(projects):
                 group = str(lib).upper()
                 if not sampleProjects.has_key(group): # avoid duplicates
                     sampleProjects[group] = projects # store in the dictionary
     # get example projects that use optional user libraries
     for lib in libFolders:
-        projects = glob.glob(LIB_DIR + '/' + lib +'/examples/*.phr')
+        projects = glob.glob(USER_LIB_DIR + '/' + lib + '/examples/*' + USER_CODE_EXT )
         if len(projects):
             group = str(lib).upper()
             if not sampleProjects.has_key(group):
@@ -150,7 +152,7 @@ def parseUserCode(userCode=None, outPath=None, toolChain=''):
                 temp = line.strip()[len('#includes')-1 : ].strip()
                 header = temp[1:-1].strip() # get the header file
                 # print header
-                libpath = LIB_DIR + '/' + header[:-2]
+                libpath = USER_LIB_DIR + '/' + header[:-2]
                 # check the folder and the header file if they exist
                 if os.path.exists( libpath ) and os.path.isfile(libpath + '/' + header):
                     # print libpath
@@ -158,9 +160,9 @@ def parseUserCode(userCode=None, outPath=None, toolChain=''):
                     include = '-I' + libpath
                     if not (include in includes): # include only once
                         includes.append( include )
-                        sources += glob.glob(libpath + '/*.c') # compile all *.c files
-                        sources += glob.glob(libpath + '/*.cpp') # compile all *.cpp files
-                        sources += glob.glob(libpath + '/*.cxx') # compile all *.cxx files
+                        for folder in ['/', '/Source/', '/src/', '/device/', '/host/']:
+                            for ext in ['*.c', '*.cpp', '*.cxx']: # compile all *.c, *.cpp, *.cxx files
+                                sources += glob.glob(libpath + folder + ext);
         fin.close()
     except:
         return False, [], []
