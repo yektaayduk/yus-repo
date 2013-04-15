@@ -104,7 +104,7 @@ class AppMainWindow(QtGui.QMainWindow):
             self.aboutDlg.showUpdateDialog()
             return
         # todo: other informations
-        self.aboutDlg.showMessage("STM32 GCC-ARM IDE [ %s ]" % self.Configs.getVersions(),
+        self.aboutDlg.showMessage("STM32 GCC-ARM IDE [ %s ]" % self.aboutDlg.getVersions(),
                            QtCore.Qt.AlignLeft | QtCore.Qt.AlignBottom, QtGui.QColor("#eecc77"));
     def openPhilRoboticsSite(self):
         # todo: change to .ORG

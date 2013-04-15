@@ -25,7 +25,7 @@
 
 '''
 
-import os, glob
+import os, glob, datetime
 from cx_Freeze import setup, Executable
 from configs import get_svn_revision
 
@@ -51,17 +51,20 @@ files += glob.glob('libraries/*')
 # example projects
 files += glob.glob('examples/*')
 
-'''
-# version file
-vfile = open('configs/versions.txt', 'w') # overwrite
 svn_rev = get_svn_revision()
 if svn_rev:
-    vfile.write('IDE build ' + svn_rev + '\n')
-vfile.write('firmware lib ' + "1.xx" + '\n') # todo: firmware library version
-vfile.close()
-
-files.append('configs/versions.txt')
-'''
+    today = datetime.datetime.now()
+    unknown = 'ide_revision = "(unknown)"'
+    revision = 'ide_revision = "%s (%s)"' %(today.strftime("%b %d, %Y"), svn_rev)
+    print revision
+    old_file = open('about.py')
+    new_file = open('about.tmp.py', 'w')
+    for line in old_file:
+        new_file.write(line.replace(unknown, revision))
+    new_file.close()
+    old_file.close()
+    os.rename('about.py', 'about.bkp.py') # create backup'
+    os.rename('about.tmp.py', 'about.py')
 
 ######## Platform dependent settings ##################################
 if os.sys.platform == 'win32':
@@ -114,8 +117,8 @@ else:
 if EXE:
     setup( name = "STM32-IDE",
            description = 'STM32-GCC-ARM-Embedded Integrated Development Environment',
-           version = get_svn_revision(),
-           author = 'PhilRobotics',
+           version = svn_rev,
+           author = 'Julius Constante',
            options = {'build_exe': {
                                     'include_files' : files,
                                     'includes' : includes,
@@ -127,4 +130,8 @@ if EXE:
                                     'include_in_shared_zip' : False,
                                     } },
            executables = [EXE]  )
+##################################################################
 
+if svn_rev and os.path.exists('about.bkp.py'):
+    os.remove('about.py')
+    os.rename('about.bkp.py', 'about.py') # restore file

@@ -31,7 +31,7 @@ from firmware import FirmwareLibUpdate
 SPLASH_IMAGE = 'images/about.png'
 
 SPLASH_NOTICE = '''
-  PhilRoboKit IDE  Copyright (C) 2013  PhilRobotics
+  STM32 GCC-ARM IDE  Copyright (C) 2013  PhilRobotics
   This program comes with ABSOLUTELY NO WARRANTY.
   This is free software, and you are welcome
   to redistribute it under certain conditions.
@@ -41,6 +41,7 @@ SPLASH_NOTICE = '''
 '''
 
 class AboutDialog(QtGui.QSplashScreen):
+    ide_revision = "(unknown)"
     def __init__(self, parent=None):
         QtGui.QSplashScreen.__init__(self, parent, flags=QtCore.Qt.WindowStaysOnTopHint)
         
@@ -54,6 +55,10 @@ class AboutDialog(QtGui.QSplashScreen):
         self.fw_update = FirmwareLibUpdate(self)
         self.input_dlg = QtGui.QInputDialog(self)
         self.fw_update_timer_id = None
+        
+    def getVersions(self):
+        fw_rev = self.fw_update.getCurrentRevision()
+        return 'build: %s   Library: %s' %(self.ide_revision, fw_rev)
         
     def mousePressEvent(self, *args, **kwargs):
         # print 'you pressed me!'
