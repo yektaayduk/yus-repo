@@ -30,18 +30,19 @@ import clang.cindex as clang
 from configs import FirmwareConfig
 from PyQt4 import QtCore
 
+# Core firmware Library
+CORE_LIB_DIR = 'hardware/cores'
 # User library path
 USER_LIB_DIR = 'libraries'
-# PhilRobokit Library
-PRK_CORE_DIR = 'hardware/cores'
-PRK_BSP_DIR = PRK_CORE_DIR + '/bsp'
-STMLIB_DIR = PRK_CORE_DIR + '/stm_lib'
-CMSIS_CM3_DIR = PRK_CORE_DIR + '/cmsis/CM3'
+
+BSP_DIR = CORE_LIB_DIR + '/bsp'
+STMLIB_DIR = CORE_LIB_DIR + '/stm_lib'
+CMSIS_CM3_DIR = CORE_LIB_DIR + '/cmsis/CM3'
 CM3_CORE_DIR = CMSIS_CM3_DIR + '/CoreSupport'
 CM3_DEVICE_DIR = CMSIS_CM3_DIR + '/DeviceSupport/ST/STM32F10x'
 
-STARTUP_CODE = PRK_BSP_DIR + '/startup_stm32f10x_md_vl.s'
-LINKER_SCRIPT = PRK_BSP_DIR + '/stm32_flash_md_vl.ld'
+STARTUP_CODE = BSP_DIR + '/startup_stm32f10x_md_vl.s'
+LINKER_SCRIPT = BSP_DIR + '/stm32_flash_md_vl.ld'
 
 # Example Projects
 EXAMPLES_DIR = 'examples'
@@ -86,9 +87,9 @@ def getExampleProjects(libFolders=[]):
 def getCoreSourceFiles(userIncludes = []):
     # scan all *.c files
     srcs = []
-    required = glob.glob(PRK_BSP_DIR + '/*.s') \
-                   + glob.glob(PRK_BSP_DIR + '/*.c') \
-                   + glob.glob(PRK_BSP_DIR + '/*.cpp') \
+    required = glob.glob(BSP_DIR + '/*.s') \
+                   + glob.glob(BSP_DIR + '/*.c') \
+                   + glob.glob(BSP_DIR + '/*.cpp') \
                    + glob.glob(CM3_CORE_DIR + '/*.c') \
                    + glob.glob(CM3_DEVICE_DIR+ '/*.c')
     required.append(STMLIB_DIR + '/src/misc.c')
@@ -119,7 +120,7 @@ def getCoreSourceFiles(userIncludes = []):
     return srcs
 
 def getIncludeDirs():
-    dirs = [ PRK_BSP_DIR, STMLIB_DIR + '/inc', CM3_CORE_DIR, CM3_DEVICE_DIR ]
+    dirs = [ BSP_DIR, STMLIB_DIR + '/inc', CM3_CORE_DIR, CM3_DEVICE_DIR ]
     includes = []
     for d in dirs:
         #includes.append('-I' + os.getcwd() + '/' + d)
@@ -204,7 +205,7 @@ def find_typerefs(node, fname=None):
 def getLibraryKeywords(headerFiles=[]):
     if not len(headerFiles):
         # search default header files
-        headerFiles = glob.glob( PRK_BSP_DIR + '/*.h' )
+        headerFiles = glob.glob( BSP_DIR + '/*.h' )
         headerFiles += glob.glob( STMLIB_DIR + '/inc/*.h' ) # large files!!
         
     #print headerFiles

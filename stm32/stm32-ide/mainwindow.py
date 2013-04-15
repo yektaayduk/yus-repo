@@ -103,10 +103,14 @@ class AppMainWindow(QtGui.QMainWindow):
             return
         # todo: other informations
         self.aboutDlg.showMessage("STM32 GCC-ARM IDE [ %s ]" % self.aboutDlg.getVersions(),
-                           QtCore.Qt.AlignLeft | QtCore.Qt.AlignBottom, QtGui.QColor("#eecc77"));
+                           QtCore.Qt.AlignLeft | QtCore.Qt.AlignBottom, QtGui.QColor("#eecc77"))
+    
+    def openProjectProtoSite(self):
+        QtGui.QDesktopServices.openUrl( QtCore.QUrl("http://projectproto.blogspot.com") )
+        
     def openPhilRoboticsSite(self):
         # todo: change to .ORG
-        QtGui.QDesktopServices.openUrl( QtCore.QUrl("http://www.philrobotics.com/") )
+        QtGui.QDesktopServices.openUrl( QtCore.QUrl("http://www.philrobotics.com") )
     def aboutCompiler(self):
         info = self.Compiler.getCompilerInfo()
         #self.log.append(info)
@@ -173,11 +177,11 @@ class AppMainWindow(QtGui.QMainWindow):
         if self.flashLoader.isRunning():
             self.insertLog('serial bootloader busy.')
             return
-        hexfile = self.Compiler.getExpectedBinFileName( self.Editor.getCurrentFile() )
-        ret, msg = self.flashLoader.programDevice( hexfile, self.serialPortName )
+        binfile = self.Compiler.getExpectedBinFileName( self.Editor.getCurrentFile() )
+        ret, msg = self.flashLoader.programDevice( binfile, self.serialPortName )
         if ret:
             self.insertLog("<font color=green>Bootload/Program Device:</font>", True)
-            self.insertLog(msg)
+            self.insertLog("<font color=lightblue><i>   %s   </i></font>"%msg)
             self.pollLoaderTimerID = self.startTimer(0.5) # relatively fast!
             if not self.pollLoaderTimerID:
                 self.insertLog("<font color=red>Unable to start Timer.</font>")
@@ -287,7 +291,8 @@ class AppMainWindow(QtGui.QMainWindow):
         self.stopAct = QtGui.QAction(QtGui.QIcon("./images/stop.png"), "S&top",
                 self, statusTip="Cancel the build process", triggered=self.stopBuild)
         self.programAct = QtGui.QAction(QtGui.QIcon("./images/load.png"), "&Load",
-                self, statusTip="Download program to the board using bootloader", triggered=self.programChip)
+                self, shortcut=QtGui.QKeySequence("Ctrl+R"), 
+                statusTip="Download program to the board using bootloader", triggered=self.programChip)
          
         self.firmwareLibList = scanFirmwareLibs()
         self.firmwareLibActs = []
@@ -326,12 +331,12 @@ class AppMainWindow(QtGui.QMainWindow):
         # todo: board names??
         #self.boardAnitoAct = QtGui.QAction("PhilRobokit &Anito",  self,
         #        checkable=True, statusTip="Select PhilRobokit Anito board" )
-        self.boardEpicpicmoAct = QtGui.QAction("e&Gizmo STM32",  self,
+        self.boardEgizmoStm32Act = QtGui.QAction("e&Gizmo STM32",  self,
                 checkable=True, statusTip="Select eGizmo STM32F100C8 MCU board" )
         self.boardGroup = QtGui.QActionGroup(self)
         #self.boardGroup.addAction(self.boardAnitoAct)
-        self.boardGroup.addAction(self.boardEpicpicmoAct)
-        self.boardEpicpicmoAct.setChecked(True)
+        self.boardGroup.addAction(self.boardEgizmoStm32Act)
+        self.boardEgizmoStm32Act.setChecked(True)
         
         self.restoreDefaultsAct = QtGui.QAction("Restore Defaults",  self,
                 statusTip="Clear configuration files", triggered=self.Configs.setDefaults)
@@ -340,11 +345,13 @@ class AppMainWindow(QtGui.QMainWindow):
         self.aboutAct = QtGui.QAction("&About", self, shortcut=QtGui.QKeySequence("F1"),
                 statusTip="About the IDE", triggered=self.about)        
         self.aboutCompilerAct = QtGui.QAction("About &Compiler", self,
-                statusTip="About PICC tool", triggered=self.aboutCompiler)
+                statusTip="About GNU tools for ARM Embedded", triggered=self.aboutCompiler)
         self.aboutQtAct = QtGui.QAction("About &Qt", self,
                 statusTip="Show the Qt library's About box", triggered=QtGui.qApp.aboutQt)
-        self.visitSiteAct = QtGui.QAction("Visit &PhilRobotics", self,
-                statusTip="Open PhilRobotics Website", triggered=self.openPhilRoboticsSite)
+        self.visitProjectprotoSiteAct = QtGui.QAction("Visit &ProjectProto", self,
+                statusTip="Open ProjectProto blog site (yus' projects)", triggered=self.openProjectProtoSite)
+        self.visitPhilroboticsSiteAct = QtGui.QAction("Visit Phil&Robotics", self,
+                statusTip="Open PhilRobotics website", triggered=self.openPhilRoboticsSite)
         
     def createMenus(self):
         ### File Menu ###
@@ -407,7 +414,7 @@ class AppMainWindow(QtGui.QMainWindow):
         self.toolsMenu.addSeparator()
         self.boardMenu = self.toolsMenu.addMenu("&Board")
         #self.boardMenu.addAction(self.boardAnitoAct)
-        self.boardMenu.addAction(self.boardEpicpicmoAct)
+        self.boardMenu.addAction(self.boardEgizmoStm32Act)
         self.serialPortMenu = self.toolsMenu.addMenu("&Serial Port")
         self.serialPortGroup = QtGui.QActionGroup(self)
         self.connect(self.serialPortMenu, QtCore.SIGNAL("aboutToShow ()"), self.updateSerialPortList )
@@ -418,7 +425,8 @@ class AppMainWindow(QtGui.QMainWindow):
         
         ### Help Menu ###
         self.helpMenu = self.menuBar().addMenu("&Help")
-        self.helpMenu.addAction(self.visitSiteAct)
+        self.helpMenu.addAction(self.visitPhilroboticsSiteAct)
+        self.helpMenu.addAction(self.visitProjectprotoSiteAct)
         self.helpMenu.addAction(self.aboutCompilerAct)
         self.helpMenu.addAction(self.aboutQtAct)
         self.helpMenu.addAction(self.aboutAct)
