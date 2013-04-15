@@ -223,11 +223,9 @@ class GccCompilerThread(QtCore.QThread):
             fout.write( '\t@$(RM) $(OBJECTS)\n' )
             fout.write( '\t@$(RM) $(OUTPUT_DIR)/$(PROJECT).*\n\n\n' )
             fout.write( '$(ELF_FILE): $(OBJECTS)\n' )
-            fout.write( '\t@echo [LINKER] $(@F)\n')
-            if verbose:
-                fout.write( '\t$(TCHAIN)gcc $(LFLAGS) $^ -o $@\n\n' )
-            else:
-                fout.write( '\t@$(TCHAIN)gcc $(LFLAGS) $^ -o $@\n\n' )
+            fout.write( '\t@echo [LINKER] $(@F)\n\t')
+            if not verbose: fout.write( '@' )
+            fout.write( '$(TCHAIN)gcc $(LFLAGS) $^ -o $@\n\n' )
             fout.write( '$(BIN_FILE): $(ELF_FILE)\n' )
             fout.write( '\t@echo [BIN Copy] $(@F)\n')
             fout.write( '\t@$(TCHAIN)objcopy -Obinary $< $@\n\n\n' )
