@@ -129,23 +129,6 @@ class IdeConfig:
     def getSerialPortName(self):
         return self.serialPortName
         
-    def getVersions(self):
-        return "beta"
-        '''
-        ide_vsn = ''
-        fw_vsn = ''
-        try:
-            vfile = open(CONFIG_DIR + 'versions.txt')
-            for line in vfile.readlines():
-                if line.find('build') >= 0:
-                    ide_vsn = line.strip()
-                if line.find('firmware') >= 0:
-                    fw_vsn = line.strip()
-            vfile.close()
-            return ide_vsn + '  +  ' + fw_vsn            
-        except:
-            return "unknown"
-        '''
 
 class CompilerConfig:
     '''

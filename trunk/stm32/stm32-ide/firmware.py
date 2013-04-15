@@ -221,7 +221,8 @@ def getLibraryKeywords(headerFiles=[]):
     return keywords
 
 class FirmwareLibUpdate(QtCore.QThread):
-    version_url = 'http://yus-repo.googlecode.com/svn/trunk/stm32/stm32-ide/hardware/cores/bsp/version'
+    version_file = 'hardware/cores/bsp/version'
+    version_url = 'http://yus-repo.googlecode.com/svn/trunk/stm32/stm32-ide/' + version_file
     history_url = 'http://yus-repo.googlecode.com/svn-history/'
     
     corelib = '/trunk/stm32/stm32-ide/hardware/cores/'
@@ -329,6 +330,16 @@ class FirmwareLibUpdate(QtCore.QThread):
             return latest
         except:
             return -1
+        
+    def getCurrentRevision(self):
+        try:
+            f = open(self.version_file)
+            txt = f.readline()
+            f.close()
+            rev = float(txt[:txt.find(' ')])
+            return 'v%.2f'%(rev/100.0)
+        except:
+            return None
     
     def _browse(self, url):
         try:
