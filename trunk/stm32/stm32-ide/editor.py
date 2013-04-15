@@ -27,10 +27,10 @@
 
 import os
 from PyQt4 import QtGui, QtCore
-from cppeditor import CppEditor, PROJECT_ALIAS, PROJECT_EXT, PROJECT_NONAME
+from cppeditor import CppEditor, PROJECT_ALIAS, PROJECT_NONAME
 from outline import OutLineView
 from finddialog import FindDialog
-from firmware import getLibraryKeywords, scanFirmwareLibs, getExampleProjects
+from firmware import USER_CODE_EXT, getLibraryKeywords, scanFirmwareLibs, getExampleProjects
 
 class MultipleCppEditor(QtGui.QTabWidget):
     '''
@@ -81,7 +81,7 @@ class MultipleCppEditor(QtGui.QTabWidget):
         if fileName == None: # prompt open dialog if filename is not specified
             fileName = QtGui.QFileDialog.getOpenFileName(
                                 self, self.tr("Open Source File"),
-                                "", PROJECT_ALIAS + " (*" + PROJECT_EXT + ");;" 
+                                "", PROJECT_ALIAS + " (*" + USER_CODE_EXT + ");;" 
                                 "C Source File (*.c);;C++ Source File (*.cpp);;Text File (*.txt);;All files (*.*)" )
         if fileName == "":
             return False
@@ -93,8 +93,8 @@ class MultipleCppEditor(QtGui.QTabWidget):
                 return True
         child = CppEditor(self, fileName, self.sampleProjects)
         tabtext = os.path.basename( str(fileName) )
-        if tabtext.lower().find(PROJECT_EXT) == len(tabtext) - len(PROJECT_EXT):
-            tabtext = tabtext[:tabtext.lower().find(PROJECT_EXT)]
+        if tabtext.lower().find(USER_CODE_EXT) == len(tabtext) - len(USER_CODE_EXT):
+            tabtext = tabtext[:tabtext.lower().find(USER_CODE_EXT)]
         self.addTab(child, tabtext)
         self.setCurrentIndex(self.count()-1)
         self.setTabToolTip(self.currentIndex(), child.currentFile())
@@ -109,8 +109,8 @@ class MultipleCppEditor(QtGui.QTabWidget):
         if rc:
             fileName = child.currentFile()
             tabtext = os.path.basename( str(fileName) )
-            if tabtext.lower().find(PROJECT_EXT) == len(tabtext) - len(PROJECT_EXT):
-                tabtext = tabtext[:tabtext.lower().find(PROJECT_EXT)]
+            if tabtext.lower().find(USER_CODE_EXT) == len(tabtext) - len(USER_CODE_EXT):
+                tabtext = tabtext[:tabtext.lower().find(USER_CODE_EXT)]
             self.setTabText(self.currentIndex(), tabtext)
             self.setTabToolTip(self.currentIndex(), fileName)
             self.Outline.update(child.text())
@@ -123,8 +123,8 @@ class MultipleCppEditor(QtGui.QTabWidget):
         if rc:
             fileName = child.currentFile()
             tabtext = os.path.basename( str(fileName) )
-            if tabtext.lower().find(PROJECT_EXT) == len(tabtext) - len(PROJECT_EXT):
-                tabtext = tabtext[:tabtext.lower().find(PROJECT_EXT)]
+            if tabtext.lower().find(USER_CODE_EXT) == len(tabtext) - len(USER_CODE_EXT):
+                tabtext = tabtext[:tabtext.lower().find(USER_CODE_EXT)]
             self.setTabText(self.currentIndex(), tabtext)
             self.setTabToolTip(self.currentIndex(), fileName)
             self.Outline.update(child.text())
@@ -281,7 +281,7 @@ class MultipleCppEditor(QtGui.QTabWidget):
     def dragEnterEvent(self, e):
         if e.mimeData().hasUrls():
             url = str( e.mimeData().urls()[0].toString() ).lower()
-            if url.rfind(PROJECT_EXT) == len(url) - len(PROJECT_EXT) or \
+            if url.rfind(USER_CODE_EXT) == len(url) - len(USER_CODE_EXT) or \
                 url.rfind('.cpp') == len(url) - len('.cpp') or \
                 url.rfind('.c') == len(url) - len('.c'):
                 e.accept()

@@ -28,14 +28,14 @@
 import os
 from PyQt4 import QtGui, QtCore
 from PyQt4.Qsci import QsciScintilla, QsciLexerCPP, QsciAPIs
-from firmware import getLibraryKeywords
+from firmware import getLibraryKeywords, REQUIRED_INCLUDE, USER_CODE_EXT
 
 # user source code
-PROJECT_ALIAS = 'PhilRobokit Proyekto' #'PhilRobokit Project'
-PROJECT_EXT = '.phr'
+PROJECT_ALIAS = 'STM32 C++ Project' #'PhilRobokit Project'
 PROJECT_NONAME = 'untitled'
 
-__default_content__ = '''#include <platform.h>
+__default_content__ = REQUIRED_INCLUDE + \
+'''
 
 int main(void)
 {
@@ -119,7 +119,7 @@ class CppEditor(QsciScintilla):
             self.loadFile(fileName)
             self.isUntitled = False
         else:
-            self.curFile = PROJECT_NONAME + PROJECT_EXT
+            self.curFile = PROJECT_NONAME + USER_CODE_EXT
             self.setText( __default_content__ )
             self.isUntitled = True
         
@@ -182,7 +182,7 @@ class CppEditor(QsciScintilla):
     
     def saveAs(self):
         fileName = QtGui.QFileDialog.getSaveFileName(self, "Save As",
-                self.curFile, PROJECT_ALIAS + " (*" + PROJECT_EXT + ");;" + 
+                self.curFile, PROJECT_ALIAS + " (*" + USER_CODE_EXT + ");;" + 
                     "C source (*.c);;C++ source (*.cpp);;Text File (*.txt);;All files (*.*)" )
         if not fileName:
             return None
@@ -236,6 +236,20 @@ class CppEditor(QsciScintilla):
     
     def insertIncludeDirective(self, library=''):        
         directive =  '#include <' + library + '.h>\r\n'
-        self.insertAt(directive, 0, 0) # insert at first line
+        insert_pos = 0
+        found_inc = False
+        for line in range(self.lines()):
+            txt = str(self.text(line)).strip()
+            if txt.find('int') == 0: # e.g. reached "int main()"
+                insert_pos = line - 1
+                break
+            elif txt.find('#include') == 0:
+                found_inc = True
+            elif found_inc:
+                insert_pos = line
+                break
+        if insert_pos < 0 or insert_pos >= self.lines():
+            insert_pos = 0
+        self.insertAt(directive, insert_pos, 0)
         self.updateApiKeywords()
 
