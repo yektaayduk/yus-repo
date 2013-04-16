@@ -156,7 +156,7 @@ def parseUserCode(userCode=None, outPath=None, toolChain=''):
                     include = '-I' + libpath
                     if not (include in includes): # include only once
                         includes.append( include )
-                        for folder in ['/', '/Source/', '/src/', '/device/', '/host/']:
+                        for folder in ['/', '/?ource*/', '/src/', '/device/', '/host/', '/font*/']:
                             for ext in ['*.c', '*.cpp', '*.cxx']: # compile all *.c, *.cpp, *.cxx files
                                 sources += glob.glob(libpath + folder + ext);
         fin.close()
