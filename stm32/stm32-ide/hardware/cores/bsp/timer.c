@@ -17,9 +17,13 @@ void delaytimer_init(void)
 	// TIM15 - 1MHz
 	TIM_TimeBaseStructure.TIM_Prescaler = (SystemCoreClock / 1000000) - 1;
 	TIM_TimeBaseInit(TIM15, &TIM_TimeBaseStructure);
- 
-	// TIM17 - 1kHz
+  #if defined (STM32F10X_LD_VL) || defined (STM32F10X_MD_VL) || (defined STM32F10X_HD_VL)
+	// TIM17 - 1kHz @ 24MHz clock
 	TIM_TimeBaseStructure.TIM_Prescaler = (SystemCoreClock / 1000) - 1;
+  #else
+	// TIM17 - 2kHz @ 72MHz clock
+	TIM_TimeBaseStructure.TIM_Prescaler = (SystemCoreClock / 2000) - 1;
+  #endif
 	TIM_TimeBaseInit(TIM17, &TIM_TimeBaseStructure);
 	
 	/* Enable counter */
@@ -29,14 +33,14 @@ void delaytimer_init(void)
 
 void delay_us(uint16_t cnt) 
 {
-	uint16_t start = TIM15->CNT;
-	while((uint16_t)(TIM15->CNT - start) <= cnt);
+	uint16_t start = micros();
+	while((uint16_t)(micros() - start) <= cnt);
 }
 
 void delay_ms(uint16_t cnt) 
 {
-	uint16_t start = TIM17->CNT;
-	while((uint16_t)(TIM17->CNT - start) <= cnt);
+	uint16_t start = millis();
+	while((uint16_t)(millis() - start) <= cnt);
 }
 
 // PWM's
