@@ -1,0 +1,7 @@
+debootstrap --verbose --arch armhf --variant=minbase --include=xorg,xfce4,xfce4-goodies,lightdm,sudo,minicom,usbutils,udev,kmod,wicd,build-essential,xorg-dev,xutils-dev,x11proto-dri2-dev,libltdl-dev,libtool,automake,libdrm-dev,guvcview,cmake,pkg-config,libgtk2.0-dev,python-dev,python-numpy,libpng12-dev,libpng++-dev,libpng3,libpnglite-dev,zlib1g-dev,pngtools,libjasper-dev,libjasper-runtime,libjasper1,libjpeg8-dev,libjpeg-progs,libtiff5-dev,libtiff-tools,ffmpeg,libavcodec-dev,libavformat-dev,libswscale-dev,openexr,libopenexr-dev,libgstreamer0.10-dev,libgstreamer-plugins-base0.10-dev,libxine1-ffmpeg,libxine-dev,libunicap2-dev,libeigen2-dev,libv4l-dev,v4l-utils,libgtkglext1-dev,swig,bzip2 --foreign wheezy bootstrap_wheezy http://ftp.debian.org/debian 2>&1 | tee bootstrap_wheezy_armhf.log
+
+
+
+
+
+
