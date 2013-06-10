@@ -1,0 +1,802 @@
+[  1%] Built target opencv_core_pch_dephelp
+[  1%] Built target pch_Generate_opencv_core
+[  3%] Built target opencv_core
+[  3%] Built target opencv_ts_pch_dephelp
+[  3%] Built target pch_Generate_opencv_ts
+[  3%] Built target opencv_imgproc_pch_dephelp
+[  3%] Built target pch_Generate_opencv_imgproc
+[  7%] Built target opencv_imgproc
+[  7%] Built target opencv_flann_pch_dephelp
+[  7%] Built target pch_Generate_opencv_flann
+[  7%] Built target opencv_flann
+[  7%] Built target opencv_highgui_pch_dephelp
+[  7%] Built target pch_Generate_opencv_highgui
+[  9%] Built target opencv_highgui
+[  9%] Built target opencv_features2d_pch_dephelp
+[ 10%] Built target pch_Generate_opencv_features2d
+[ 12%] Built target opencv_features2d
+[ 13%] Built target opencv_ts
+[ 13%] Built target opencv_perf_core_pch_dephelp
+[ 14%] Built target pch_Generate_opencv_perf_core
+[ 16%] Built target opencv_perf_core
+[ 17%] Built target opencv_test_core_pch_dephelp
+[ 17%] Built target pch_Generate_opencv_test_core
+[ 18%] Built target opencv_test_core
+[ 18%] Built target opencv_perf_imgproc_pch_dephelp
+[ 18%] Built target pch_Generate_opencv_perf_imgproc
+[ 20%] Built target opencv_perf_imgproc
+[ 20%] Built target opencv_test_imgproc_pch_dephelp
+[ 20%] Built target pch_Generate_opencv_test_imgproc
+[ 22%] Built target opencv_test_imgproc
+[ 23%] Built target opencv_test_flann_pch_dephelp
+[ 23%] Built target pch_Generate_opencv_test_flann
+[ 23%] Built target opencv_test_flann
+[ 23%] Built target opencv_perf_highgui_pch_dephelp
+[ 23%] Built target pch_Generate_opencv_perf_highgui
+[ 24%] Built target opencv_perf_highgui
+[ 25%] Built target opencv_test_highgui_pch_dephelp
+[ 26%] Built target pch_Generate_opencv_test_highgui
+[ 27%] Built target opencv_test_highgui
+[ 27%] Built target opencv_perf_features2d_pch_dephelp
+[ 27%] Built target pch_Generate_opencv_perf_features2d
+[ 28%] Built target opencv_perf_features2d
+[ 28%] Built target opencv_test_features2d_pch_dephelp
+[ 28%] Built target pch_Generate_opencv_test_features2d
+[ 29%] Built target opencv_test_features2d
+[ 30%] Built target opencv_calib3d_pch_dephelp
+[ 30%] Built target pch_Generate_opencv_calib3d
+[ 31%] Built target opencv_calib3d
+[ 31%] Built target opencv_perf_calib3d_pch_dephelp
+[ 31%] Built target pch_Generate_opencv_perf_calib3d
+[ 31%] Built target opencv_perf_calib3d
+[ 31%] Built target opencv_test_calib3d_pch_dephelp
+[ 31%] Built target pch_Generate_opencv_test_calib3d
+[ 34%] Built target opencv_test_calib3d
+[ 34%] Built target opencv_ml_pch_dephelp
+[ 34%] Built target pch_Generate_opencv_ml
+[ 36%] Built target opencv_ml
+[ 36%] Built target opencv_test_ml_pch_dephelp
+[ 36%] Built target pch_Generate_opencv_test_ml
+[ 37%] Built target opencv_test_ml
+[ 37%] Built target opencv_video_pch_dephelp
+[ 38%] Built target pch_Generate_opencv_video
+[ 40%] Built target opencv_video
+[ 40%] Built target opencv_perf_video_pch_dephelp
+[ 41%] Built target pch_Generate_opencv_perf_video
+[ 41%] Built target opencv_perf_video
+[ 42%] Built target opencv_test_video_pch_dephelp
+[ 42%] Built target pch_Generate_opencv_test_video
+[ 43%] Built target opencv_test_video
+[ 44%] Built target opencv_objdetect_pch_dephelp
+[ 44%] Built target pch_Generate_opencv_objdetect
+[ 45%] Built target opencv_objdetect
+[ 45%] Built target opencv_perf_objdetect_pch_dephelp
+[ 45%] Built target pch_Generate_opencv_perf_objdetect
+[ 45%] Built target opencv_perf_objdetect
+[ 46%] Built target opencv_test_objdetect_pch_dephelp
+[ 46%] Built target pch_Generate_opencv_test_objdetect
+[ 46%] Built target opencv_test_objdetect
+[ 46%] Built target opencv_contrib_pch_dephelp
+[ 46%] Built target pch_Generate_opencv_contrib
+[ 49%] Built target opencv_contrib
+[ 49%] Built target opencv_test_contrib_pch_dephelp
+[ 50%] Built target pch_Generate_opencv_test_contrib
+[ 50%] Built target opencv_test_contrib
+[ 50%] Built target opencv_photo_pch_dephelp
+[ 50%] Built target pch_Generate_opencv_photo
+[ 50%] Built target opencv_photo
+[ 50%] Built target opencv_perf_photo_pch_dephelp
+[ 50%] Built target pch_Generate_opencv_perf_photo
+[ 51%] Built target opencv_perf_photo
+[ 51%] Built target opencv_test_photo_pch_dephelp
+[ 52%] Built target pch_Generate_opencv_test_photo
+[ 52%] Built target opencv_test_photo
+[ 52%] Built target opencv_legacy_pch_dephelp
+[ 53%] Built target pch_Generate_opencv_legacy
+[ 62%] Built target opencv_legacy
+[ 62%] Built target opencv_test_legacy_pch_dephelp
+[ 62%] Built target pch_Generate_opencv_test_legacy
+[ 63%] Built target opencv_test_legacy
+[ 63%] Built target opencv_gpu_pch_dephelp
+[ 63%] Built target pch_Generate_opencv_gpu
+[ 68%] Built target opencv_gpu
+[ 68%] Built target opencv_perf_gpu_pch_dephelp
+[ 68%] Built target pch_Generate_opencv_perf_gpu
+[ 69%] Built target opencv_perf_gpu
+[ 69%] Built target opencv_test_gpu_pch_dephelp
+[ 69%] Built target pch_Generate_opencv_test_gpu
+[ 71%] Built target opencv_test_gpu
+[ 71%] Built target opencv_nonfree_pch_dephelp
+[ 71%] Built target pch_Generate_opencv_nonfree
+[ 72%] Built target opencv_nonfree
+[ 72%] Built target opencv_perf_nonfree_pch_dephelp
+[ 73%] Built target pch_Generate_opencv_perf_nonfree
+[ 74%] Built target opencv_perf_nonfree
+[ 74%] Built target opencv_test_nonfree_pch_dephelp
+[ 74%] Built target pch_Generate_opencv_test_nonfree
+[ 75%] Built target opencv_test_nonfree
+[ 75%] Built target opencv_python
+[ 76%] Built target opencv_stitching_pch_dephelp
+[ 76%] Built target pch_Generate_opencv_stitching
+[ 77%] Built target opencv_stitching
+[ 77%] Built target opencv_perf_stitching_pch_dephelp
+[ 77%] Built target pch_Generate_opencv_perf_stitching
+[ 77%] Built target opencv_perf_stitching
+[ 77%] Built target opencv_test_stitching_pch_dephelp
+[ 77%] Built target pch_Generate_opencv_test_stitching
+[ 78%] Built target opencv_test_stitching
+[ 78%] Built target opencv_perf_superres_pch_dephelp
+[ 78%] Built target pch_Generate_opencv_perf_superres
+[ 78%] Built target opencv_superres_pch_dephelp
+[ 78%] Built target pch_Generate_opencv_superres
+[ 78%] Built target opencv_superres
+[ 79%] Built target opencv_perf_superres
+[ 79%] Built target opencv_test_superres_pch_dephelp
+[ 79%] Built target pch_Generate_opencv_test_superres
+[ 79%] Built target opencv_test_superres
+[ 79%] Built target opencv_videostab_pch_dephelp
+[ 79%] Built target pch_Generate_opencv_videostab
+[ 80%] Built target opencv_videostab
+[ 80%] Built target opencv_haartraining_engine
+[ 80%] Built target opencv_createsamples
+[ 81%] Built target opencv_haartraining
+[ 82%] Built target opencv_performance
+[ 82%] Built target opencv_traincascade
+[ 82%] Built target example_adaptiveskindetector
+[ 82%] Built target example_bgfg_codebook
+[ 82%] Built target example_blobtrack_sample
+[ 82%] Built target example_contours
+[ 82%] Built target example_convert_cascade
+[ 82%] Built target example_delaunay
+[ 82%] Built target example_facedetect
+[ 82%] Built target example_fback_c
+[ 82%] Built target example_find_obj
+[ 83%] Built target example_find_obj_calonder
+[ 83%] Built target example_find_obj_ferns
+[ 83%] Built target example_latentsvmdetect
+[ 83%] Built target example_morphology
+[ 83%] Built target example_motempl
+[ 83%] Built target example_mser_sample
+[ 83%] Built target example_mushroom
+[ 83%] Built target example_one_way_sample
+[ 83%] Built target example_polar_transforms
+[ 83%] Built target example_pyramid_segmentation
+[ 84%] Built target example_smiledetect
+[ 84%] Built target example_tree_engine
+[ 84%] Built target example_3calibration
+[ 84%] Built target example_OpenEXRimages_HighDynamicRange_Retina_toneMapping
+[ 84%] Built target example_OpenEXRimages_HighDynamicRange_Retina_toneMapping_video
+[ 84%] Built target example_bagofwords_classification
+[ 84%] Built target example_bgfg_gmg
+[ 84%] Built target example_bgfg_segm
+[ 84%] Built target example_brief_match_test
+[ 85%] Built target example_build3dmodel
+[ 85%] Built target example_calibration
+[ 85%] Built target example_calibration_artificial
+[ 85%] Built target example_camshiftdemo
+[ 85%] Built target example_chamfer
+[ 85%] Built target example_connected_components
+[ 85%] Built target example_contours2
+[ 85%] Built target example_convexhull
+[ 86%] Built target example_cout_mat
+[ 86%] Built target example_delaunay2
+[ 86%] Built target example_demhist
+[ 86%] Built target example_descriptor_extractor_matcher
+[ 86%] Built target example_detection_based_tracker_sample
+[ 86%] Built target example_detector_descriptor_evaluation
+[ 86%] Built target example_detector_descriptor_matcher_evaluation
+[ 86%] Built target example_dft
+[ 86%] Built target example_distrans
+[ 87%] Built target example_drawing
+[ 87%] Built target example_edge
+[ 87%] Built target example_em
+[ 87%] Built target example_fabmap_sample
+[ 87%] Built target example_facerec_demo
+[ 87%] Built target example_fback
+[ 87%] Built target example_ffilldemo
+[ 87%] Built target example_filestorage
+[ 87%] Built target example_fitellipse
+[ 87%] Built target example_freak_demo
+[ 87%] Built target example_gencolors
+[ 87%] Built target example_generic_descriptor_match
+[ 87%] Built target example_grabcut
+[ 87%] Built target example_houghcircles
+[ 87%] Built target example_houghlines
+[ 87%] Built target example_hybridtrackingsample
+[ 87%] Built target example_image
+[ 87%] Built target example_imagelist_creator
+[ 87%] Built target example_inpaint
+[ 87%] Built target example_kalman
+[ 87%] Built target example_kmeans
+[ 87%] Built target example_laplace
+[ 88%] Built target example_latentsvm_multidetect
+[ 88%] Built target example_letter_recog
+[ 88%] Built target example_linemod
+[ 88%] Built target example_lkdemo
+[ 88%] Built target example_logpolar_bsm
+[ 88%] Built target example_main
+[ 88%] Built target example_matcher_simple
+[ 88%] Built target example_matching_to_many_images
+[ 88%] Built target example_meanshift_segmentation
+[ 89%] Built target example_minarea
+[ 89%] Built target example_morphology2
+[ 89%] Built target example_opencv_version
+[ 89%] Built target example_openni_capture
+[ 89%] Built target example_pca
+[ 90%] Built target example_peopledetect
+[ 90%] Built target example_phase_corr
+[ 90%] Built target example_points_classifier
+[ 90%] Built target example_retinaDemo
+[ 90%] Built target example_rgbdodometry
+[ 90%] Built target example_segment_objects
+[ 90%] Built target example_select3dobj
+[ 90%] Built target example_simpleflow_demo
+[ 90%] Built target example_squares
+[ 90%] Built target example_starter_imagelist
+[ 90%] Built target example_starter_video
+[ 90%] Built target example_stereo_calib
+[ 90%] Built target example_stereo_match
+[ 90%] Built target example_stitching
+[ 90%] Built target example_stitching_detailed
+[ 90%] Built target example_tvl1_optical_flow
+[ 90%] Built target example_video_dmtx
+[ 91%] Built target example_video_homography
+[ 91%] Built target example_videostab
+[ 91%] Built target example_watershed
+[ 91%] Built target tutorial_AddingImages
+[ 91%] Built target tutorial_AddingImagesTrackbar
+[ 91%] Built target tutorial_BasicLinearTransforms
+[ 91%] Built target tutorial_BasicLinearTransformsTrackbar
+[ 91%] Built target tutorial_CannyDetector_Demo
+[ 91%] Built target tutorial_Drawing_1
+[ 92%] Built target tutorial_Drawing_2
+[ 92%] Built target tutorial_EqualizeHist_Demo
+[ 92%] Built target tutorial_Geometric_Transforms_Demo
+[ 92%] Built target tutorial_HoughCircle_Demo
+[ 92%] Built target tutorial_HoughLines_Demo
+[ 92%] Built target tutorial_Laplace_Demo
+[ 92%] Built target tutorial_MatchTemplate_Demo
+[ 92%] Built target tutorial_Morphology_1
+[ 92%] Built target tutorial_Morphology_2
+[ 92%] Built target tutorial_Pyramids
+[ 93%] Built target tutorial_Remap_Demo
+[ 93%] Built target tutorial_SBM_Sample
+[ 93%] Built target tutorial_SURF_FlannMatcher
+[ 93%] Built target tutorial_SURF_Homography
+[ 93%] Built target tutorial_SURF_descriptor
+[ 93%] Built target tutorial_SURF_detector
+[ 93%] Built target tutorial_Smoothing
+[ 93%] Built target tutorial_Sobel_Demo
+[ 93%] Built target tutorial_Test
+[ 93%] Built target tutorial_Threshold
+[ 93%] Built target tutorial_calcBackProject_Demo1
+[ 94%] Built target tutorial_calcBackProject_Demo2
+[ 94%] Built target tutorial_calcHist_Demo
+[ 94%] Built target tutorial_camera_calibration
+[ 94%] Built target tutorial_compareHist_Demo
+[ 94%] Built target tutorial_copyMakeBorder_demo
+[ 94%] Built target tutorial_cornerDetector_Demo
+[ 94%] Built target tutorial_cornerHarris_Demo
+[ 94%] Built target tutorial_cornerSubPix_Demo
+[ 94%] Built target tutorial_discrete_fourier_transform
+[ 94%] Built target tutorial_display_image
+[ 95%] Built target tutorial_file_input_output
+[ 95%] Built target tutorial_filter2D_demo
+[ 95%] Built target tutorial_findContours_demo
+[ 95%] Built target tutorial_generalContours_demo1
+[ 95%] Built target tutorial_generalContours_demo2
+[ 95%] Built target tutorial_goodFeaturesToTrack_Demo
+[ 95%] Built target tutorial_gpu-basics-similarity
+[ 95%] Built target tutorial_how_to_scan_images
+[ 95%] Built target tutorial_hull_demo
+[ 95%] Built target tutorial_interoperability_with_OpenCV_1
+[ 96%] Built target tutorial_introduction_to_svm
+[ 96%] Built target tutorial_mat_mask_operations
+[ 96%] Built target tutorial_mat_the_basic_image_container
+[ 96%] Built target tutorial_moments_demo
+[ 96%] Built target tutorial_non_linear_svms
+[ 96%] Built target tutorial_objectDetection
+[ 96%] Built target tutorial_objectDetection2
+[ 96%] Built target tutorial_pointPolygonTest_demo
+[ 96%] Built target tutorial_retina_tutorial
+[ 96%] Built target tutorial_video-input-psnr-ssim
+[ 97%] Built target tutorial_video-write
+[ 97%] Built target example_gpu_alpha_comp
+[ 97%] Built target example_gpu_bgfg_segm
+[ 97%] Built target example_gpu_brox_optical_flow
+[ 97%] Built target example_gpu_cascadeclassifier
+[ 98%] Built target example_gpu_cascadeclassifier_nvidia_api
+[ 98%] Built target example_gpu_driver_api_multi
+[ 98%] Built target example_gpu_driver_api_stereo_multi
+[ 98%] Built target example_gpu_farneback_optical_flow
+[ 98%] Built target example_gpu_generalized_hough
+[ 98%] Built target example_gpu_hog
+[ 98%] Built target example_gpu_houghlines
+[ 98%] Built target example_gpu_morphology
+[ 98%] Built target example_gpu_multi
+[ 98%] Built target example_gpu_opengl
+[ 99%] Built target example_gpu_optical_flow
+[ 99%] Built target example_gpu_opticalflow_nvidia_api
+[ 99%] Built target example_gpu_performance
+[ 99%] Built target example_gpu_pyrlk_optical_flow
+[ 99%] Built target example_gpu_stereo_match
+[ 99%] Built target example_gpu_stereo_multi
+[ 99%] Built target example_gpu_super_resolution
+[ 99%] Built target example_gpu_surf_keypoint_matcher
+[ 99%] Built target example_gpu_video_reader
+[100%] Built target example_gpu_video_writer
+Install the project...
+-- Install configuration: "RELEASE"
+-- Installing: /usr/local/include/opencv2/opencv_modules.hpp
+-- Installing: /usr/local/lib/pkgconfig/opencv.pc
+-- Installing: /usr/local/share/OpenCV/OpenCVConfig.cmake
+-- Installing: /usr/local/share/OpenCV/OpenCVConfig-version.cmake
+-- Installing: /usr/local/include/opencv/highgui.h
+-- Installing: /usr/local/include/opencv/cvaux.h
+-- Installing: /usr/local/include/opencv/cxeigen.hpp
+-- Installing: /usr/local/include/opencv/cvaux.hpp
+-- Installing: /usr/local/include/opencv/cxcore.h
+-- Installing: /usr/local/include/opencv/ml.h
+-- Installing: /usr/local/include/opencv/cxcore.hpp
+-- Installing: /usr/local/include/opencv/cxmisc.h
+-- Installing: /usr/local/include/opencv/cvwimage.h
+-- Installing: /usr/local/include/opencv/cv.h
+-- Installing: /usr/local/include/opencv/cv.hpp
+-- Installing: /usr/local/include/opencv2/opencv.hpp
+-- Installing: /usr/local/lib/libopencv_core.so.2.4.5
+-- Installing: /usr/local/lib/libopencv_core.so.2.4
+-- Installing: /usr/local/lib/libopencv_core.so
+-- Set runtime path of "/usr/local/lib/libopencv_core.so.2.4.5" to "/usr/local/lib"
+-- Installing: /usr/local/include/opencv2/core/core.hpp
+-- Installing: /usr/local/include/opencv2/core/wimage.hpp
+-- Installing: /usr/local/include/opencv2/core/mat.hpp
+-- Installing: /usr/local/include/opencv2/core/eigen.hpp
+-- Installing: /usr/local/include/opencv2/core/opengl_interop_deprecated.hpp
+-- Installing: /usr/local/include/opencv2/core/cuda_devptrs.hpp
+-- Installing: /usr/local/include/opencv2/core/gpumat.hpp
+-- Installing: /usr/local/include/opencv2/core/version.hpp
+-- Installing: /usr/local/include/opencv2/core/operations.hpp
+-- Installing: /usr/local/include/opencv2/core/internal.hpp
+-- Installing: /usr/local/include/opencv2/core/opengl_interop.hpp
+-- Installing: /usr/local/include/opencv2/core/devmem2d.hpp
+-- Installing: /usr/local/include/opencv2/core/core_c.h
+-- Installing: /usr/local/include/opencv2/core/types_c.h
+-- Installing: /usr/local/lib/libopencv_imgproc.so.2.4.5
+-- Installing: /usr/local/lib/libopencv_imgproc.so.2.4
+-- Installing: /usr/local/lib/libopencv_imgproc.so
+-- Set runtime path of "/usr/local/lib/libopencv_imgproc.so.2.4.5" to "/usr/local/lib"
+-- Installing: /usr/local/include/opencv2/imgproc/imgproc.hpp
+-- Installing: /usr/local/include/opencv2/imgproc/types_c.h
+-- Installing: /usr/local/include/opencv2/imgproc/imgproc_c.h
+-- Installing: /usr/local/lib/libopencv_flann.so.2.4.5
+-- Installing: /usr/local/lib/libopencv_flann.so.2.4
+-- Installing: /usr/local/lib/libopencv_flann.so
+-- Set runtime path of "/usr/local/lib/libopencv_flann.so.2.4.5" to "/usr/local/lib"
+-- Installing: /usr/local/include/opencv2/flann/miniflann.hpp
+-- Installing: /usr/local/include/opencv2/flann/flann.hpp
+-- Installing: /usr/local/include/opencv2/flann/flann_base.hpp
+-- Installing: /usr/local/include/opencv2/flann/kmeans_index.h
+-- Installing: /usr/local/include/opencv2/flann/dist.h
+-- Installing: /usr/local/include/opencv2/flann/composite_index.h
+-- Installing: /usr/local/include/opencv2/flann/dummy.h
+-- Installing: /usr/local/include/opencv2/flann/simplex_downhill.h
+-- Installing: /usr/local/include/opencv2/flann/allocator.h
+-- Installing: /usr/local/include/opencv2/flann/index_testing.h
+-- Installing: /usr/local/include/opencv2/flann/any.h
+-- Installing: /usr/local/include/opencv2/flann/timer.h
+-- Installing: /usr/local/include/opencv2/flann/matrix.h
+-- Installing: /usr/local/include/opencv2/flann/lsh_table.h
+-- Installing: /usr/local/include/opencv2/flann/random.h
+-- Installing: /usr/local/include/opencv2/flann/autotuned_index.h
+-- Installing: /usr/local/include/opencv2/flann/sampling.h
+-- Installing: /usr/local/include/opencv2/flann/linear_index.h
+-- Installing: /usr/local/include/opencv2/flann/dynamic_bitset.h
+-- Installing: /usr/local/include/opencv2/flann/defines.h
+-- Installing: /usr/local/include/opencv2/flann/object_factory.h
+-- Installing: /usr/local/include/opencv2/flann/kdtree_single_index.h
+-- Installing: /usr/local/include/opencv2/flann/hdf5.h
+-- Installing: /usr/local/include/opencv2/flann/result_set.h
+-- Installing: /usr/local/include/opencv2/flann/config.h
+-- Installing: /usr/local/include/opencv2/flann/ground_truth.h
+-- Installing: /usr/local/include/opencv2/flann/saving.h
+-- Installing: /usr/local/include/opencv2/flann/logger.h
+-- Installing: /usr/local/include/opencv2/flann/params.h
+-- Installing: /usr/local/include/opencv2/flann/lsh_index.h
+-- Installing: /usr/local/include/opencv2/flann/general.h
+-- Installing: /usr/local/include/opencv2/flann/hierarchical_clustering_index.h
+-- Installing: /usr/local/include/opencv2/flann/nn_index.h
+-- Installing: /usr/local/include/opencv2/flann/kdtree_index.h
+-- Installing: /usr/local/include/opencv2/flann/all_indices.h
+-- Installing: /usr/local/include/opencv2/flann/heap.h
+-- Installing: /usr/local/lib/libopencv_highgui.so.2.4.5
+-- Installing: /usr/local/lib/libopencv_highgui.so.2.4
+-- Installing: /usr/local/lib/libopencv_highgui.so
+-- Set runtime path of "/usr/local/lib/libopencv_highgui.so.2.4.5" to "/usr/local/lib"
+-- Installing: /usr/local/include/opencv2/highgui/highgui.hpp
+-- Installing: /usr/local/include/opencv2/highgui/highgui_c.h
+-- Installing: /usr/local/include/opencv2/highgui/cap_ios.h
+-- Installing: /usr/local/lib/libopencv_features2d.so.2.4.5
+-- Installing: /usr/local/lib/libopencv_features2d.so.2.4
+-- Installing: /usr/local/lib/libopencv_features2d.so
+-- Set runtime path of "/usr/local/lib/libopencv_features2d.so.2.4.5" to "/usr/local/lib"
+-- Installing: /usr/local/include/opencv2/features2d/features2d.hpp
+-- Installing: /usr/local/lib/libopencv_calib3d.so.2.4.5
+-- Installing: /usr/local/lib/libopencv_calib3d.so.2.4
+-- Installing: /usr/local/lib/libopencv_calib3d.so
+-- Set runtime path of "/usr/local/lib/libopencv_calib3d.so.2.4.5" to "/usr/local/lib"
+-- Installing: /usr/local/include/opencv2/calib3d/calib3d.hpp
+-- Installing: /usr/local/lib/libopencv_ml.so.2.4.5
+-- Installing: /usr/local/lib/libopencv_ml.so.2.4
+-- Installing: /usr/local/lib/libopencv_ml.so
+-- Set runtime path of "/usr/local/lib/libopencv_ml.so.2.4.5" to "/usr/local/lib"
+-- Installing: /usr/local/include/opencv2/ml/ml.hpp
+-- Installing: /usr/local/lib/libopencv_video.so.2.4.5
+-- Installing: /usr/local/lib/libopencv_video.so.2.4
+-- Installing: /usr/local/lib/libopencv_video.so
+-- Set runtime path of "/usr/local/lib/libopencv_video.so.2.4.5" to "/usr/local/lib"
+-- Installing: /usr/local/include/opencv2/video/video.hpp
+-- Installing: /usr/local/include/opencv2/video/background_segm.hpp
+-- Installing: /usr/local/include/opencv2/video/tracking.hpp
+-- Installing: /usr/local/lib/libopencv_objdetect.so.2.4.5
+-- Installing: /usr/local/lib/libopencv_objdetect.so.2.4
+-- Installing: /usr/local/lib/libopencv_objdetect.so
+-- Set runtime path of "/usr/local/lib/libopencv_objdetect.so.2.4.5" to "/usr/local/lib"
+-- Installing: /usr/local/include/opencv2/objdetect/objdetect.hpp
+-- Installing: /usr/local/lib/libopencv_contrib.so.2.4.5
+-- Installing: /usr/local/lib/libopencv_contrib.so.2.4
+-- Installing: /usr/local/lib/libopencv_contrib.so
+-- Set runtime path of "/usr/local/lib/libopencv_contrib.so.2.4.5" to "/usr/local/lib"
+-- Installing: /usr/local/include/opencv2/contrib/openfabmap.hpp
+-- Installing: /usr/local/include/opencv2/contrib/detection_based_tracker.hpp
+-- Installing: /usr/local/include/opencv2/contrib/retina.hpp
+-- Installing: /usr/local/include/opencv2/contrib/hybridtracker.hpp
+-- Installing: /usr/local/include/opencv2/contrib/contrib.hpp
+-- Installing: /usr/local/lib/libopencv_photo.so.2.4.5
+-- Installing: /usr/local/lib/libopencv_photo.so.2.4
+-- Installing: /usr/local/lib/libopencv_photo.so
+-- Set runtime path of "/usr/local/lib/libopencv_photo.so.2.4.5" to "/usr/local/lib"
+-- Installing: /usr/local/include/opencv2/photo/photo.hpp
+-- Installing: /usr/local/include/opencv2/photo/photo_c.h
+-- Installing: /usr/local/lib/libopencv_legacy.so.2.4.5
+-- Installing: /usr/local/lib/libopencv_legacy.so.2.4
+-- Installing: /usr/local/lib/libopencv_legacy.so
+-- Set runtime path of "/usr/local/lib/libopencv_legacy.so.2.4.5" to "/usr/local/lib"
+-- Installing: /usr/local/include/opencv2/legacy/compat.hpp
+-- Installing: /usr/local/include/opencv2/legacy/blobtrack.hpp
+-- Installing: /usr/local/include/opencv2/legacy/legacy.hpp
+-- Installing: /usr/local/include/opencv2/legacy/streams.hpp
+-- Installing: /usr/local/lib/libopencv_gpu.so.2.4.5
+-- Installing: /usr/local/lib/libopencv_gpu.so.2.4
+-- Installing: /usr/local/lib/libopencv_gpu.so
+-- Set runtime path of "/usr/local/lib/libopencv_gpu.so.2.4.5" to "/usr/local/lib"
+-- Installing: /usr/local/include/opencv2/gpu/stream_accessor.hpp
+-- Installing: /usr/local/include/opencv2/gpu/gpu.hpp
+-- Installing: /usr/local/include/opencv2/gpu/gpumat.hpp
+-- Installing: /usr/local/include/opencv2/gpu/devmem2d.hpp
+-- Installing: /usr/local/include/opencv2/gpu/device/reduce.hpp
+-- Installing: /usr/local/include/opencv2/gpu/device/warp_shuffle.hpp
+-- Installing: /usr/local/include/opencv2/gpu/device/scan.hpp
+-- Installing: /usr/local/include/opencv2/gpu/device/warp.hpp
+-- Installing: /usr/local/include/opencv2/gpu/device/saturate_cast.hpp
+-- Installing: /usr/local/include/opencv2/gpu/device/limits.hpp
+-- Installing: /usr/local/include/opencv2/gpu/device/warp_reduce.hpp
+-- Installing: /usr/local/include/opencv2/gpu/device/datamov_utils.hpp
+-- Installing: /usr/local/include/opencv2/gpu/device/border_interpolate.hpp
+-- Installing: /usr/local/include/opencv2/gpu/device/dynamic_smem.hpp
+-- Installing: /usr/local/include/opencv2/gpu/device/simd_functions.hpp
+-- Installing: /usr/local/include/opencv2/gpu/device/funcattrib.hpp
+-- Installing: /usr/local/include/opencv2/gpu/device/utility.hpp
+-- Installing: /usr/local/include/opencv2/gpu/device/type_traits.hpp
+-- Installing: /usr/local/include/opencv2/gpu/device/color.hpp
+-- Installing: /usr/local/include/opencv2/gpu/device/filters.hpp
+-- Installing: /usr/local/include/opencv2/gpu/device/vec_math.hpp
+-- Installing: /usr/local/include/opencv2/gpu/device/transform.hpp
+-- Installing: /usr/local/include/opencv2/gpu/device/block.hpp
+-- Installing: /usr/local/include/opencv2/gpu/device/static_check.hpp
+-- Installing: /usr/local/include/opencv2/gpu/device/common.hpp
+-- Installing: /usr/local/include/opencv2/gpu/device/emulation.hpp
+-- Installing: /usr/local/include/opencv2/gpu/device/vec_traits.hpp
+-- Installing: /usr/local/include/opencv2/gpu/device/functional.hpp
+-- Installing: /usr/local/include/opencv2/gpu/device/vec_distance.hpp
+-- Installing: /usr/local/include/opencv2/gpu/device/detail/reduce.hpp
+-- Installing: /usr/local/include/opencv2/gpu/device/detail/reduce_key_val.hpp
+-- Installing: /usr/local/include/opencv2/gpu/device/detail/vec_distance_detail.hpp
+-- Installing: /usr/local/include/opencv2/gpu/device/detail/transform_detail.hpp
+-- Installing: /usr/local/include/opencv2/gpu/device/detail/color_detail.hpp
+-- Installing: /usr/local/include/opencv2/gpu/device/detail/type_traits_detail.hpp
+-- Installing: /usr/local/lib/libopencv_nonfree.so.2.4.5
+-- Installing: /usr/local/lib/libopencv_nonfree.so.2.4
+-- Installing: /usr/local/lib/libopencv_nonfree.so
+-- Set runtime path of "/usr/local/lib/libopencv_nonfree.so.2.4.5" to "/usr/local/lib"
+-- Installing: /usr/local/include/opencv2/nonfree/gpu.hpp
+-- Installing: /usr/local/include/opencv2/nonfree/nonfree.hpp
+-- Installing: /usr/local/include/opencv2/nonfree/ocl.hpp
+-- Installing: /usr/local/include/opencv2/nonfree/features2d.hpp
+-- Installing: /usr/local/lib/python2.7/dist-packages/cv2.so
+-- Set runtime path of "/usr/local/lib/python2.7/dist-packages/cv2.so" to "/usr/local/lib"
+-- Installing: /usr/local/lib/python2.7/dist-packages/cv.py
+-- Installing: /usr/local/lib/libopencv_stitching.so.2.4.5
+-- Installing: /usr/local/lib/libopencv_stitching.so.2.4
+-- Installing: /usr/local/lib/libopencv_stitching.so
+-- Set runtime path of "/usr/local/lib/libopencv_stitching.so.2.4.5" to "/usr/local/lib"
+-- Installing: /usr/local/include/opencv2/stitching/warpers.hpp
+-- Installing: /usr/local/include/opencv2/stitching/stitcher.hpp
+-- Installing: /usr/local/include/opencv2/stitching/detail/matchers.hpp
+-- Installing: /usr/local/include/opencv2/stitching/detail/warpers.hpp
+-- Installing: /usr/local/include/opencv2/stitching/detail/exposure_compensate.hpp
+-- Installing: /usr/local/include/opencv2/stitching/detail/seam_finders.hpp
+-- Installing: /usr/local/include/opencv2/stitching/detail/autocalib.hpp
+-- Installing: /usr/local/include/opencv2/stitching/detail/camera.hpp
+-- Installing: /usr/local/include/opencv2/stitching/detail/motion_estimators.hpp
+-- Installing: /usr/local/include/opencv2/stitching/detail/util.hpp
+-- Installing: /usr/local/include/opencv2/stitching/detail/util_inl.hpp
+-- Installing: /usr/local/include/opencv2/stitching/detail/warpers_inl.hpp
+-- Installing: /usr/local/include/opencv2/stitching/detail/blenders.hpp
+-- Installing: /usr/local/lib/libopencv_superres.so.2.4.5
+-- Installing: /usr/local/lib/libopencv_superres.so.2.4
+-- Installing: /usr/local/lib/libopencv_superres.so
+-- Set runtime path of "/usr/local/lib/libopencv_superres.so.2.4.5" to "/usr/local/lib"
+-- Installing: /usr/local/include/opencv2/superres/optical_flow.hpp
+-- Installing: /usr/local/include/opencv2/superres/superres.hpp
+-- Installing: /usr/local/lib/libopencv_ts.so.2.4.5
+-- Installing: /usr/local/lib/libopencv_ts.so.2.4
+-- Installing: /usr/local/lib/libopencv_ts.so
+-- Set runtime path of "/usr/local/lib/libopencv_ts.so.2.4.5" to "/usr/local/lib"
+-- Installing: /usr/local/include/opencv2/ts/ts.hpp
+-- Installing: /usr/local/include/opencv2/ts/gpu_test.hpp
+-- Installing: /usr/local/include/opencv2/ts/gpu_perf.hpp
+-- Installing: /usr/local/include/opencv2/ts/ts_perf.hpp
+-- Installing: /usr/local/include/opencv2/ts/ts_gtest.h
+-- Installing: /usr/local/lib/libopencv_videostab.so.2.4.5
+-- Installing: /usr/local/lib/libopencv_videostab.so.2.4
+-- Installing: /usr/local/lib/libopencv_videostab.so
+-- Set runtime path of "/usr/local/lib/libopencv_videostab.so.2.4.5" to "/usr/local/lib"
+-- Installing: /usr/local/include/opencv2/videostab/motion_stabilizing.hpp
+-- Installing: /usr/local/include/opencv2/videostab/frame_source.hpp
+-- Installing: /usr/local/include/opencv2/videostab/stabilizer.hpp
+-- Installing: /usr/local/include/opencv2/videostab/optical_flow.hpp
+-- Installing: /usr/local/include/opencv2/videostab/log.hpp
+-- Installing: /usr/local/include/opencv2/videostab/inpainting.hpp
+-- Installing: /usr/local/include/opencv2/videostab/fast_marching_inl.hpp
+-- Installing: /usr/local/include/opencv2/videostab/videostab.hpp
+-- Installing: /usr/local/include/opencv2/videostab/global_motion.hpp
+-- Installing: /usr/local/include/opencv2/videostab/deblurring.hpp
+-- Installing: /usr/local/include/opencv2/videostab/fast_marching.hpp
+-- Installing: /usr/local/share/OpenCV/haarcascades/haarcascade_upperbody.xml
+-- Installing: /usr/local/share/OpenCV/haarcascades/haarcascade_mcs_leftear.xml
+-- Installing: /usr/local/share/OpenCV/haarcascades/haarcascade_mcs_lefteye.xml
+-- Installing: /usr/local/share/OpenCV/haarcascades/haarcascade_profileface.xml
+-- Installing: /usr/local/share/OpenCV/haarcascades/haarcascade_fullbody.xml
+-- Installing: /usr/local/share/OpenCV/haarcascades/haarcascade_frontalface_alt_tree.xml
+-- Installing: /usr/local/share/OpenCV/haarcascades/haarcascade_righteye_2splits.xml
+-- Installing: /usr/local/share/OpenCV/haarcascades/haarcascade_frontalface_default.xml
+-- Installing: /usr/local/share/OpenCV/haarcascades/haarcascade_eye.xml
+-- Installing: /usr/local/share/OpenCV/haarcascades/haarcascade_lowerbody.xml
+-- Installing: /usr/local/share/OpenCV/haarcascades/haarcascade_mcs_rightear.xml
+-- Installing: /usr/local/share/OpenCV/haarcascades/haarcascade_mcs_nose.xml
+-- Installing: /usr/local/share/OpenCV/haarcascades/haarcascade_frontalface_alt.xml
+-- Installing: /usr/local/share/OpenCV/haarcascades/haarcascade_mcs_mouth.xml
+-- Installing: /usr/local/share/OpenCV/haarcascades/haarcascade_smile.xml
+-- Installing: /usr/local/share/OpenCV/haarcascades/haarcascade_eye_tree_eyeglasses.xml
+-- Installing: /usr/local/share/OpenCV/haarcascades/haarcascade_mcs_eyepair_big.xml
+-- Installing: /usr/local/share/OpenCV/haarcascades/haarcascade_lefteye_2splits.xml
+-- Installing: /usr/local/share/OpenCV/haarcascades/haarcascade_frontalface_alt2.xml
+-- Installing: /usr/local/share/OpenCV/haarcascades/haarcascade_mcs_eyepair_small.xml
+-- Installing: /usr/local/share/OpenCV/haarcascades/haarcascade_mcs_righteye.xml
+-- Installing: /usr/local/share/OpenCV/haarcascades/haarcascade_mcs_upperbody.xml
+-- Installing: /usr/local/share/OpenCV/lbpcascades/lbpcascade_silverware.xml
+-- Installing: /usr/local/share/OpenCV/lbpcascades/lbpcascade_profileface.xml
+-- Installing: /usr/local/share/OpenCV/lbpcascades/lbpcascade_frontalface.xml
+-- Installing: /usr/local/bin/opencv_haartraining
+-- Set runtime path of "/usr/local/bin/opencv_haartraining" to "/usr/local/lib"
+-- Installing: /usr/local/bin/opencv_createsamples
+-- Set runtime path of "/usr/local/bin/opencv_createsamples" to "/usr/local/lib"
+-- Installing: /usr/local/bin/opencv_performance
+-- Set runtime path of "/usr/local/bin/opencv_performance" to "/usr/local/lib"
+-- Installing: /usr/local/bin/opencv_traincascade
+-- Set runtime path of "/usr/local/bin/opencv_traincascade" to "/usr/local/lib"
+-- Installing: /usr/local/share/OpenCV/samples/c/contours.c
+-- Installing: /usr/local/share/OpenCV/samples/c/delaunay.c
+-- Installing: /usr/local/share/OpenCV/samples/c/pyramid_segmentation.c
+-- Installing: /usr/local/share/OpenCV/samples/c/motempl.c
+-- Installing: /usr/local/share/OpenCV/samples/c/convert_cascade.c
+-- Installing: /usr/local/share/OpenCV/samples/c/fback_c.c
+-- Installing: /usr/local/share/OpenCV/samples/c/polar_transforms.c
+-- Installing: /usr/local/share/OpenCV/samples/c/morphology.c
+-- Installing: /usr/local/share/OpenCV/samples/c/mushroom.cpp
+-- Installing: /usr/local/share/OpenCV/samples/c/latentsvmdetect.cpp
+-- Installing: /usr/local/share/OpenCV/samples/c/mser_sample.cpp
+-- Installing: /usr/local/share/OpenCV/samples/c/adaptiveskindetector.cpp
+-- Installing: /usr/local/share/OpenCV/samples/c/smiledetect.cpp
+-- Installing: /usr/local/share/OpenCV/samples/c/find_obj.cpp
+-- Installing: /usr/local/share/OpenCV/samples/c/one_way_sample.cpp
+-- Installing: /usr/local/share/OpenCV/samples/c/facedetect.cpp
+-- Installing: /usr/local/share/OpenCV/samples/c/find_obj_calonder.cpp
+-- Installing: /usr/local/share/OpenCV/samples/c/bgfg_codebook.cpp
+-- Installing: /usr/local/share/OpenCV/samples/c/tree_engine.cpp
+-- Installing: /usr/local/share/OpenCV/samples/c/find_obj_ferns.cpp
+-- Installing: /usr/local/share/OpenCV/samples/c/blobtrack_sample.cpp
+-- Installing: /usr/local/share/OpenCV/samples/c/baboon200.jpg
+-- Installing: /usr/local/share/OpenCV/samples/c/one_way_train_0000.jpg
+-- Installing: /usr/local/share/OpenCV/samples/c/cat.jpg
+-- Installing: /usr/local/share/OpenCV/samples/c/fruits.jpg
+-- Installing: /usr/local/share/OpenCV/samples/c/lena.jpg
+-- Installing: /usr/local/share/OpenCV/samples/c/stuff.jpg
+-- Installing: /usr/local/share/OpenCV/samples/c/airplane.jpg
+-- Installing: /usr/local/share/OpenCV/samples/c/baboon.jpg
+-- Installing: /usr/local/share/OpenCV/samples/c/baboon200_rotated.jpg
+-- Installing: /usr/local/share/OpenCV/samples/c/one_way_train_0001.jpg
+-- Installing: /usr/local/share/OpenCV/samples/c/puzzle.png
+-- Installing: /usr/local/share/OpenCV/samples/c/box.png
+-- Installing: /usr/local/share/OpenCV/samples/c/box_in_scene.png
+-- Installing: /usr/local/share/OpenCV/samples/c/JCB.png
+-- Installing: /usr/local/share/OpenCV/samples/c/waveform.data
+-- Installing: /usr/local/share/OpenCV/samples/c/agaricus-lepiota.data
+-- Installing: /usr/local/share/OpenCV/samples/c/build_all.sh
+-- Installing: /usr/local/share/OpenCV/samples/c/cvsample.dsp
+-- Installing: /usr/local/share/OpenCV/samples/c/facedetect.cmd
+-- Installing: /usr/local/share/OpenCV/samples/cpp/starter_video.cpp
+-- Installing: /usr/local/share/OpenCV/samples/cpp/fback.cpp
+-- Installing: /usr/local/share/OpenCV/samples/cpp/segment_objects.cpp
+-- Installing: /usr/local/share/OpenCV/samples/cpp/tvl1_optical_flow.cpp
+-- Installing: /usr/local/share/OpenCV/samples/cpp/em.cpp
+-- Installing: /usr/local/share/OpenCV/samples/cpp/rgbdodometry.cpp
+-- Installing: /usr/local/share/OpenCV/samples/cpp/demhist.cpp
+-- Installing: /usr/local/share/OpenCV/samples/cpp/points_classifier.cpp
+-- Installing: /usr/local/share/OpenCV/samples/cpp/matching_to_many_images.cpp
+-- Installing: /usr/local/share/OpenCV/samples/cpp/dft.cpp
+-- Installing: /usr/local/share/OpenCV/samples/cpp/connected_components.cpp
+-- Installing: /usr/local/share/OpenCV/samples/cpp/contours2.cpp
+-- Installing: /usr/local/share/OpenCV/samples/cpp/meanshift_segmentation.cpp
+-- Installing: /usr/local/share/OpenCV/samples/cpp/phase_corr.cpp
+-- Installing: /usr/local/share/OpenCV/samples/cpp/logpolar_bsm.cpp
+-- Installing: /usr/local/share/OpenCV/samples/cpp/morphology2.cpp
+-- Installing: /usr/local/share/OpenCV/samples/cpp/select3dobj.cpp
+-- Installing: /usr/local/share/OpenCV/samples/cpp/fitellipse.cpp
+-- Installing: /usr/local/share/OpenCV/samples/cpp/generic_descriptor_match.cpp
+-- Installing: /usr/local/share/OpenCV/samples/cpp/houghlines.cpp
+-- Installing: /usr/local/share/OpenCV/samples/cpp/video_dmtx.cpp
+-- Installing: /usr/local/share/OpenCV/samples/cpp/convexhull.cpp
+-- Installing: /usr/local/share/OpenCV/samples/cpp/3calibration.cpp
+-- Installing: /usr/local/share/OpenCV/samples/cpp/laplace.cpp
+-- Installing: /usr/local/share/OpenCV/samples/cpp/latentsvm_multidetect.cpp
+-- Installing: /usr/local/share/OpenCV/samples/cpp/distrans.cpp
+-- Installing: /usr/local/share/OpenCV/samples/cpp/stereo_match.cpp
+-- Installing: /usr/local/share/OpenCV/samples/cpp/OpenEXRimages_HighDynamicRange_Retina_toneMapping_video.cpp
+-- Installing: /usr/local/share/OpenCV/samples/cpp/hybridtrackingsample.cpp
+-- Installing: /usr/local/share/OpenCV/samples/cpp/inpaint.cpp
+-- Installing: /usr/local/share/OpenCV/samples/cpp/starter_imagelist.cpp
+-- Installing: /usr/local/share/OpenCV/samples/cpp/bagofwords_classification.cpp
+-- Installing: /usr/local/share/OpenCV/samples/cpp/fabmap_sample.cpp
+-- Installing: /usr/local/share/OpenCV/samples/cpp/camshiftdemo.cpp
+-- Installing: /usr/local/share/OpenCV/samples/cpp/watershed.cpp
+-- Installing: /usr/local/share/OpenCV/samples/cpp/simpleflow_demo.cpp
+-- Installing: /usr/local/share/OpenCV/samples/cpp/houghcircles.cpp
+-- Installing: /usr/local/share/OpenCV/samples/cpp/gencolors.cpp
+-- Installing: /usr/local/share/OpenCV/samples/cpp/stitching.cpp
+-- Installing: /usr/local/share/OpenCV/samples/cpp/letter_recog.cpp
+-- Installing: /usr/local/share/OpenCV/samples/cpp/minarea.cpp
+-- Installing: /usr/local/share/OpenCV/samples/cpp/squares.cpp
+-- Installing: /usr/local/share/OpenCV/samples/cpp/facerec_demo.cpp
+-- Installing: /usr/local/share/OpenCV/samples/cpp/chamfer.cpp
+-- Installing: /usr/local/share/OpenCV/samples/cpp/drawing.cpp
+-- Installing: /usr/local/share/OpenCV/samples/cpp/descriptor_extractor_matcher.cpp
+-- Installing: /usr/local/share/OpenCV/samples/cpp/kalman.cpp
+-- Installing: /usr/local/share/OpenCV/samples/cpp/ffilldemo.cpp
+-- Installing: /usr/local/share/OpenCV/samples/cpp/videostab.cpp
+-- Installing: /usr/local/share/OpenCV/samples/cpp/matcher_simple.cpp
+-- Installing: /usr/local/share/OpenCV/samples/cpp/edge.cpp
+-- Installing: /usr/local/share/OpenCV/samples/cpp/kmeans.cpp
+-- Installing: /usr/local/share/OpenCV/samples/cpp/OpenEXRimages_HighDynamicRange_Retina_toneMapping.cpp
+-- Installing: /usr/local/share/OpenCV/samples/cpp/openni_capture.cpp
+-- Installing: /usr/local/share/OpenCV/samples/cpp/linemod.cpp
+-- Installing: /usr/local/share/OpenCV/samples/cpp/image.cpp
+-- Installing: /usr/local/share/OpenCV/samples/cpp/build3dmodel.cpp
+-- Installing: /usr/local/share/OpenCV/samples/cpp/freak_demo.cpp
+-- Installing: /usr/local/share/OpenCV/samples/cpp/lkdemo.cpp
+-- Installing: /usr/local/share/OpenCV/samples/cpp/grabcut.cpp
+-- Installing: /usr/local/share/OpenCV/samples/cpp/stereo_calib.cpp
+-- Installing: /usr/local/share/OpenCV/samples/cpp/calibration.cpp
+-- Installing: /usr/local/share/OpenCV/samples/cpp/bgfg_gmg.cpp
+-- Installing: /usr/local/share/OpenCV/samples/cpp/bgfg_segm.cpp
+-- Installing: /usr/local/share/OpenCV/samples/cpp/cout_mat.cpp
+-- Installing: /usr/local/share/OpenCV/samples/cpp/opencv_version.cpp
+-- Installing: /usr/local/share/OpenCV/samples/cpp/imagelist_creator.cpp
+-- Installing: /usr/local/share/OpenCV/samples/cpp/delaunay2.cpp
+-- Installing: /usr/local/share/OpenCV/samples/cpp/brief_match_test.cpp
+-- Installing: /usr/local/share/OpenCV/samples/cpp/detector_descriptor_matcher_evaluation.cpp
+-- Installing: /usr/local/share/OpenCV/samples/cpp/pca.cpp
+-- Installing: /usr/local/share/OpenCV/samples/cpp/detection_based_tracker_sample.cpp
+-- Installing: /usr/local/share/OpenCV/samples/cpp/peopledetect.cpp
+-- Installing: /usr/local/share/OpenCV/samples/cpp/filestorage.cpp
+-- Installing: /usr/local/share/OpenCV/samples/cpp/video_homography.cpp
+-- Installing: /usr/local/share/OpenCV/samples/cpp/detector_descriptor_evaluation.cpp
+-- Installing: /usr/local/share/OpenCV/samples/cpp/retinaDemo.cpp
+-- Installing: /usr/local/share/OpenCV/samples/cpp/calibration_artificial.cpp
+-- Installing: /usr/local/share/OpenCV/samples/cpp/stitching_detailed.cpp
+-- Installing: /usr/local/share/OpenCV/samples/cpp/left08.jpg
+-- Installing: /usr/local/share/OpenCV/samples/cpp/right05.jpg
+-- Installing: /usr/local/share/OpenCV/samples/cpp/right01.jpg
+-- Installing: /usr/local/share/OpenCV/samples/cpp/right08.jpg
+-- Installing: /usr/local/share/OpenCV/samples/cpp/right06.jpg
+-- Installing: /usr/local/share/OpenCV/samples/cpp/left01.jpg
+-- Installing: /usr/local/share/OpenCV/samples/cpp/fruits.jpg
+-- Installing: /usr/local/share/OpenCV/samples/cpp/left09.jpg
+-- Installing: /usr/local/share/OpenCV/samples/cpp/lena.jpg
+-- Installing: /usr/local/share/OpenCV/samples/cpp/right14.jpg
+-- Installing: /usr/local/share/OpenCV/samples/cpp/left06.jpg
+-- Installing: /usr/local/share/OpenCV/samples/cpp/right03.jpg
+-- Installing: /usr/local/share/OpenCV/samples/cpp/building.jpg
+-- Installing: /usr/local/share/OpenCV/samples/cpp/right12.jpg
+-- Installing: /usr/local/share/OpenCV/samples/cpp/right02.jpg
+-- Installing: /usr/local/share/OpenCV/samples/cpp/left03.jpg
+-- Installing: /usr/local/share/OpenCV/samples/cpp/right09.jpg
+-- Installing: /usr/local/share/OpenCV/samples/cpp/left12.jpg
+-- Installing: /usr/local/share/OpenCV/samples/cpp/right04.jpg
+-- Installing: /usr/local/share/OpenCV/samples/cpp/right07.jpg
+-- Installing: /usr/local/share/OpenCV/samples/cpp/stuff.jpg
+-- Installing: /usr/local/share/OpenCV/samples/cpp/left02.jpg
+-- Installing: /usr/local/share/OpenCV/samples/cpp/baboon.jpg
+-- Installing: /usr/local/share/OpenCV/samples/cpp/right11.jpg
+-- Installing: /usr/local/share/OpenCV/samples/cpp/left14.jpg
+-- Installing: /usr/local/share/OpenCV/samples/cpp/left13.jpg
+-- Installing: /usr/local/share/OpenCV/samples/cpp/board.jpg
+-- Installing: /usr/local/share/OpenCV/samples/cpp/left05.jpg
+-- Installing: /usr/local/share/OpenCV/samples/cpp/left11.jpg
+-- Installing: /usr/local/share/OpenCV/samples/cpp/right13.jpg
+-- Installing: /usr/local/share/OpenCV/samples/cpp/left04.jpg
+-- Installing: /usr/local/share/OpenCV/samples/cpp/left07.jpg
+-- Installing: /usr/local/share/OpenCV/samples/cpp/pic2.png
+-- Installing: /usr/local/share/OpenCV/samples/cpp/pic4.png
+-- Installing: /usr/local/share/OpenCV/samples/cpp/logo_in_clutter.png
+-- Installing: /usr/local/share/OpenCV/samples/cpp/pic1.png
+-- Installing: /usr/local/share/OpenCV/samples/cpp/logo.png
+-- Installing: /usr/local/share/OpenCV/samples/cpp/pic5.png
+-- Installing: /usr/local/share/OpenCV/samples/cpp/tsukuba_l.png
+-- Installing: /usr/local/share/OpenCV/samples/cpp/pic3.png
+-- Installing: /usr/local/share/OpenCV/samples/cpp/pic6.png
+-- Installing: /usr/local/share/OpenCV/samples/cpp/tsukuba_r.png
+-- Installing: /usr/local/share/OpenCV/samples/cpp/templ.png
+-- Installing: /usr/local/share/OpenCV/samples/cpp/letter-recognition.data
+-- Installing: /usr/local/share/OpenCV/samples/gpu/performance/tests.cpp
+-- Installing: /usr/local/share/OpenCV/samples/gpu/performance/performance.cpp
+-- Installing: /usr/local/share/OpenCV/samples/gpu/performance/performance.h
+-- Installing: /usr/local/share/OpenCV/samples/gpu/cascadeclassifier.cpp
+-- Installing: /usr/local/share/OpenCV/samples/gpu/driver_api_stereo_multi.cpp
+-- Installing: /usr/local/share/OpenCV/samples/gpu/farneback_optical_flow.cpp
+-- Installing: /usr/local/share/OpenCV/samples/gpu/houghlines.cpp
+-- Installing: /usr/local/share/OpenCV/samples/gpu/super_resolution.cpp
+-- Installing: /usr/local/share/OpenCV/samples/gpu/opengl.cpp
+-- Installing: /usr/local/share/OpenCV/samples/gpu/stereo_match.cpp
+-- Installing: /usr/local/share/OpenCV/samples/gpu/multi.cpp
+-- Installing: /usr/local/share/OpenCV/samples/gpu/video_writer.cpp
+-- Installing: /usr/local/share/OpenCV/samples/gpu/brox_optical_flow.cpp
+-- Installing: /usr/local/share/OpenCV/samples/gpu/generalized_hough.cpp
+-- Installing: /usr/local/share/OpenCV/samples/gpu/surf_keypoint_matcher.cpp
+-- Installing: /usr/local/share/OpenCV/samples/gpu/driver_api_multi.cpp
+-- Installing: /usr/local/share/OpenCV/samples/gpu/optical_flow.cpp
+-- Installing: /usr/local/share/OpenCV/samples/gpu/hog.cpp
+-- Installing: /usr/local/share/OpenCV/samples/gpu/opticalflow_nvidia_api.cpp
+-- Installing: /usr/local/share/OpenCV/samples/gpu/pyrlk_optical_flow.cpp
+-- Installing: /usr/local/share/OpenCV/samples/gpu/bgfg_segm.cpp
+-- Installing: /usr/local/share/OpenCV/samples/gpu/cascadeclassifier_nvidia_api.cpp
+-- Installing: /usr/local/share/OpenCV/samples/gpu/video_reader.cpp
+-- Installing: /usr/local/share/OpenCV/samples/gpu/alpha_comp.cpp
+-- Installing: /usr/local/share/OpenCV/samples/gpu/morphology.cpp
+-- Installing: /usr/local/share/OpenCV/samples/gpu/stereo_multi.cpp
+-- Installing: /usr/local/share/OpenCV/samples/gpu/aloeL.jpg
+-- Installing: /usr/local/share/OpenCV/samples/gpu/aloeR.jpg
+-- Installing: /usr/local/share/OpenCV/samples/gpu/basketball2.png
+-- Installing: /usr/local/share/OpenCV/samples/gpu/road.png
+-- Installing: /usr/local/share/OpenCV/samples/gpu/tsucuba_left.png
+-- Installing: /usr/local/share/OpenCV/samples/gpu/rubberwhale1.png
+-- Installing: /usr/local/share/OpenCV/samples/gpu/tsucuba_right.png
+-- Installing: /usr/local/share/OpenCV/samples/gpu/basketball1.png
+-- Installing: /usr/local/share/OpenCV/samples/gpu/rubberwhale2.png
+-- Installing: /usr/local/share/opencv/samples/surf_matcher.cpp
+-- Installing: /usr/local/share/opencv/samples/squares.cpp
+-- Installing: /usr/local/share/opencv/samples/hog.cpp
+-- Installing: /usr/local/share/opencv/samples/facedetect.cpp
+-- Installing: /usr/local/share/opencv/samples/aloe-L.png
+-- Installing: /usr/local/share/opencv/samples/aloe-R.png
+-- Installing: /usr/local/share/opencv/samples/aloe-disp.png
