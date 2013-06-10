@@ -1,0 +1,287 @@
+-- The CXX compiler identification is GNU 4.6.3
+-- The C compiler identification is GNU 4.6.3
+-- Check for working CXX compiler: /usr/bin/arm-linux-gnueabihf-g++-4.6
+-- Check for working CXX compiler: /usr/bin/arm-linux-gnueabihf-g++-4.6 -- works
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working C compiler: /usr/bin/arm-linux-gnueabihf-gcc-4.6
+-- Check for working C compiler: /usr/bin/arm-linux-gnueabihf-gcc-4.6 -- works
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Detected version of GNU GCC: 46 (406)
+-- Performing Test HAVE_CXX_W
+-- Performing Test HAVE_CXX_W - Success
+-- Performing Test HAVE_C_W
+-- Performing Test HAVE_C_W - Success
+-- Performing Test HAVE_CXX_WALL
+-- Performing Test HAVE_CXX_WALL - Success
+-- Performing Test HAVE_C_WALL
+-- Performing Test HAVE_C_WALL - Success
+-- Performing Test HAVE_CXX_WERROR_RETURN_TYPE
+-- Performing Test HAVE_CXX_WERROR_RETURN_TYPE - Success
+-- Performing Test HAVE_C_WERROR_RETURN_TYPE
+-- Performing Test HAVE_C_WERROR_RETURN_TYPE - Success
+-- Performing Test HAVE_CXX_WERROR_ADDRESS
+-- Performing Test HAVE_CXX_WERROR_ADDRESS - Success
+-- Performing Test HAVE_C_WERROR_ADDRESS
+-- Performing Test HAVE_C_WERROR_ADDRESS - Success
+-- Performing Test HAVE_CXX_WERROR_SEQUENCE_POINT
+-- Performing Test HAVE_CXX_WERROR_SEQUENCE_POINT - Success
+-- Performing Test HAVE_C_WERROR_SEQUENCE_POINT
+-- Performing Test HAVE_C_WERROR_SEQUENCE_POINT - Success
+-- Performing Test HAVE_CXX_WFORMAT
+-- Performing Test HAVE_CXX_WFORMAT - Success
+-- Performing Test HAVE_C_WFORMAT
+-- Performing Test HAVE_C_WFORMAT - Success
+-- Performing Test HAVE_CXX_WERROR_FORMAT_SECURITY
+-- Performing Test HAVE_CXX_WERROR_FORMAT_SECURITY - Success
+-- Performing Test HAVE_C_WERROR_FORMAT_SECURITY
+-- Performing Test HAVE_C_WERROR_FORMAT_SECURITY - Success
+-- Performing Test HAVE_CXX_WMISSING_DECLARATIONS
+-- Performing Test HAVE_CXX_WMISSING_DECLARATIONS - Success
+-- Performing Test HAVE_C_WMISSING_DECLARATIONS
+-- Performing Test HAVE_C_WMISSING_DECLARATIONS - Success
+-- Performing Test HAVE_CXX_WMISSING_PROTOTYPES
+-- Performing Test HAVE_CXX_WMISSING_PROTOTYPES - Failed
+-- Performing Test HAVE_C_WMISSING_PROTOTYPES
+-- Performing Test HAVE_C_WMISSING_PROTOTYPES - Success
+-- Performing Test HAVE_CXX_WSTRICT_PROTOTYPES
+-- Performing Test HAVE_CXX_WSTRICT_PROTOTYPES - Failed
+-- Performing Test HAVE_C_WSTRICT_PROTOTYPES
+-- Performing Test HAVE_C_WSTRICT_PROTOTYPES - Success
+-- Performing Test HAVE_CXX_WUNDEF
+-- Performing Test HAVE_CXX_WUNDEF - Success
+-- Performing Test HAVE_C_WUNDEF
+-- Performing Test HAVE_C_WUNDEF - Success
+-- Performing Test HAVE_CXX_WINIT_SELF
+-- Performing Test HAVE_CXX_WINIT_SELF - Success
+-- Performing Test HAVE_C_WINIT_SELF
+-- Performing Test HAVE_C_WINIT_SELF - Success
+-- Performing Test HAVE_CXX_WPOINTER_ARITH
+-- Performing Test HAVE_CXX_WPOINTER_ARITH - Success
+-- Performing Test HAVE_C_WPOINTER_ARITH
+-- Performing Test HAVE_C_WPOINTER_ARITH - Success
+-- Performing Test HAVE_CXX_WSHADOW
+-- Performing Test HAVE_CXX_WSHADOW - Success
+-- Performing Test HAVE_C_WSHADOW
+-- Performing Test HAVE_C_WSHADOW - Success
+-- Performing Test HAVE_CXX_WSIGN_PROMO
+-- Performing Test HAVE_CXX_WSIGN_PROMO - Success
+-- Performing Test HAVE_C_WSIGN_PROMO
+-- Performing Test HAVE_C_WSIGN_PROMO - Failed
+-- Performing Test HAVE_CXX_WNO_NARROWING
+-- Performing Test HAVE_CXX_WNO_NARROWING - Failed
+-- Performing Test HAVE_C_WNO_NARROWING
+-- Performing Test HAVE_C_WNO_NARROWING - Failed
+-- Performing Test HAVE_CXX_WNO_DELETE_NON_VIRTUAL_DTOR
+-- Performing Test HAVE_CXX_WNO_DELETE_NON_VIRTUAL_DTOR - Failed
+-- Performing Test HAVE_C_WNO_DELETE_NON_VIRTUAL_DTOR
+-- Performing Test HAVE_C_WNO_DELETE_NON_VIRTUAL_DTOR - Failed
+-- Performing Test HAVE_CXX_WNO_UNNAMED_TYPE_TEMPLATE_ARGS
+-- Performing Test HAVE_CXX_WNO_UNNAMED_TYPE_TEMPLATE_ARGS - Failed
+-- Performing Test HAVE_C_WNO_UNNAMED_TYPE_TEMPLATE_ARGS
+-- Performing Test HAVE_C_WNO_UNNAMED_TYPE_TEMPLATE_ARGS - Failed
+-- Performing Test HAVE_CXX_FDIAGNOSTICS_SHOW_OPTION
+-- Performing Test HAVE_CXX_FDIAGNOSTICS_SHOW_OPTION - Success
+-- Performing Test HAVE_C_FDIAGNOSTICS_SHOW_OPTION
+-- Performing Test HAVE_C_FDIAGNOSTICS_SHOW_OPTION - Success
+-- Performing Test HAVE_CXX_PTHREAD
+-- Performing Test HAVE_CXX_PTHREAD - Success
+-- Performing Test HAVE_C_PTHREAD
+-- Performing Test HAVE_C_PTHREAD - Success
+-- Performing Test HAVE_CXX_FOMIT_FRAME_POINTER
+-- Performing Test HAVE_CXX_FOMIT_FRAME_POINTER - Success
+-- Performing Test HAVE_C_FOMIT_FRAME_POINTER
+-- Performing Test HAVE_C_FOMIT_FRAME_POINTER - Success
+-- Performing Test HAVE_CXX_FFUNCTION_SECTIONS
+-- Performing Test HAVE_CXX_FFUNCTION_SECTIONS - Success
+-- Performing Test HAVE_C_FFUNCTION_SECTIONS
+-- Performing Test HAVE_C_FFUNCTION_SECTIONS - Success
+-- Looking for alloca.h
+-- Looking for alloca.h - found
+-- Looking for alloca
+-- Looking for alloca - not found
+-- Looking for unistd.h
+-- Looking for unistd.h - found
+-- Looking for pthread.h
+-- Looking for pthread.h - found
+-- Found ZLIB: /usr/lib/arm-linux-gnueabihf/libz.so (found version "1.2.7") 
+-- Found TIFF: /usr/lib/arm-linux-gnueabihf/libtiff.so (found version "4.0.2") 
+-- Found JPEG: /usr/lib/arm-linux-gnueabihf/libjpeg.so  
+-- Found Jasper: /usr/lib/arm-linux-gnueabihf/libjasper.so (found version "1.900.1") 
+-- Found PNG: /usr/lib/arm-linux-gnueabihf/libpng.so (found version "1.2.49") 
+-- Looking for /usr/include/png.h
+-- Looking for /usr/include/png.h - found
+-- Looking for /usr/include/libpng/png.h
+-- Looking for /usr/include/libpng/png.h - found
+-- Found OpenEXR: /usr/lib/libIlmImf.so
+-- checking for module 'gtk+-2.0'
+--   found gtk+-2.0, version 2.24.10
+-- checking for module 'gthread-2.0'
+--   found gthread-2.0, version 2.32.4
+-- checking for module 'gtkglext-1.0'
+--   found gtkglext-1.0, version 1.2.0
+-- Looking for XOpenDisplay in /usr/lib/arm-linux-gnueabihf/libX11.so;/usr/lib/arm-linux-gnueabihf/libXext.so
+-- Looking for XOpenDisplay in /usr/lib/arm-linux-gnueabihf/libX11.so;/usr/lib/arm-linux-gnueabihf/libXext.so - found
+-- Looking for gethostbyname
+-- Looking for gethostbyname - found
+-- Looking for connect
+-- Looking for connect - found
+-- Looking for remove
+-- Looking for remove - found
+-- Looking for shmat
+-- Looking for shmat - found
+-- Looking for IceConnectionNumber in ICE
+-- Looking for IceConnectionNumber in ICE - found
+-- Found X11: /usr/lib/arm-linux-gnueabihf/libX11.so
+-- checking for module 'gstreamer-base-0.10'
+--   found gstreamer-base-0.10, version 0.10.36
+-- checking for module 'gstreamer-app-0.10'
+--   found gstreamer-app-0.10, version 0.10.36
+-- checking for module 'gstreamer-video-0.10'
+--   found gstreamer-video-0.10, version 0.10.36
+-- checking for module 'libunicap'
+--   found libunicap, version 0.9.12
+-- checking for module 'libucil'
+--   package 'libucil' not found
+-- checking for module 'libdc1394-2'
+--   package 'libdc1394-2' not found
+-- checking for module 'libdc1394'
+--   package 'libdc1394' not found
+-- checking for module 'libxine'
+--   found libxine, version 1.1.21
+-- checking for module 'libv4l1'
+--   found libv4l1, version 0.8.8
+-- Looking for linux/videodev.h
+-- Looking for linux/videodev.h - not found
+-- Looking for linux/videodev2.h
+-- Looking for linux/videodev2.h - found
+-- Looking for sys/videoio.h
+-- Looking for sys/videoio.h - not found
+-- checking for module 'libavcodec'
+--   found libavcodec, version 53.35.0
+-- checking for module 'libavformat'
+--   found libavformat, version 53.21.1
+-- checking for module 'libavutil'
+--   found libavutil, version 51.22.1
+-- checking for module 'libswscale'
+--   found libswscale, version 2.1.0
+-- Looking for libavformat/avformat.h
+-- Looking for libavformat/avformat.h - found
+-- Looking for ffmpeg/avformat.h
+-- Looking for ffmpeg/avformat.h - not found
+-- Found PythonInterp: /usr/bin/python (found suitable version "2.7.3", required is "2.0") 
+-- Found PythonLibs: /usr/lib/libpython2.7.so (found suitable exact version "2.7.3") 
+-- Could NOT find OPENCL (missing:  OPENCL_LIBRARY OPENCL_INCLUDE_DIR) 
+-- Performing Test HAVE_CXX_WNO_UNDEF
+-- Performing Test HAVE_CXX_WNO_UNDEF - Success
+-- Performing Test HAVE_CXX_WNO_DEPRECATED_DECLARATIONS
+-- Performing Test HAVE_CXX_WNO_DEPRECATED_DECLARATIONS - Success
+-- 
+-- General configuration for OpenCV 2.4.5 =====================================
+--   Version control:               unknown
+-- 
+--   Platform:
+--     Host:                        Linux 3.4.43+ armv7l
+--     Target:                      Linux 1 arm
+--     CMake:                       2.8.9
+--     CMake generator:             Unix Makefiles
+--     CMake build tool:            /usr/bin/make
+--     Configuration:               RELEASE
+-- 
+--   C/C++:
+--     Built as dynamic libs?:      YES
+--     C++ Compiler:                /usr/bin/arm-linux-gnueabihf-g++-4.6  (ver 4.6.3)
+--     C++ flags (Release):         -mfpu=neon -mfpu=neon   -W -Wall -Werror=return-type -Werror=address -Werror=sequence-point -Wformat -Werror=format-security -Wmissing-declarations -Wundef -Winit-self -Wpointer-arith -Wshadow -Wsign-promo -fdiagnostics-show-option -pthread -fomit-frame-pointer -ffunction-sections -O3 -DNDEBUG  -DNDEBUG
+--     C++ flags (Debug):           -mfpu=neon -mfpu=neon   -W -Wall -Werror=return-type -Werror=address -Werror=sequence-point -Wformat -Werror=format-security -Wmissing-declarations -Wundef -Winit-self -Wpointer-arith -Wshadow -Wsign-promo -fdiagnostics-show-option -pthread -fomit-frame-pointer -ffunction-sections -g  -O0 -DDEBUG -D_DEBUG -ggdb3
+--     C Compiler:                  /usr/bin/arm-linux-gnueabihf-gcc-4.6
+--     C flags (Release):           -mfpu=neon -mfpu=neon   -W -Wall -Werror=return-type -Werror=address -Werror=sequence-point -Wformat -Werror=format-security -Wmissing-declarations -Wmissing-prototypes -Wstrict-prototypes -Wundef -Winit-self -Wpointer-arith -Wshadow -fdiagnostics-show-option -pthread -fomit-frame-pointer -ffunction-sections -O3 -DNDEBUG  -DNDEBUG
+--     C flags (Debug):             -mfpu=neon -mfpu=neon   -W -Wall -Werror=return-type -Werror=address -Werror=sequence-point -Wformat -Werror=format-security -Wmissing-declarations -Wmissing-prototypes -Wstrict-prototypes -Wundef -Winit-self -Wpointer-arith -Wshadow -fdiagnostics-show-option -pthread -fomit-frame-pointer -ffunction-sections -g  -O0 -DDEBUG -D_DEBUG -ggdb3
+--     Linker flags (Release):
+--     Linker flags (Debug):
+--     Precompiled headers:         YES
+-- 
+--   OpenCV modules:
+--     To be built:                 core imgproc flann highgui features2d calib3d ml video objdetect contrib photo legacy gpu nonfree python stitching superres ts videostab
+--     Disabled:                    world
+--     Disabled by dependency:      -
+--     Unavailable:                 androidcamera java ocl
+-- 
+--   GUI: 
+--     QT 4.x:                      NO
+--     GTK+ 2.x:                    YES (ver 2.24.10)
+--     GThread :                    YES (ver 2.32.4)
+--     GtkGlExt:                    YES (ver 1.2.0)
+--     OpenGL support:              YES (/usr/lib/arm-linux-gnueabihf/libGLU.so /usr/lib/arm-linux-gnueabihf/libGL.so /usr/lib/arm-linux-gnueabihf/libSM.so /usr/lib/arm-linux-gnueabihf/libICE.so /usr/lib/arm-linux-gnueabihf/libX11.so /usr/lib/arm-linux-gnueabihf/libXext.so)
+-- 
+--   Media I/O: 
+--     ZLib:                        /usr/lib/arm-linux-gnueabihf/libz.so (ver 1.2.7)
+--     JPEG:                        /usr/lib/arm-linux-gnueabihf/libjpeg.so (ver 80)
+--     PNG:                         /usr/lib/arm-linux-gnueabihf/libpng.so (ver 1.2.49)
+--     TIFF:                        /usr/lib/arm-linux-gnueabihf/libtiff.so (ver 42 - 4.0.2)
+--     JPEG 2000:                   /usr/lib/arm-linux-gnueabihf/libjasper.so (ver 1.900.1)
+--     OpenEXR:                     /usr/lib/libImath.so /usr/lib/libIlmImf.so /usr/lib/libIex.so /usr/lib/libHalf.so /usr/lib/libIlmThread.so (ver 1.6.1)
+-- 
+--   Video I/O:
+--     DC1394 1.x:                  NO
+--     DC1394 2.x:                  NO
+--     FFMPEG:                      YES
+--       codec:                     YES (ver 53.35.0)
+--       format:                    YES (ver 53.21.1)
+--       util:                      YES (ver 51.22.1)
+--       swscale:                   YES (ver 2.1.0)
+--       gentoo-style:              YES
+--     GStreamer:                   
+--       base:                      YES (ver 0.10.36)
+--       app:                       YES (ver 0.10.36)
+--       video:                     YES (ver 0.10.36)
+--     OpenNI:                      NO
+--     OpenNI PrimeSensor Modules:  NO
+--     PvAPI:                       NO
+--     GigEVisionSDK:               NO
+--     UniCap:                      NO
+--     UniCap ucil:                 NO
+--     V4L/V4L2:                    Using libv4l (ver 0.8.8)
+--     XIMEA:                       NO
+--     Xine:                        YES (ver 1.1.21)
+-- 
+--   Other third-party libraries:
+--     Use IPP:                     NO
+--     Use Eigen:                   YES (ver 2.0.17)
+--     Use TBB:                     NO
+--     Use OpenMP:                  NO
+--     Use GCD                      NO
+--     Use Concurrency              NO
+--     Use C=:                      NO
+--     Use Cuda:                    NO
+--     Use OpenCL:                  NO
+-- 
+--   Python:
+--     Interpreter:                 /usr/bin/python (ver 2.7.3)
+--     Libraries:                   /usr/lib/libpython2.7.so (ver 2.7.3)
+--     numpy:                       /usr/lib/pymodules/python2.7/numpy/core/include (ver 1.6.2)
+--     packages path:               lib/python2.7/dist-packages
+-- 
+--   Java:
+--     ant:                         NO
+--     JNI:                         NO
+--     Java tests:                  YES
+-- 
+--   Documentation:
+--     Build Documentation:         NO
+--     Sphinx:                      NO
+--     PdfLaTeX compiler:           NO
+-- 
+--   Tests and samples:
+--     Tests:                       YES
+--     Performance tests:           YES
+--     C/C++ Examples:              YES
+-- 
+--   Install path:                  /usr/local
+-- 
+--   cvconfig.h is in:              /home/user/opencv/opencv-2.4.5/build
+-- -----------------------------------------------------------------
+-- 
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/user/opencv/opencv-2.4.5/build
