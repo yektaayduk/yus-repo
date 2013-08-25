@@ -2,7 +2,7 @@
 '''
 
     @filename: about.py
-    @project : STM32-GCC-ARM-IDE
+    @project : AVR32-GCC-IDE
 
     PhilRobotics | Philippine Electronics and Robotics Enthusiasts Club
     http://philrobotics.com | http://philrobotics.com/forum | http://facebook.com/philrobotics
@@ -31,7 +31,7 @@ from firmware import FirmwareLibUpdate
 SPLASH_IMAGE = 'images/about.png'
 
 SPLASH_NOTICE = '''
-  STM32 GCC-ARM IDE  Copyright (C) 2013  PhilRobotics
+  AVR32 GCC IDE  Copyright (C) 2013  PhilRobotics
   This program comes with ABSOLUTELY NO WARRANTY.
   This is free software, and you are welcome
   to redistribute it under certain conditions.

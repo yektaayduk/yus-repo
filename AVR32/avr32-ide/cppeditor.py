@@ -2,7 +2,7 @@
 '''
 
     @filename: cppeditor.py
-    @project : STM32-GCC-ARM-IDE
+    @project : AVR32-GCC-IDE
 
     PhilRobotics | Philippine Electronics and Robotics Enthusiasts Club
     http://philrobotics.com | http://philrobotics.com/forum | http://facebook.com/philrobotics
@@ -31,7 +31,7 @@ from PyQt4.Qsci import QsciScintilla, QsciLexerCPP, QsciAPIs
 from firmware import getLibraryKeywords, REQUIRED_INCLUDE, USER_CODE_EXT
 
 # user source code
-PROJECT_ALIAS = 'STM32 C++ Project' #'PhilRobokit Project'
+PROJECT_ALIAS = 'AVR32 C++ Project' #'PhilRobokit Project'
 PROJECT_NONAME = 'untitled'
 
 __default_content__ = REQUIRED_INCLUDE + \

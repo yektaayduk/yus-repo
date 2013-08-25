@@ -2,7 +2,7 @@
 '''
 
     @filename: firmware.py
-    @project : STM32-GCC-ARM-IDE
+    @project : AVR32-GCC-IDE
 
     PhilRobotics | Philippine Electronics and Robotics Enthusiasts Club
     http://philrobotics.com | http://philrobotics.com/forum | http://facebook.com/philrobotics
@@ -39,10 +39,10 @@ BSP_DIR = CORE_LIB_DIR + '/bsp'
 STMLIB_DIR = CORE_LIB_DIR + '/stm_lib'
 CMSIS_CM3_DIR = CORE_LIB_DIR + '/cmsis/CM3'
 CM3_CORE_DIR = CMSIS_CM3_DIR + '/CoreSupport'
-CM3_DEVICE_DIR = CMSIS_CM3_DIR + '/DeviceSupport/ST/STM32F10x'
+CM3_DEVICE_DIR = CMSIS_CM3_DIR + '/DeviceSupport/ST/AT32UC3L0x'
 
-STARTUP_CODE = BSP_DIR + '/startup_stm32f10x_md_vl.s'
-LINKER_SCRIPT = BSP_DIR + '/stm32_flash_md_vl.ld'
+STARTUP_CODE = BSP_DIR + '/startup_AT32UC3L0128.s'
+LINKER_SCRIPT = BSP_DIR + '/AT32UC3L0128.ld'
 
 # Example Projects
 EXAMPLES_DIR = 'examples'
@@ -93,10 +93,6 @@ def getCoreSourceFiles(userIncludes = []):
                    + glob.glob(CM3_CORE_DIR + '/*.c') \
                    + glob.glob(CM3_DEVICE_DIR+ '/*.c')
     required.append(STMLIB_DIR + '/src/misc.c')
-    required.append(STMLIB_DIR + '/src/stm32f10x_gpio.c')
-    required.append(STMLIB_DIR + '/src/stm32f10x_rcc.c')
-    required.append(STMLIB_DIR + '/src/stm32f10x_tim.c')
-    required.append(STMLIB_DIR + '/src/stm32f10x_usart.c')
 
     for include in userIncludes:
         userheader = os.path.join( include[2:], os.path.split(include[2:])[1] + '.h' )
@@ -225,12 +221,12 @@ def getLibraryKeywords(headerFiles=[]):
 
 class FirmwareLibUpdate(QtCore.QThread):
     version_file = 'hardware/cores/bsp/version'
-    version_url = 'http://yus-repo.googlecode.com/svn/trunk/stm32/stm32-ide/' + version_file
+    version_url = 'http://yus-repo.googlecode.com/svn/trunk/AVR32/avr32-ide/' + version_file
     history_url = 'http://yus-repo.googlecode.com/svn-history/'
     
-    corelib = '/trunk/stm32/stm32-ide/hardware/cores/'
-    userlib = '/trunk/stm32/stm32-ide/libraries/'
-    examples = '/trunk/stm32/stm32-ide/examples/'
+    corelib = '/trunk/AVR32/avr32-ide/hardware/cores/'
+    userlib = '/trunk/AVR32/avr32-ide/libraries/'
+    examples = '/trunk/AVR32/avr32-ide/examples/'
     
     href_str = '<li><a href="'
     file_list = []
@@ -253,7 +249,7 @@ class FirmwareLibUpdate(QtCore.QThread):
     
     def run(self):
         self.LogList.clear()
-        self.LogList.append('searching STM32-GCC-ARM-IDE repository. please wait....')
+        self.LogList.append('searching AVR32-GCC-IDE repository. please wait....')
         latest_rev = self.latest_fwlib_svnrev()
         # print 'latest_fwlib_svnrev = ', latest_rev
         if latest_rev == -1: # e.g. network error

@@ -2,7 +2,7 @@
 '''
 
     @filename: mainwindow.py
-    @project : STM32-GCC-ARM-IDE
+    @project : AVR32-GCC-IDE
 
     PhilRobotics | Philippine Electronics and Robotics Enthusiasts Club
     http://philrobotics.com | http://philrobotics.com/forum | http://facebook.com/philrobotics
@@ -46,7 +46,7 @@ class AppMainWindow(QtGui.QMainWindow):
         Constructor
         '''
         super(AppMainWindow, self).__init__()
-        print "STM32 GCC-ARM IDE started..."
+        print "AVR32 GCC IDE started..."
         print SPLASH_NOTICE
         
         if False: # todo: set to True if building stand-alone package (cx_Freeze)
@@ -59,7 +59,7 @@ class AppMainWindow(QtGui.QMainWindow):
         self.aboutDlg = AboutDialog(self)
         self.aboutDlg.show()
         
-        self.setWindowTitle("STM32 GCC-ARM IDE")
+        self.setWindowTitle("AVR32 GCC IDE")
         self.setWindowIcon(QtGui.QIcon('images/app.png'))
         self.setMinimumSize(300, 400)
         
@@ -102,7 +102,7 @@ class AppMainWindow(QtGui.QMainWindow):
             self.aboutDlg.showUpdateDialog()
             return
         # todo: other informations
-        self.aboutDlg.showMessage("STM32 GCC-ARM IDE [ %s ]" % self.aboutDlg.getVersions(),
+        self.aboutDlg.showMessage("AVR32 GCC IDE [ %s ]" % self.aboutDlg.getVersions(),
                            QtCore.Qt.AlignLeft | QtCore.Qt.AlignBottom, QtGui.QColor("#eecc77"))
     
     def openProjectProtoSite(self):
@@ -331,12 +331,12 @@ class AppMainWindow(QtGui.QMainWindow):
         # todo: board names??
         #self.boardAnitoAct = QtGui.QAction("PhilRobokit &Anito",  self,
         #        checkable=True, statusTip="Select PhilRobokit Anito board" )
-        self.boardEgizmoStm32Act = QtGui.QAction("e&Gizmo STM32",  self,
-                checkable=True, statusTip="Select eGizmo STM32F100C8 MCU board" )
+        self.boardEgizmoAvr32Act = QtGui.QAction("e&Gizmo AVR32",  self,
+                checkable=True, statusTip="Select eGizmo AT32UC3L0128 MCU board" )
         self.boardGroup = QtGui.QActionGroup(self)
         #self.boardGroup.addAction(self.boardAnitoAct)
-        self.boardGroup.addAction(self.boardEgizmoStm32Act)
-        self.boardEgizmoStm32Act.setChecked(True)
+        self.boardGroup.addAction(self.boardEgizmoAvr32Act)
+        self.boardEgizmoAvr32Act.setChecked(True)
         
         self.restoreDefaultsAct = QtGui.QAction("Restore Defaults",  self,
                 statusTip="Clear configuration files", triggered=self.Configs.setDefaults)
@@ -345,7 +345,7 @@ class AppMainWindow(QtGui.QMainWindow):
         self.aboutAct = QtGui.QAction("&About", self, shortcut=QtGui.QKeySequence("F1"),
                 statusTip="About the IDE", triggered=self.about)        
         self.aboutCompilerAct = QtGui.QAction("About &Compiler", self,
-                statusTip="About GNU tools for ARM Embedded", triggered=self.aboutCompiler)
+                statusTip="About GNU tools for AVR32", triggered=self.aboutCompiler)
         self.aboutQtAct = QtGui.QAction("About &Qt", self,
                 statusTip="Show the Qt library's About box", triggered=QtGui.qApp.aboutQt)
         self.visitProjectprotoSiteAct = QtGui.QAction("Visit &ProjectProto", self,
@@ -414,7 +414,7 @@ class AppMainWindow(QtGui.QMainWindow):
         self.toolsMenu.addSeparator()
         self.boardMenu = self.toolsMenu.addMenu("&Board")
         #self.boardMenu.addAction(self.boardAnitoAct)
-        self.boardMenu.addAction(self.boardEgizmoStm32Act)
+        self.boardMenu.addAction(self.boardEgizmoAvr32Act)
         self.serialPortMenu = self.toolsMenu.addMenu("&Serial Port")
         self.serialPortGroup = QtGui.QActionGroup(self)
         self.connect(self.serialPortMenu, QtCore.SIGNAL("aboutToShow ()"), self.updateSerialPortList )

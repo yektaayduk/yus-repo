@@ -2,7 +2,7 @@
 '''
 
     @filename: outline.py
-    @project : STM32-GCC-ARM-IDE
+    @project : AVR32-GCC-IDE
 
     PhilRobotics | Philippine Electronics and Robotics Enthusiasts Club
     http://philrobotics.com | http://philrobotics.com/forum | http://facebook.com/philrobotics
@@ -191,6 +191,6 @@ class OutLineView(QtGui.QDockWidget):
                 self.setWindowTitle("Outline")
                 self.updated = True
             
-        return QtGui.QDockWidget.timerEvent(self, *args, **kwargs)
+        #return QtGui.QDockWidget.timerEvent(self, *args, **kwargs)
         
     

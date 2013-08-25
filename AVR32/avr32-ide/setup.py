@@ -2,7 +2,7 @@
 '''
 
     @filename: setup.py
-    @project : STM32-GCC-ARM-IDE
+    @project : AVR32-GCC-IDE
 
     PhilRobotics | Philippine Electronics and Robotics Enthusiasts Club
     http://philrobotics.com | http://philrobotics.com/forum | http://facebook.com/philrobotics
@@ -71,7 +71,7 @@ if os.sys.platform == 'win32':
     # add win32 for pyserial
     packages.append('serial.win32')
     # add tool chain files
-    files += glob.glob('tools/gccarm/*')
+    files += glob.glob('tools/AVRToolchain/*')
     files += glob.glob('tools/msys/*')
     # add dll's
     files += glob.glob('*.dll')
@@ -80,18 +80,18 @@ if os.sys.platform == 'win32':
     EXE = Executable(
         script = 'main.pyw',
         base = 'Win32GUI',
-        targetName = 'stm32-ide.exe',
+        targetName = 'avr32-ide.exe',
         icon = 'images/app.ico',
         )
 
 elif os.sys.platform == 'linux2':
     # add tool chain files
-    files += glob.glob('tools/gccarm/*')
+    files += glob.glob('tools/AVRToolchain/*')
     # add dll's
     files += glob.glob('*.so')
     EXE = Executable(
         script = 'main.pyw',
-        targetName = 'stm32-ide',
+        targetName = 'avr32-ide',
         base = None,
         icon = None,
         )
@@ -100,12 +100,12 @@ elif os.sys.platform == 'darwin': # note: use cx_Freeze 4.3 or later
     # prevent dynamic library loading error on OS X
     script_exe = False
     # add tool chain files
-    files += glob.glob('tools/gccarm/*')
+    files += glob.glob('tools/AVRToolchain/*')
     # add PL2303 usb driver
     files += glob.glob('drivers/PL2303/macosx/*')
     EXE = Executable(
         script = 'main.pyw',
-        targetName = 'stm32-ide',
+        targetName = 'avr32-ide',
         base = None,
         icon = None,
         )
@@ -115,8 +115,8 @@ else:
 
 ##################### cx_freeze ##################################
 if EXE:
-    setup( name = "STM32-IDE",
-           description = 'STM32-GCC-ARM-Embedded Integrated Development Environment',
+    setup( name = "AVR32-IDE",
+           description = 'AVR32-GCC Integrated Development Environment',
            version = svn_rev,
            author = 'Julius Constante',
            options = {'build_exe': {
