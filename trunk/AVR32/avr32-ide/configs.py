@@ -2,7 +2,7 @@
 '''
 
     @filename: configs.py
-    @project : STM32-GCC-ARM-IDE
+    @project : AVR32-GCC-IDE
 
     PhilRobotics | Philippine Electronics and Robotics Enthusiasts Club
     http://philrobotics.com | http://philrobotics.com/forum | http://facebook.com/philrobotics
@@ -38,10 +38,10 @@ FIRMWARE_CONFIG = CONFIG_DIR + 'firmware.ini'
 # board settings file
 BOARD_CONFIG = CONFIG_DIR + 'board.ini'
 
-# default toolchains (GCC-ARM)
-DEFAULT_TCHAIN_WIN32 = 'tools\\gccarm\\bin\\arm-none-eabi-'
-DEFAULT_TCHAIN_LINUX = 'tools/gccarm/bin/arm-none-eabi-'
-DEFAULT_TCHAIN_OSX   = 'tools/gccarm/bin/arm-none-eabi-'
+# default toolchains (AVR GCC)
+DEFAULT_TCHAIN_WIN32 = 'tools\\AVRToolchain\\bin\\avr32-'
+DEFAULT_TCHAIN_LINUX = 'tools/AVRToolchain/bin/avr32-'
+DEFAULT_TCHAIN_OSX   = 'tools/AVRToolchain/bin/avr32-'
 # make command
 DEFAULT_MAKECMD_WIN32 = 'tools\\msys\\bin\\make.exe'
 DEFAULT_MAKECMD_LINUX = 'make'
@@ -52,7 +52,7 @@ DEFAULT_RMCMD_LINUX = 'rm'
 DEFAULT_RMCMD_OSX   = 'rm'
 
 # compiler defines (used also for header parser)
-DEFAULT_COMPILER_DEFINES = 'USE_STDPERIPH_DRIVER:1;STM32F10X_MD_VL:1'
+DEFAULT_COMPILER_DEFINES = 'USE_STDPERIPH_DRIVER:1;AT32UCL0128:1'
 
 # default flags
 COMMON_FLAGS     = '-mcpu=cortex-m3 -mthumb'

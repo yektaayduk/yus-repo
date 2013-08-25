@@ -1,7 +1,7 @@
 
 '''
     @filename: flashloader.py
-    @project : STM32-GCC-ARM-IDE
+    @project : AVR32-GCC-IDE
     
     based on 'stm32loader.py'
     # Author: Ivan A-R <ivan@tuxotronic.org>
