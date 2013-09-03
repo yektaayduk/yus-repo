@@ -87,8 +87,14 @@ def getCoreSourceFiles(userIncludes = []):
     # scan all *.c files
     srcs = []
     required = glob.glob(CORE_LIB_DIR + '/utils/startup/*.S') \
+                   + glob.glob(CORE_LIB_DIR + '/drivers/flashcdw/*.c') \
+                   + glob.glob(CORE_LIB_DIR + '/drivers/gpio/*.c') \
                    + glob.glob(CORE_LIB_DIR + '/drivers/intc/*.S') \
-                   + glob.glob(CORE_LIB_DIR + '/drivers/intc/*.c')
+                   + glob.glob(CORE_LIB_DIR + '/drivers/intc/*.c') \
+                   + glob.glob(CORE_LIB_DIR + '/drivers/pm/power_clocks_lib.c') \
+				   + glob.glob(CORE_LIB_DIR + '/drivers/pm/*3l.c') \
+                   + glob.glob(CORE_LIB_DIR + '/drivers/scif/*3l.c') \
+                   + glob.glob(CORE_LIB_DIR + '/drivers/usart/*.c')
 
     for include in userIncludes:
         userheader = os.path.join( include[2:], os.path.split(include[2:])[1] + '.h' )
@@ -112,7 +118,9 @@ def getCoreSourceFiles(userIncludes = []):
     return srcs
 
 def getIncludeDirs():
-    dirs = [ BSP_DIR, CORE_LIB_DIR + '/utils', CORE_LIB_DIR + '/utils/preprocessor', CORE_LIB_DIR + '/common/utils', CORE_LIB_DIR + '/drivers/intc' ]
+    dirs = [ BSP_DIR ] #, CORE_LIB_DIR + '/drivers/intc', CORE_LIB_DIR + '/drivers/pm', CORE_LIB_DIR + '/drivers/scif' ]
+    dirs += glob.glob( CORE_LIB_DIR + '/drivers/*' )
+    dirs += [ CORE_LIB_DIR + '/utils', CORE_LIB_DIR + '/utils/preprocessor', CORE_LIB_DIR + '/common/utils' ]
     includes = []
     for d in dirs:
         #includes.append('-I' + os.getcwd() + '/' + d)
