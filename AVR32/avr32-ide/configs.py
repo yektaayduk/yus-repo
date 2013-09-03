@@ -39,28 +39,30 @@ FIRMWARE_CONFIG = CONFIG_DIR + 'firmware.ini'
 BOARD_CONFIG = CONFIG_DIR + 'board.ini'
 
 # default toolchains (AVR GCC)
-DEFAULT_TCHAIN_WIN32 = 'tools\\AVRToolchain\\bin\\avr32-'
-DEFAULT_TCHAIN_LINUX = 'tools/AVRToolchain/bin/avr32-'
-DEFAULT_TCHAIN_OSX   = 'tools/AVRToolchain/bin/avr32-'
+DEFAULT_TCHAIN_WIN32 = 'tools\\avr32-gnu-toolchain\\bin\\avr32-'
+DEFAULT_TCHAIN_LINUX = 'tools/avr32-gnu-toolchain/bin/avr32-'
+DEFAULT_TCHAIN_OSX   = 'tools/avr32-gnu-toolchain/bin/avr32-'
 # make command
-DEFAULT_MAKECMD_WIN32 = 'tools\\msys\\bin\\make.exe'
+DEFAULT_MAKECMD_WIN32 = 'tools\\shellUtils\\make.exe'
 DEFAULT_MAKECMD_LINUX = 'make'
 DEFAULT_MAKECMD_OSX   = 'make'
 # rm command
-DEFAULT_RMCMD_WIN32 = 'tools/msys/bin/rm -rf'
-DEFAULT_RMCMD_LINUX = 'rm'
-DEFAULT_RMCMD_OSX   = 'rm'
+DEFAULT_RMCMD_WIN32 = 'tools/shellUtils/rm -rf'
+DEFAULT_RMCMD_LINUX = 'rm -rf'
+DEFAULT_RMCMD_OSX   = 'rm -rf'
 
 # compiler defines (used also for header parser)
-DEFAULT_COMPILER_DEFINES = 'USE_STDPERIPH_DRIVER:1;AT32UCL0128:1'
+DEFAULT_COMPILER_DEFINES = 'USE_ASF:1;AT32UCL0128:1'
 
 # default flags
-COMMON_FLAGS     = '-mcpu=cortex-m3 -mthumb'
-DEFAULT_CFLAGS   = COMMON_FLAGS + ' -Os -c -g -Wall -Wl,--gc-sections -Wno-psabi'
-DEFAULT_CFLAGS  += ' -mfix-cortex-m3-ldrd -fno-common -ffunction-sections -fdata-sections'
+COMMON_FLAGS     = '-march=ucr3 -mpart=uc3l0128'
+DEFAULT_CFLAGS   = COMMON_FLAGS + ' -c -Os -mrelax -mno-cond-exec-before-reload'
+DEFAULT_CFLAGS  += ' -fno-common -ffunction-sections -fdata-sections -funsigned-char -fno-strict-aliasing'
+DEFAULT_CFLAGS  += ' -Wall -Wl,--gc-sections -Wno-psabi'
 DEFAULT_CXXFLAGS = DEFAULT_CFLAGS + ' -fno-rtti -fno-exceptions'
-DEFAULT_AFLAGS   = COMMON_FLAGS
-DEFAULT_LFLAGS   = '-T$(LKR_SCRIPT) -Wl,-Map=$(MAP_FILE),--cref,--gc-sections'
+DEFAULT_AFLAGS   = COMMON_FLAGS + ' -c -D__ASSEMBLY__ -mrelax'
+DEFAULT_LFLAGS   = COMMON_FLAGS + ' -nostartfiles -T$(LKR_SCRIPT)'
+DEFAULT_LFLAGS  += ' -Wl,-Map=$(MAP_FILE),--cref,--gc-sections,-e,_trampoline,--relax,--direct-data'
 DEFAULT_LFLAGS  += ' -lc -lm -lgcc -lstdc++' 
 
 

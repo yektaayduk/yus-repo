@@ -41,13 +41,12 @@ CMSIS_CM3_DIR = CORE_LIB_DIR + '/cmsis/CM3'
 CM3_CORE_DIR = CMSIS_CM3_DIR + '/CoreSupport'
 CM3_DEVICE_DIR = CMSIS_CM3_DIR + '/DeviceSupport/ST/AT32UC3L0x'
 
-STARTUP_CODE = BSP_DIR + '/startup_AT32UC3L0128.s'
-LINKER_SCRIPT = BSP_DIR + '/AT32UC3L0128.ld'
+LINKER_SCRIPT = CORE_LIB_DIR + '/utils/linker_scripts/link_uc3l0128.lds'
 
 # Example Projects
 EXAMPLES_DIR = 'examples'
 # required header file
-REQUIRED_INCLUDE = '#include <platform.h>'
+REQUIRED_INCLUDE = '#include <avr32.h>'
 # user project/source code extension name
 USER_CODE_EXT = '.cxx'
 
@@ -87,12 +86,9 @@ def getExampleProjects(libFolders=[]):
 def getCoreSourceFiles(userIncludes = []):
     # scan all *.c files
     srcs = []
-    required = glob.glob(BSP_DIR + '/*.s') \
-                   + glob.glob(BSP_DIR + '/*.c') \
-                   + glob.glob(BSP_DIR + '/*.cpp') \
-                   + glob.glob(CM3_CORE_DIR + '/*.c') \
-                   + glob.glob(CM3_DEVICE_DIR+ '/*.c')
-    required.append(STMLIB_DIR + '/src/misc.c')
+    required = glob.glob(CORE_LIB_DIR + '/utils/startup/*.S') \
+                   + glob.glob(CORE_LIB_DIR + '/drivers/intc/*.S') \
+                   + glob.glob(CORE_LIB_DIR + '/drivers/intc/*.c')
 
     for include in userIncludes:
         userheader = os.path.join( include[2:], os.path.split(include[2:])[1] + '.h' )
@@ -116,7 +112,7 @@ def getCoreSourceFiles(userIncludes = []):
     return srcs
 
 def getIncludeDirs():
-    dirs = [ BSP_DIR, STMLIB_DIR + '/inc', CM3_CORE_DIR, CM3_DEVICE_DIR ]
+    dirs = [ BSP_DIR, CORE_LIB_DIR + '/utils', CORE_LIB_DIR + '/utils/preprocessor', CORE_LIB_DIR + '/common/utils', CORE_LIB_DIR + '/drivers/intc' ]
     includes = []
     for d in dirs:
         #includes.append('-I' + os.getcwd() + '/' + d)
