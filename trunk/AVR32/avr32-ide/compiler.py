@@ -191,7 +191,7 @@ class GccCompilerThread(QtCore.QThread):
             fout.write( 'PROJECT = ' + projectName + '\n\n' )
             fout.write( 'OUTPUT_DIR = ' + outPath + '\n' )
             fout.write( 'ELF_FILE = $(OUTPUT_DIR)/$(PROJECT).elf\n' )
-            fout.write( 'BIN_FILE = $(OUTPUT_DIR)/$(PROJECT).bin\n' )
+            fout.write( 'HEX_FILE = $(OUTPUT_DIR)/$(PROJECT).hex\n' )
             fout.write( 'MAP_FILE = $(OUTPUT_DIR)/$(PROJECT).map\n' )
             fout.write( 'LKR_SCRIPT = ' + getLinkerScript() + '\n\n')
             fout.write( 'TCHAIN = ' + self.TCHAIN.replace('\\','/') + '\n\n' )
@@ -217,7 +217,7 @@ class GccCompilerThread(QtCore.QThread):
                 fout.write( '\t' + obj + ' \\\n' )
                 objects.append(obj)
             fout.write( '\n\n' )
-            fout.write( 'all : $(BIN_FILE)\n' )
+            fout.write( 'all : $(HEX_FILE)\n' )
             fout.write( '\t@$(TCHAIN)size $(ELF_FILE)\n\n' )
             fout.write( 'clean:\n' )
             fout.write( '\t@$(RM) $(OBJECTS)\n' )
@@ -226,9 +226,9 @@ class GccCompilerThread(QtCore.QThread):
             fout.write( '\t@echo [LINKER] $(@F)\n\t')
             if not verbose: fout.write( '@' )
             fout.write( '$(TCHAIN)gcc $(LFLAGS) $^ -o $@\n\n' )
-            fout.write( '$(BIN_FILE): $(ELF_FILE)\n' )
-            fout.write( '\t@echo [BIN Copy] $(@F)\n')
-            fout.write( '\t@$(TCHAIN)objcopy -Obinary $< $@\n\n\n' )
+            fout.write( '$(HEX_FILE): $(ELF_FILE)\n' )
+            fout.write( '\t@echo [HEX Copy] $(@F)\n')
+            fout.write( '\t@$(TCHAIN)objcopy -O ihex $< $@\n\n\n' )
             i = 0
             for src in sourceFiles:
                 src = str(src)
@@ -241,7 +241,7 @@ class GccCompilerThread(QtCore.QThread):
                 elif src_ext == '.s':
                     fout.write( '\t@echo [AS] $(<F)\n\t' )
                     if not verbose: fout.write( '@' )
-                    fout.write( '$(TCHAIN)as $(AFLAGS) $< -o $@\n\n')
+                    fout.write( '$(TCHAIN)gcc -x assembler-with-cpp $(AFLAGS) $< -o $@\n\n')
                 elif src_ext == '.c':
                     fout.write( '\t@echo [CC] $(<F)\n\t' )
                     if not verbose: fout.write( '@' )
