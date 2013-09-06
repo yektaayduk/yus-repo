@@ -39,6 +39,11 @@ class GccCompilerThread(QtCore.QThread):
     '''
     classdocs
     '''
+    # enum tasks
+    GET_INFO = 0
+    BUILD_PROJECT = 1
+    PROGRAM_HEX = 2
+    _task = GET_INFO
     def __init__(self, parent=None):
         QtCore.QThread.__init__(self, parent)
         self.parent = parent
@@ -56,6 +61,7 @@ class GccCompilerThread(QtCore.QThread):
 
         self.UserCode = None
         self.CleanBuild = True
+        self.serialPortName = None
         self.CompilerProcess = None # todo: use QtCore.QProcess class instead
         
         self.LogList = QtCore.QStringList()
@@ -66,9 +72,16 @@ class GccCompilerThread(QtCore.QThread):
             return
         
         self.LogList.clear()
-        if not self.UserCode: # just get version info
+        if self._task == self.GET_INFO:
             command = [ self.TCHAIN + 'gcc', '--version' ]
-        else:
+        elif self._task == self.PROGRAM_HEX:
+            # output folder - same location with user code
+            outpath = os.path.join( os.path.dirname(self.UserCode) , OUT_DIR )
+            command = [ self.make , '-f'+os.path.join(outpath, MAKEFILE)]
+            command.append( 'COMPORT=%s' % self.serialPortName )
+            command.append( 'program' )
+            #print command
+        else: # self._task == self.BUILD_PROJECT
             projectName = os.path.splitext(os.path.basename(self.UserCode))[0]
             # output folder - same location with user code
             outpath = os.path.join( os.path.dirname(self.UserCode) , OUT_DIR )
@@ -135,7 +148,7 @@ class GccCompilerThread(QtCore.QThread):
         if self.isRunning():
             return None
 
-        self.UserCode = None
+        self._task = self.GET_INFO
         self.start()
         while True:
             self.usleep(1000)
@@ -155,11 +168,32 @@ class GccCompilerThread(QtCore.QThread):
             return False, "busy"
         if not os.path.isfile(userCode):
             return False, "file not found"
-        
+
+        self._task = self.BUILD_PROJECT            
         self.UserCode = str(userCode)
         self.CleanBuild = cleanBuild
         self.start()
         return True, "Build process running. Please wait..."
+        
+    def programHex(self, userCode=None, serialPort=None):
+        if self.isRunning():
+            return False, "busy"
+        if not serialPort:
+            return False, "no port selected"
+        
+        self.serialPortName = str(serialPort)
+        self.UserCode = str(userCode)
+        
+        outpath = os.path.join( os.path.dirname(self.UserCode) , OUT_DIR )
+        makefile = os.path.join(outpath, MAKEFILE)
+        hexfile = self.getExpectedHexFileName(userCode)
+        
+        if not os.path.isfile(makefile) or not os.path.isfile(hexfile):
+            return False, "No *.hex file found! (re)build first the project."
+        
+        self._task = self.PROGRAM_HEX
+        self.start()
+        return True, "Flash Loader running. Please wait..."
 
     def pollBuildProcess(self, stopProcess=False):
         if self.isRunning() or self.LogList.count()>0:
@@ -223,12 +257,16 @@ class GccCompilerThread(QtCore.QThread):
             fout.write( '\t@$(RM) $(OBJECTS)\n' )
             fout.write( '\t@$(RM) $(OUTPUT_DIR)/$(PROJECT).*\n\n\n' )
             fout.write( '$(ELF_FILE): $(OBJECTS)\n' )
-            fout.write( '\t@echo [LINKER] $(@F)\n\t')
+            fout.write( '\t@echo [LINK] $(@F)\n\t')
             if not verbose: fout.write( '@' )
             fout.write( '$(TCHAIN)gcc $(LFLAGS) $^ -o $@\n\n' )
             fout.write( '$(HEX_FILE): $(ELF_FILE)\n' )
-            fout.write( '\t@echo [HEX Copy] $(@F)\n')
-            fout.write( '\t@$(TCHAIN)objcopy -O ihex $< $@\n\n\n' )
+            fout.write( '\t@echo [HEX] $(@F)\n')
+            fout.write( '\t@$(TCHAIN)objcopy -O ihex $< $@\n\n' )
+            fout.write( 'program: $(HEX_FILE)\n' )
+            fout.write( '\tbatchisp -device at32uc3l0128 -hardware RS232 -port $(COMPORT) ' )
+            fout.write( '-operation erase f memory flash blankcheck loadbuffer $(HEX_FILE) ' )
+            fout.write( 'program verify start reset 0\n\n\n' )
             i = 0
             for src in sourceFiles:
                 src = str(src)
@@ -257,17 +295,17 @@ class GccCompilerThread(QtCore.QThread):
         except:
             return False
             
-    def getExpectedBinFileName(self, userCode=None):
+    def getExpectedHexFileName(self, userCode=None):
         if not userCode:
             return None
         outpath = os.path.dirname( str(userCode) ) + '/' + OUT_DIR
         fname = os.path.basename( str(userCode) )
         dotpos = fname.rfind('.')
         if dotpos > 0:
-            binfile = outpath + '/' + fname[:dotpos] + '.bin'
+            hexfile = outpath + '/' + fname[:dotpos] + '.hex'
         else:
-            binfile = outpath + '/' + fname + '.bin'
-        return binfile
+            hexfile = outpath + '/' + fname + '.hex'
+        return hexfile
     
 
 

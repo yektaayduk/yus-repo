@@ -32,7 +32,6 @@ from firmware import scanFirmwareLibs, getExampleProjects
 from compiler import GccCompilerThread
 from configs import IdeConfig
 from serialport import scan_serialports, SerialPortMonitor
-from flashloader import FlashLoaderThread
 from about import AboutDialog, SPLASH_NOTICE
 
 
@@ -76,9 +75,6 @@ class AppMainWindow(QtGui.QMainWindow):
         self.serialPortName = None
         self.serialPortLabel = QtGui.QLabel('<font color=red><i>(select port)</i></font>')
         self.SerialPortMonitorDialog = SerialPortMonitor(self)
-        
-        self.flashLoader = FlashLoaderThread(self)
-        self.pollLoaderTimerID = None
         
         self.Configs = IdeConfig(self)
         
@@ -170,20 +166,17 @@ class AppMainWindow(QtGui.QMainWindow):
             self.insertLog('<font color=orange>Please select first a Serial Port.</font>')
             return
         if self.Compiler.isRunning():
-            self.insertLog('compiler busy... please wait...')
+            self.insertLog('compiler/bootloader busy... please wait...')
             return
         if self.SerialPortMonitorDialog.isPortOpen():
             self.SerialPortMonitorDialog.close() # close first serial port monitor
-        if self.flashLoader.isRunning():
-            self.insertLog('serial bootloader busy.')
-            return
-        binfile = self.Compiler.getExpectedBinFileName( self.Editor.getCurrentFile() )
-        ret, msg = self.flashLoader.programDevice( binfile, self.serialPortName )
+        fn = self.Editor.getCurrentFile()
+        ret, msg = self.Compiler.programHex( fn, self.serialPortName )
         if ret:
             self.insertLog("<font color=green>Bootload/Program Device:</font>", True)
             self.insertLog("<font color=lightblue><i>   %s   </i></font>"%msg)
-            self.pollLoaderTimerID = self.startTimer(0.5) # relatively fast!
-            if not self.pollLoaderTimerID:
+            self.pollCompilerTimerID = self.startTimer(10)
+            if not self.pollCompilerTimerID:
                 self.insertLog("<font color=red>Unable to start Timer.</font>")
         else:
             self.insertLog("<font color=red>%s</font>"%msg)
@@ -481,15 +474,6 @@ class AppMainWindow(QtGui.QMainWindow):
                 self.killTimer(timerID)
                 self.pollCompilerTimerID = None
         
-        if timerID == self.pollLoaderTimerID:
-            ret, msg = self.flashLoader.pollBootLoadProcess()
-            if ret:
-                if len(msg):
-                    self.insertLog( "<font color=lightgreen>%s</font>" % msg )
-            else:
-                self.killTimer(timerID)
-                self.pollLoaderTimerID = None
-
         return QtGui.QMainWindow.timerEvent(self, *args, **kwargs)
         
    
