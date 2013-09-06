@@ -13,6 +13,9 @@ extern "C"
 #include <gpio.h>
 #include <usart.h>
 
+#define TARGET_DFLL_FREQ_HZ   96000000  // DFLL target frequency, in Hz
+#define TARGET_MCUCLK_FREQ_HZ 12000000  // MCU clock target frequency, in Hz
+#define TARGET_PBACLK_FREQ_HZ 12000000  // PBA clock target frequency, in Hz
 
 #ifdef __cplusplus
 }
