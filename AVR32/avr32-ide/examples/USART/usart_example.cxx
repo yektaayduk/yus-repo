@@ -1,36 +1,17 @@
 #include <avr32.h>
 
-#define EXAMPLE_TARGET_PBACLK_FREQ_HZ FOSC0  // PBA clock target frequency, in Hz
-
 #define EXAMPLE_USART                 (&AVR32_USART3)
 #define EXAMPLE_USART_RX_PIN          AVR32_USART3_RXD_0_0_PIN
 #define EXAMPLE_USART_RX_FUNCTION     AVR32_USART3_RXD_0_0_FUNCTION
 #define EXAMPLE_USART_TX_PIN          AVR32_USART3_TXD_0_0_PIN
 #define EXAMPLE_USART_TX_FUNCTION     AVR32_USART3_TXD_0_0_FUNCTION
 #define EXAMPLE_USART_CLOCK_MASK      AVR32_USART3_CLK_PBA
-#define EXAMPLE_TARGET_DFLL_FREQ_HZ   96000000  // DFLL target frequency, in Hz
-#define EXAMPLE_TARGET_MCUCLK_FREQ_HZ 12000000  // MCU clock target frequency, in Hz
-#  undef  EXAMPLE_TARGET_PBACLK_FREQ_HZ
-#define EXAMPLE_TARGET_PBACLK_FREQ_HZ 12000000  // PBA clock target frequency, in Hz
+
 #define EXAMPLE_PDCA_CLOCK_HSB        AVR32_PDCA_CLK_HSB
 #define EXAMPLE_PDCA_CLOCK_PB         AVR32_PDCA_CLK_PBA
 
-static scif_gclk_opt_t gc_dfllif_ref_opt = { SCIF_GCCTRL_SLOWCLOCK, 0, false };
-static pcl_freq_param_t pcl_dfll_freq_param = {
-  PCL_MC_DFLL0,
-  EXAMPLE_TARGET_MCUCLK_FREQ_HZ,
-  EXAMPLE_TARGET_PBACLK_FREQ_HZ,
-  EXAMPLE_TARGET_PBACLK_FREQ_HZ,
-  0,
-  0,
-  0,
-  EXAMPLE_TARGET_DFLL_FREQ_HZ,
-  &gc_dfllif_ref_opt
-};
-
 int main(void)
 {
-	pcl_configure_clocks(&pcl_dfll_freq_param);
 	
 	static const gpio_map_t USART_GPIO_MAP =
 	{
@@ -53,10 +34,10 @@ int main(void)
 			sizeof(USART_GPIO_MAP) / sizeof(USART_GPIO_MAP[0]));
 	
 	// Initialize USART in RS232 mode.
-	usart_init_rs232(EXAMPLE_USART, &USART_OPTIONS, EXAMPLE_TARGET_PBACLK_FREQ_HZ);
+	usart_init_rs232(EXAMPLE_USART, &USART_OPTIONS, TARGET_PBACLK_FREQ_HZ);
 	
 	// Hello world!
-	usart_write_line(EXAMPLE_USART, "this is the AVR UC3L MCU saying hello world!\r\n");
+	usart_write_line(EXAMPLE_USART, "This is the AVR UC3L MCU saying hello world!\r\n");
 
 	// Press enter to continue.
 	while (usart_get_echo_line(EXAMPLE_USART) == USART_FAILURE);  // Get and echo characters until end of line.

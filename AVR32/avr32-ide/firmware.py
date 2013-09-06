@@ -86,7 +86,8 @@ def getExampleProjects(libFolders=[]):
 def getCoreSourceFiles(userIncludes = []):
     # scan all *.c files
     srcs = []
-    required = glob.glob(CORE_LIB_DIR + '/utils/startup/*.S') \
+    required = glob.glob(BSP_DIR + '/*.c') + glob.glob(BSP_DIR + '/*.cpp') \
+                   + glob.glob(CORE_LIB_DIR + '/utils/startup/*.S') \
                    + glob.glob(CORE_LIB_DIR + '/drivers/flashcdw/*.c') \
                    + glob.glob(CORE_LIB_DIR + '/drivers/gpio/*.c') \
                    + glob.glob(CORE_LIB_DIR + '/drivers/intc/*.S') \
