@@ -474,7 +474,7 @@ class AppMainWindow(QtGui.QMainWindow):
                 self.killTimer(timerID)
                 self.pollCompilerTimerID = None
         
-        return QtGui.QMainWindow.timerEvent(self, *args, **kwargs)
+        #return QtGui.QMainWindow.timerEvent(self, *args, **kwargs)
         
    
     def closeEvent(self, event):
