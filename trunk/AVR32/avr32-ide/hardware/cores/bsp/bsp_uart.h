@@ -27,7 +27,7 @@ public:
 	int gets( char* buff, int len );
 	
 	/* interrupt service routine */
-	//static void ISR( HardwareUart *uart );
+	void _isr();
 
 private:
 	volatile uint8_t m_portNum;
