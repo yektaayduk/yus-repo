@@ -259,7 +259,7 @@ class GccCompilerThread(QtCore.QThread):
             fout.write( '$(ELF_FILE): $(OBJECTS)\n' )
             fout.write( '\t@echo [LINK] $(@F)\n\t')
             if not verbose: fout.write( '@' )
-            fout.write( '$(TCHAIN)gcc $(LFLAGS) $^ -o $@\n\n' )
+            fout.write( '$(TCHAIN)g++ $(LFLAGS) $^ -o $@\n\n' )
             fout.write( '$(HEX_FILE): $(ELF_FILE)\n' )
             fout.write( '\t@echo [HEX] $(@F)\n')
             fout.write( '\t@$(TCHAIN)objcopy -O ihex $< $@\n\n' )
@@ -275,7 +275,7 @@ class GccCompilerThread(QtCore.QThread):
                 if src_ext == USER_CODE_EXT:
                     fout.write( '\t@echo [CXX] $< \n\t' )
                     if not verbose: fout.write( '@' )
-                    fout.write( '$(TCHAIN)gcc $(INCLUDES) $(CXXFLAGS) -x c++ $< -o $@\n\n')                        
+                    fout.write( '$(TCHAIN)g++ $(INCLUDES) $(CXXFLAGS) -x c++ $< -o $@\n\n')                        
                 elif src_ext == '.s':
                     fout.write( '\t@echo [AS] $(<F)\n\t' )
                     if not verbose: fout.write( '@' )
@@ -287,7 +287,7 @@ class GccCompilerThread(QtCore.QThread):
                 elif src_ext == '.cpp':
                     fout.write( '\t@echo [CPP] $(<F)\n\t' )
                     if not verbose: fout.write( '@' )
-                    fout.write( '$(TCHAIN)gcc $(INCLUDES) $(CXXFLAGS) $< -o $@\n\n')
+                    fout.write( '$(TCHAIN)g++ $(INCLUDES) $(CXXFLAGS) $< -o $@\n\n')
                     
                 i += 1
             fout.close()
