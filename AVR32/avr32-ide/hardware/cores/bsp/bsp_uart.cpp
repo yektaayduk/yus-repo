@@ -15,6 +15,11 @@ extern "C"
 
 HardwareUart Serial0( 0 );
 
+__attribute__((__interrupt__)) static void usart3_int_handler(void)
+{
+	Serial0._isr();
+}
+
 static const gpio_map_t usart3_gpio =
 {
 	{AVR32_USART3_RXD_0_0_PIN, AVR32_USART3_RXD_0_0_FUNCTION},
@@ -49,9 +54,22 @@ void HardwareUart::begin( uint32_t baud )
   
 	// Initialize USART in RS232 mode.
 	usart_init_rs232(m_usart, &m_options, TARGET_PBACLK_FREQ_HZ);
-			
+
+	
+	// Disable all interrupts.
+	Disable_global_interrupt();
+
+	// todo: other ports
+	INTC_register_interrupt(&usart3_int_handler, AVR32_USART3_IRQ, AVR32_INTC_INT0);
+	
 	// clear FIFO buffers
 	TxFifo.inptr = TxFifo.outptr = RxFifo.inptr = RxFifo.outptr = 0;
+	
+	// Enable USART Rx interrupt.
+	m_usart->ier = AVR32_USART_IER_RXRDY_MASK;
+	
+	// Enable all interrupts.
+	Enable_global_interrupt();
 }
 
 void HardwareUart::end()
@@ -63,7 +81,18 @@ void HardwareUart::end()
 void HardwareUart::putc(uint8_t c)
 {
 	if(!m_usart) return;
-	usart_putchar(m_usart, c);
+
+	// wait until buffer has an empty slot.
+	while (( (TxFifo.inptr+1) & UART_BUFF_MASK) == TxFifo.outptr) continue;
+	
+	//place character in buffer
+	TxFifo.buff[TxFifo.inptr] = c;
+	// increment in index
+	TxFifo.inptr = (TxFifo.inptr + 1) & UART_BUFF_MASK;
+	// start the TX sequence if not yet running
+	if(!(TxFifo.outptr == TxFifo.inptr)) { // if TX buffer still not empty
+		m_usart->ier = AVR32_USART_IER_TXEMPTY_MASK; // (re)enable TX interrupt;
+	}
 }
 
 void HardwareUart::print(char ch)
@@ -84,16 +113,55 @@ void HardwareUart::puts(const char *s)
 uint8_t HardwareUart::isrx()
 {
 	if(!m_usart) return 0;
-	return (m_usart->csr & AVR32_USART_CSR_RXRDY_MASK) != 0;
+	
+	//return (m_usart->csr & AVR32_USART_CSR_RXRDY_MASK) != 0;
+	// checks if a character is present in the RX buffer
+	return (RxFifo.inptr != RxFifo.outptr);
 }
 
 uint8_t HardwareUart::getc()
 {
 	if(!m_usart) return 0;
 
-	return usart_getchar(m_usart);
+	// wait until a character is present
+	while (isrx()==0) continue;
+
+	// get a character from RX buffer
+	uint8_t c = RxFifo.buff[RxFifo.outptr];
+	// increment out index
+	RxFifo.outptr = (RxFifo.outptr+1)&UART_BUFF_MASK;
+
+	return c;
 }
 
+
+void HardwareUart::_isr()
+{
+	uint16_t temp;
+	
+	if(!m_usart) return;
+	
+	if(m_usart->csr & AVR32_USART_CSR_RXRDY_MASK)
+	{
+		// byte read and save to buffer
+		RxFifo.buff[RxFifo.inptr] = ((m_usart->rhr & AVR32_USART_RHR_RXCHR_MASK) >> AVR32_USART_RHR_RXCHR_OFFSET) & 0xFF;
+		temp = (RxFifo.inptr+1) & UART_BUFF_MASK;
+		if(temp != RxFifo.outptr){	// avoid buffer overrun
+			RxFifo.inptr = temp;
+		}
+	}
+	if(m_usart->csr & AVR32_USART_CSR_TXEMPTY_MASK)
+	{
+		if(TxFifo.outptr==TxFifo.inptr) {// if buffer empty
+			m_usart->idr = AVR32_USART_IER_TXEMPTY_MASK; // disable TX interrupt
+		}
+		else {
+			// place the character to the data register
+			m_usart->thr = TxFifo.buff[TxFifo.outptr++];
+			TxFifo.outptr &= UART_BUFF_MASK; // circular FIFO
+		}
+	}
+}
 
 /*------------------------------------------------------------------------/
 /  Universal string handler for user console interface

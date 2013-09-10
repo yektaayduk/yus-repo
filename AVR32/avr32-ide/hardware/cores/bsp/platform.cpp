@@ -40,6 +40,15 @@ void _bsp_init(void)
 {
 	pcl_configure_clocks(&pcl_dfll_freq_param);
 	
+	// Disable all interrupts.
+	Disable_global_interrupt();
+
+	// Initialize interrupt vectors.
+	INTC_init_interrupts();
+	
+	// Enable all interrupts.
+	Enable_global_interrupt();
+	
 	// user code
 	main();
 }
