@@ -55,7 +55,11 @@
 #define	OUTPUT_OPENDRAIN	( GPIO_DIR_OUTPUT | GPIO_OPEN_DRAIN )
 
 #define	pinMode(pin,mode)			gpio_configure_pin(pin, mode)
-#define	digitalWrite(pin,value)		{ if(value) gpio_set_pin_high(pin); else gpio_set_pin_low(pin); }
+__always_inline static void digitalWrite(uint32_t pin, uint32_t value)
+{
+	if(value) gpio_set_pin_high(pin);
+	else gpio_set_pin_low(pin);
+}
 #define	digitalRead(pin)			(gpio_get_pin_value(pin) == 0)
 
 #define setPinHigh(pin)		gpio_set_pin_high(pin)
