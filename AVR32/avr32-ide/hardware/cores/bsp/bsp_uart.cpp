@@ -13,7 +13,7 @@ extern "C"
 #include "bsp_uart.h"
 
 
-HardwareUart Serial0( 0 );
+HardwareUart Serial0( 3 );
 
 __attribute__((__interrupt__)) static void usart3_int_handler(void)
 {
@@ -26,21 +26,21 @@ static const gpio_map_t usart3_gpio =
 	{AVR32_USART3_TXD_0_0_PIN, AVR32_USART3_TXD_0_0_FUNCTION}
 };
 
-HardwareUart::HardwareUart( uint8_t portNum )
+HardwareUart::HardwareUart( uint8_t portNum ):
+	m_portNum(portNum),
+	m_usart(NULL)
 {
-	m_portNum = portNum;
-	m_usart = NULL;
 }
 
 void HardwareUart::begin( uint32_t baud )
 {
 	usart_options_t m_options;
 	
-	if(m_portNum==0) {
+	//if(m_portNum==3) {
 		m_usart = &AVR32_USART3;
 		// Assign GPIO to USART.
 		gpio_enable_module(usart3_gpio, sizeof(usart3_gpio) / sizeof(usart3_gpio[0]));
-	}
+	//}
 	//else if // todo
 	//	m_usart = ...
 	
@@ -70,6 +70,9 @@ void HardwareUart::begin( uint32_t baud )
 	
 	// Enable all interrupts.
 	Enable_global_interrupt();
+	
+	delay_ms(50);
+	//print("m_portNum = %d\r\n", m_portNum);
 }
 
 void HardwareUart::end()

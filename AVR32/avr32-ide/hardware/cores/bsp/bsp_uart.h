@@ -5,13 +5,13 @@
 #ifdef __cplusplus
 extern "C" {
 
-#define UART_BUFF_SIZE		256
+#define UART_BUFF_SIZE		1024
 #define	UART_BUFF_MASK		(UART_BUFF_SIZE-1)
 
 class HardwareUart
 {
 public:
-	HardwareUart( uint8_t portNum = 0 );
+	HardwareUart( uint8_t portNum = 3 );
 	void begin( uint32_t baud = 115200 );
 	void end();
 	void putc( uint8_t c );
