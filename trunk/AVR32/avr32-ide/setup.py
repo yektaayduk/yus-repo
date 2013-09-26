@@ -71,8 +71,8 @@ if os.sys.platform == 'win32':
     # add win32 for pyserial
     packages.append('serial.win32')
     # add tool chain files
-    files += glob.glob('tools/AVRToolchain/*')
-    files += glob.glob('tools/msys/*')
+    files += glob.glob('tools/avr32-gnu-toolchain/*')
+    files += glob.glob('tools/shellUtils/*')
     # add dll's
     files += glob.glob('*.dll')
     # add PL2303 usb driver
@@ -86,7 +86,7 @@ if os.sys.platform == 'win32':
 
 elif os.sys.platform == 'linux2':
     # add tool chain files
-    files += glob.glob('tools/AVRToolchain/*')
+    files += glob.glob('tools/avr32-gnu-toolchain/*')
     # add dll's
     files += glob.glob('*.so')
     EXE = Executable(
@@ -100,7 +100,7 @@ elif os.sys.platform == 'darwin': # note: use cx_Freeze 4.3 or later
     # prevent dynamic library loading error on OS X
     script_exe = False
     # add tool chain files
-    files += glob.glob('tools/AVRToolchain/*')
+    files += glob.glob('tools/avr32-gnu-toolchain/*')
     # add PL2303 usb driver
     files += glob.glob('drivers/PL2303/macosx/*')
     EXE = Executable(
