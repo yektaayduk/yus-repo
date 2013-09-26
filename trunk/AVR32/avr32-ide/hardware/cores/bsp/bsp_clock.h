@@ -14,6 +14,7 @@
 
 #define delay_us(cnt)		cpu_delay_us(cnt, TARGET_MCUCLK_FREQ_HZ)
 #define delay_ms(cnt)		cpu_delay_ms(cnt, TARGET_MCUCLK_FREQ_HZ)
+#define delay				delay_ms
 
 
 #endif	// __BSP_CLOCK_H__
