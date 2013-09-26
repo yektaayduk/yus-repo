@@ -111,7 +111,7 @@ udata_clear_loop_end:
 #endif
 
   // Start the show.
-  lda.w   pc, _bsp_init
+  lda.w   pc, bsp_main
 
 
 //! \endverbatim

@@ -120,13 +120,14 @@ class AppMainWindow(QtGui.QMainWindow):
             self.insertLog('compiler busy..')
             return
         kdbMod = QtGui.QApplication.keyboardModifiers()
-        ret = self.Editor.saveFile() # save the file first before starting the build.
-        if ret == False:
-            self.insertLog("<font color=red>unable to save project!</font>")
-            return
-        elif ret == None:
-            self.insertLog("nothing to build.")
-            return
+        if not os.path.isfile(self.Editor.getCurrentFile()) or self.Editor.isCurrentFileModified():
+            ret = self.Editor.saveFile() # save the file first before starting the build.
+            if ret == False:
+                self.insertLog("<font color=red>unable to save project!</font>")
+                return
+            elif ret == None:
+                self.insertLog("nothing to build.")
+                return
         self.insertLog("<font color=green>------- Start Project Build. -------</font>", True)
         fn = self.Editor.getCurrentFile()
         cleanBuild = False

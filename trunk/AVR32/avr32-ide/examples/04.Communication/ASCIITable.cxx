@@ -1,4 +1,4 @@
-#include <lm4f120xl.h>
+#include <avr32.h>
 
 // first visible ASCIIcharacter '!' is number 33:
 char thisChar = 33;
