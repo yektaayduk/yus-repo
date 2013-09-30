@@ -1,5 +1,5 @@
 /******************************************************************************
- * AVR32 AT32UC3L064 GNU LD script file.
+ * AVR32 AT32UC3L0128 GNU LD script file.
  *
  * - Compiler:           GNU GCC for AVR32
  * - Supported devices:  AVR32 AT32UC3L064

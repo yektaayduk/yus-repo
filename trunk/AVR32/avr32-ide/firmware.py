@@ -36,12 +36,10 @@ CORE_LIB_DIR = 'hardware/cores'
 USER_LIB_DIR = 'libraries'
 
 BSP_DIR = CORE_LIB_DIR + '/bsp'
-STMLIB_DIR = CORE_LIB_DIR + '/stm_lib'
-CMSIS_CM3_DIR = CORE_LIB_DIR + '/cmsis/CM3'
-CM3_CORE_DIR = CMSIS_CM3_DIR + '/CoreSupport'
-CM3_DEVICE_DIR = CMSIS_CM3_DIR + '/DeviceSupport/ST/AT32UC3L0x'
+ASF_DIR = CORE_LIB_DIR + '/ASF'
+DRV_DIR = ASF_DIR + '/avr32/drivers'
 
-LINKER_SCRIPT = CORE_LIB_DIR + '/utils/linker_scripts/link_uc3l0128.lds'
+LINKER_SCRIPT = BSP_DIR + '/link_uc3l0128.lds'
 
 # Example Projects
 EXAMPLES_DIR = 'examples'
@@ -86,16 +84,16 @@ def getExampleProjects(libFolders=[]):
 def getCoreSourceFiles(userIncludes = []):
     # scan all *.c files
     srcs = []
-    required = glob.glob(BSP_DIR + '/*.c') + glob.glob(BSP_DIR + '/*.cpp') \
-                   + glob.glob(CORE_LIB_DIR + '/utils/startup/*.S') \
-                   + glob.glob(CORE_LIB_DIR + '/drivers/flashcdw/*.c') \
-                   + glob.glob(CORE_LIB_DIR + '/drivers/gpio/*.c') \
-                   + glob.glob(CORE_LIB_DIR + '/drivers/intc/*.S') \
-                   + glob.glob(CORE_LIB_DIR + '/drivers/intc/*.c') \
-                   + glob.glob(CORE_LIB_DIR + '/drivers/pm/power_clocks_lib.c') \
-				   + glob.glob(CORE_LIB_DIR + '/drivers/pm/*3l.c') \
-                   + glob.glob(CORE_LIB_DIR + '/drivers/scif/*3l.c') \
-                   + glob.glob(CORE_LIB_DIR + '/drivers/usart/*.c')
+    required = glob.glob(BSP_DIR + '/*.c') + glob.glob(BSP_DIR + '/*.cpp')
+    try:
+        f = open( os.path.join(ASF_DIR, 'SOURCES'), 'r' )
+        for entry in f.readlines():
+            src = os.path.join(ASF_DIR, entry.strip())
+            if os.path.isfile(src) and not (src in required):
+                required.append( src )
+        f.close()
+    except:
+        pass
 
     for include in userIncludes:
         userheader = os.path.join( include[2:], os.path.split(include[2:])[1] + '.h' )
@@ -105,7 +103,8 @@ def getCoreSourceFiles(userIncludes = []):
                 if line.replace(' ', '').find('#include') == 0: # found an '#include' directive
                     temp = line.strip()[len('#includes')-1 : ].strip()
                     header = temp[1:-1].strip() # get the header file
-                    src = STMLIB_DIR + '/src/' + header[:-2] + '.c'
+                    src = os.path.join(DRV_DIR, header[:-2], header[:-2]) + '.c' # e.g. drivers/adcifb/adcifb.c
+                    print src
                     if os.path.isfile(src) and not (src in required):
                         required.append( src )
             fin.close()
@@ -119,12 +118,18 @@ def getCoreSourceFiles(userIncludes = []):
     return srcs
 
 def getIncludeDirs():
-    dirs = [ BSP_DIR ] #, CORE_LIB_DIR + '/drivers/intc', CORE_LIB_DIR + '/drivers/pm', CORE_LIB_DIR + '/drivers/scif' ]
-    dirs += glob.glob( CORE_LIB_DIR + '/drivers/*' )
-    dirs += [ CORE_LIB_DIR + '/utils', CORE_LIB_DIR + '/utils/preprocessor', CORE_LIB_DIR + '/common/utils' ]
+    dirs = [ BSP_DIR ]
+    try:
+        f = open( os.path.join(ASF_DIR, 'INCLUDES'), 'r' )
+        for entry in f.readlines():
+            path = os.path.join(ASF_DIR, entry.strip())
+            if os.path.exists( path ):
+                dirs.append( path )
+        f.close()
+    except:
+        pass
     includes = []
     for d in dirs:
-        #includes.append('-I' + os.getcwd() + '/' + d)
         includes.append( '-I' + d )
     #print includes
     return includes
@@ -133,7 +138,7 @@ def getIncludeDirs():
 # [sources] contains the path name of the parsed used code
 def parseUserCode(userCode=None, outPath=None, toolChain=''):
     
-    # check if user code (e.g. test.phr) exists
+    # check if user code (e.g. test.cxx) exists
     if not os.path.isfile(userCode): # file not found
         return False, [], []
     
@@ -207,7 +212,7 @@ def getLibraryKeywords(headerFiles=[]):
     if not len(headerFiles):
         # search default header files
         headerFiles = glob.glob( BSP_DIR + '/*.h' )
-        headerFiles += glob.glob( STMLIB_DIR + '/inc/*.h' ) # large files!!
+        headerFiles += glob.glob( DRV_DIR + '/*/*.h' )
         
     #print headerFiles
     fwconfig.saveFwSettings()
