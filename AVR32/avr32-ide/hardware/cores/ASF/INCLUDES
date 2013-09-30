@@ -1,0 +1,10 @@
+avr32/drivers/cpu
+avr32/drivers/flashcdw
+avr32/drivers/gpio
+avr32/drivers/intc
+avr32/drivers/pm
+avr32/drivers/scif
+avr32/drivers/usart
+avr32/utils
+avr32/utils/preprocessor
+common/utils
