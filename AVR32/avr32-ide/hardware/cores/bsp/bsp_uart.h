@@ -40,7 +40,12 @@ private:
 };
 
 extern HardwareUart Serial0;
-#define Serial	Serial0
+extern HardwareUart Serial1;
+extern HardwareUart Serial2;
+extern HardwareUart Serial3;
+
+// debug Serial
+#define Serial	Serial3
 
 }
 #endif // __cplusplus
