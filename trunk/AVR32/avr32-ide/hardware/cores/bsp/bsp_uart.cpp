@@ -13,18 +13,55 @@ extern "C"
 #include "bsp_uart.h"
 
 
-HardwareUart Serial0( 3 );
+HardwareUart Serial0( 0 );
+HardwareUart Serial1( 1 );
+HardwareUart Serial2( 2 );
+HardwareUart Serial3( 3 );
 
-__attribute__((__interrupt__)) static void usart3_int_handler(void)
+__attribute__((__interrupt__)) static void usart0_int_handler(void)
 {
 	Serial0._isr();
 }
+
+__attribute__((__interrupt__)) static void usart1_int_handler(void)
+{
+	Serial1._isr();
+}
+
+__attribute__((__interrupt__)) static void usart2_int_handler(void)
+{
+	Serial2._isr();
+}
+
+__attribute__((__interrupt__)) static void usart3_int_handler(void)
+{
+	Serial3._isr();
+}
+
+static const gpio_map_t usart0_gpio =
+{
+	{AVR32_USART0_RXD_0_PIN, AVR32_USART0_RXD_0_FUNCTION},
+	{AVR32_USART0_TXD_0_PIN, AVR32_USART0_TXD_0_FUNCTION}
+};
+
+static const gpio_map_t usart1_gpio =
+{
+	{AVR32_USART1_RXD_0_0_PIN, AVR32_USART1_RXD_0_0_FUNCTION},
+	{AVR32_USART1_TXD_0_0_PIN, AVR32_USART1_TXD_0_0_FUNCTION}
+};
+
+static const gpio_map_t usart2_gpio =
+{
+	{AVR32_USART2_RXD_0_0_PIN, AVR32_USART2_RXD_0_0_FUNCTION},
+	{AVR32_USART2_TXD_0_0_PIN, AVR32_USART2_TXD_0_0_FUNCTION}
+};
 
 static const gpio_map_t usart3_gpio =
 {
 	{AVR32_USART3_RXD_0_0_PIN, AVR32_USART3_RXD_0_0_FUNCTION},
 	{AVR32_USART3_TXD_0_0_PIN, AVR32_USART3_TXD_0_0_FUNCTION}
 };
+
 
 HardwareUart::HardwareUart( uint8_t portNum ):
 	m_portNum(portNum),
@@ -36,13 +73,40 @@ void HardwareUart::begin( uint32_t baud )
 {
 	usart_options_t m_options;
 	
-	//if(m_portNum==3) {
+#if 1 // static constructor workaround
+	if(this == &Serial0)
+		m_portNum = 0;
+	else if(this == &Serial1)
+		m_portNum = 1;
+	else if(this == &Serial2)
+		m_portNum = 2;
+	else if(this == &Serial3)
+		m_portNum = 3;
+#endif
+	
+	// Assign GPIO to USART.
+	switch(m_portNum)
+	{
+	case 0:
+		m_usart = &AVR32_USART0;
+		gpio_enable_module(usart0_gpio, sizeof(usart0_gpio) / sizeof(usart0_gpio[0]));
+		break;
+	case 1:
+		m_usart = &AVR32_USART1;
+		gpio_enable_module(usart1_gpio, sizeof(usart1_gpio) / sizeof(usart1_gpio[0]));
+		break;
+	case 2:
+		m_usart = &AVR32_USART2;
+		gpio_enable_module(usart2_gpio, sizeof(usart2_gpio) / sizeof(usart2_gpio[0]));
+		break;
+	case 3:
 		m_usart = &AVR32_USART3;
-		// Assign GPIO to USART.
 		gpio_enable_module(usart3_gpio, sizeof(usart3_gpio) / sizeof(usart3_gpio[0]));
-	//}
-	//else if // todo
-	//	m_usart = ...
+		break;
+	default:
+		m_usart = NULL;
+		break;
+	}
 	
 	if(!m_usart) return;
 	
@@ -59,8 +123,21 @@ void HardwareUart::begin( uint32_t baud )
 	// Disable all interrupts.
 	Disable_global_interrupt();
 
-	// todo: other ports
-	INTC_register_interrupt(&usart3_int_handler, AVR32_USART3_IRQ, AVR32_INTC_INT0);
+	switch(m_portNum)
+	{
+	case 0:
+		INTC_register_interrupt(&usart0_int_handler, AVR32_USART0_IRQ, AVR32_INTC_INT0);
+		break;
+	case 1:
+		INTC_register_interrupt(&usart1_int_handler, AVR32_USART1_IRQ, AVR32_INTC_INT0);
+		break;
+	case 2:
+		INTC_register_interrupt(&usart2_int_handler, AVR32_USART2_IRQ, AVR32_INTC_INT0);
+		break;
+	case 3:
+		INTC_register_interrupt(&usart3_int_handler, AVR32_USART3_IRQ, AVR32_INTC_INT0);
+		break;
+	}
 	
 	// clear FIFO buffers
 	TxFifo.inptr = TxFifo.outptr = RxFifo.inptr = RxFifo.outptr = 0;
