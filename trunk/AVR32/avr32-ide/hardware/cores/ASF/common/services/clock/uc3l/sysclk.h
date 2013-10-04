@@ -151,6 +151,11 @@ extern "C" {
 #define SYSCLK_SRC_DFLL         AVR32_PM_MCSEL_DFLL0    //!< Digital Frequency Locked Loop
 #define SYSCLK_SRC_RC120M       AVR32_PM_MCSEL_RC120M   //!< 120 MHz RC oscillator
 #if (UC3L0128 || UC3L0256 || UC3L3_L4)
+#  if (UC3L0128 || UC3L0256)
+#    ifndef AVR32_PM_MCSEL_PLL0
+#      define AVR32_PM_MCSEL_PLL0 5
+#    endif
+#  endif 
 #define SYSCLK_SRC_PLL0         AVR32_PM_MCSEL_PLL0     //!< Phase Locked Loop 0
 #endif
 
@@ -573,7 +578,9 @@ static inline uint32_t sysclk_get_peripheral_bus_hz(const volatile void *module)
 	case AVR32_ADCIFB_ADDRESS:
 	case AVR32_ACIFB_ADDRESS:
 	case AVR32_CAT_ADDRESS:
+#if !UC3L0128
 	case AVR32_GLOC_ADDRESS:
+#endif
 	case AVR32_AW_ADDRESS:
 #if UC3L3
 	case AVR32_ABDACB_ADDRESS:
@@ -769,11 +776,11 @@ static inline void sysclk_enable_peripheral_clock(const volatile void *module)
 		case AVR32_CAT_ADDRESS:
 			sysclk_enable_pba_module(SYSCLK_CAT);
 			break;
-
+#if !UC3L0128
 		case AVR32_GLOC_ADDRESS:
 			sysclk_enable_pba_module(SYSCLK_GLOC);
 			break;
-
+#endif
 		case AVR32_AW_ADDRESS:
 			sysclk_enable_pba_module(SYSCLK_AW);
 			break;
@@ -911,10 +918,11 @@ static inline void sysclk_disable_peripheral_clock(const volatile void *module)
 		case AVR32_CAT_ADDRESS:
 			sysclk_disable_pba_module(SYSCLK_CAT);
 			break;
-
+#if !UC3L0128
 		case AVR32_GLOC_ADDRESS:
 			sysclk_disable_pba_module(SYSCLK_GLOC);
 			break;
+#endif
 		case AVR32_AW_ADDRESS:
 			sysclk_disable_pba_module(SYSCLK_AW);
 			break;

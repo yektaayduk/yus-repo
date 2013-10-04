@@ -52,7 +52,7 @@ DEFAULT_RMCMD_LINUX = 'rm -rf'
 DEFAULT_RMCMD_OSX   = 'rm -rf'
 
 # compiler defines (used also for header parser)
-DEFAULT_COMPILER_DEFINES = 'USE_ASF:1;AT32UCL0128:1'
+DEFAULT_COMPILER_DEFINES = 'USE_ASF:1;BOARD:USER_BOARD'
 
 # default flags
 COMMON_FLAGS     = '-march=ucr3 -mpart=uc3l0128'

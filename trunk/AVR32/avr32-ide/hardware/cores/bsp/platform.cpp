@@ -1,20 +1,5 @@
 
-#ifdef __cplusplus
-extern "C"
-{
-#endif
-
-#include <avr32/io.h>
-#include <power_clocks_lib.h>
-
-#ifdef __cplusplus
-}
-#endif
-
-#include <stdlib.h>
-#include <stdarg.h>
-#include <bsp_clock.h>
-#include <bsp_uart.h>
+#include <avr32.h>
 
 extern "C"
 {
@@ -25,24 +10,9 @@ extern "C"
 	void __libc_init_array(void);
 }
 
-static scif_gclk_opt_t gc_dfllif_ref_opt = { SCIF_GCCTRL_SLOWCLOCK, 0, false };
-
-static pcl_freq_param_t pcl_dfll_freq_param =
-{
-	PCL_MC_DFLL0,
-	TARGET_MCUCLK_FREQ_HZ,
-	TARGET_PBACLK_FREQ_HZ,
-	TARGET_PBACLK_FREQ_HZ,
-	0,
-	0,
-	0,
-	TARGET_DFLL_FREQ_HZ,
-	&gc_dfllif_ref_opt
-};
-
 void _init(void)
 {
-	pcl_configure_clocks(&pcl_dfll_freq_param);
+	sysclk_init();
 	
 	// Disable all interrupts.
 	Disable_global_interrupt();

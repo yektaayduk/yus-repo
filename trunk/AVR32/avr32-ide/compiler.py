@@ -262,7 +262,7 @@ class GccCompilerThread(QtCore.QThread):
             fout.write( '$(TCHAIN)g++ $(LFLAGS) $^ -o $@\n\n' )
             fout.write( '$(HEX_FILE): $(ELF_FILE)\n' )
             fout.write( '\t@echo [HEX] $(@F)\n')
-            fout.write( '\t@$(TCHAIN)objcopy -O ihex $< $@\n\n' )
+            fout.write( '\t@$(TCHAIN)objcopy -O ihex -R .eeprom -R .fuse -R .lock -R .signature $< $@\n\n' )
             fout.write( 'program: $(HEX_FILE)\n' )
             fout.write( '\tbatchisp -device at32uc3l0128 -hardware RS232 -port $(COMPORT) ' )
             fout.write( '-operation erase f memory flash blankcheck loadbuffer $(HEX_FILE) ' )
