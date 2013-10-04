@@ -40,26 +40,26 @@ __attribute__((__interrupt__)) static void usart3_int_handler(void)
 
 static const gpio_map_t usart0_gpio =
 {
-	{AVR32_USART0_RXD_0_PIN, AVR32_USART0_RXD_0_FUNCTION},
-	{AVR32_USART0_TXD_0_PIN, AVR32_USART0_TXD_0_FUNCTION}
+	{AVR32_USART0_RXD_0_PIN, AVR32_USART0_RXD_0_FUNCTION}, // PA01
+	{AVR32_USART0_TXD_0_PIN, AVR32_USART0_TXD_0_FUNCTION}  // PA00
 };
 
 static const gpio_map_t usart1_gpio =
 {
-	{AVR32_USART1_RXD_0_0_PIN, AVR32_USART1_RXD_0_0_FUNCTION},
-	{AVR32_USART1_TXD_0_0_PIN, AVR32_USART1_TXD_0_0_FUNCTION}
+	{AVR32_USART1_RXD_0_1_PIN, AVR32_USART1_RXD_0_1_FUNCTION}, // PB11
+	{AVR32_USART1_TXD_0_1_PIN, AVR32_USART1_TXD_0_1_FUNCTION}  // PB10
 };
 
 static const gpio_map_t usart2_gpio =
 {
-	{AVR32_USART2_RXD_0_0_PIN, AVR32_USART2_RXD_0_0_FUNCTION},
-	{AVR32_USART2_TXD_0_0_PIN, AVR32_USART2_TXD_0_0_FUNCTION}
+	{AVR32_USART2_RXD_0_0_PIN, AVR32_USART2_RXD_0_0_FUNCTION}, // PA21
+	{AVR32_USART2_TXD_0_0_PIN, AVR32_USART2_TXD_0_0_FUNCTION}  // PA20
 };
 
 static const gpio_map_t usart3_gpio =
 {
-	{AVR32_USART3_RXD_0_0_PIN, AVR32_USART3_RXD_0_0_FUNCTION},
-	{AVR32_USART3_TXD_0_0_PIN, AVR32_USART3_TXD_0_0_FUNCTION}
+	{AVR32_USART3_RXD_0_0_PIN, AVR32_USART3_RXD_0_0_FUNCTION}, // PB01
+	{AVR32_USART3_TXD_0_0_PIN, AVR32_USART3_TXD_0_0_FUNCTION}  // PB00
 };
 
 
@@ -117,7 +117,7 @@ void HardwareUart::begin( uint32_t baud )
 	m_options.channelmode = USART_NORMAL_CHMODE;
   
 	// Initialize USART in RS232 mode.
-	usart_init_rs232(m_usart, &m_options, TARGET_PBACLK_FREQ_HZ);
+	usart_init_rs232(m_usart, &m_options, sysclk_get_pba_hz());
 
 	
 	// Disable all interrupts.

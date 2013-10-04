@@ -1,9 +1,9 @@
 /**
  * \file
  *
- * \brief Atmel Development Board Clock Configuration (ASF)
+ * \brief Chip-specific system clock manager configuration
  *
- * Copyright (c) 2010-2012 Atmel Corporation. All rights reserved.
+ * Copyright (c) 2011-2012 Atmel Corporation. All rights reserved.
  *
  * \asf_license_start
  *
@@ -43,65 +43,28 @@
 #ifndef CONF_CLOCK_H_INCLUDED
 #define CONF_CLOCK_H_INCLUDED
 
-#if (UC3A3 || UC3C)
-#   define CONFIG_SYSCLK_INIT_CPUMASK   (0)
-#   define CONFIG_SYSCLK_INIT_PBAMASK   (0)
-#   define CONFIG_SYSCLK_INIT_PBBMASK   (0)
-#   define CONFIG_SYSCLK_INIT_HSBMASK   (0)
-#elif UC3L
-#   define CONFIG_SYSCLK_INIT_CPUMASK   (0)
-#   define CONFIG_SYSCLK_INIT_PBAMASK   (0)
-#   define CONFIG_SYSCLK_INIT_PBBMASK   (0)
-#   define CONFIG_SYSCLK_INIT_HSBMASK   (0)
-#endif
+#define TARGET_MCUCLK_FREQ_HZ        48000000UL  // MCU clock target frequency, in Hz
 
-#if UC3A3
-#   define CONFIG_SYSCLK_SOURCE         (SYSCLK_SRC_OSC0)
-#   define CONFIG_SYSCLK_CPU_DIV        (0)
-#   define CONFIG_SYSCLK_PBA_DIV        (0)
-#   define CONFIG_SYSCLK_PBB_DIV        (0)
-#   define CONFIG_PLL0_SOURCE           (PLL_SRC_OSC0)
-#   define CONFIG_PLL0_MUL              (48000000UL / BOARD_OSC0_HZ)
-#   define CONFIG_PLL0_DIV              (1)
-#   define CONFIG_USBCLK_SOURCE         (USBCLK_SRC_OSC0)
-#   define CONFIG_USBCLK_DIV            (1)
-#   define CONFIG_PLL1_SOURCE           (PLL_SRC_OSC0)
-#   define CONFIG_PLL1_DIV              (2)
-#   define CONFIG_PLL1_MUL              (8)
-#elif UC3L
-#   define CONFIG_SYSCLK_SOURCE         (SYSCLK_SRC_DFLL)
-#   define CONFIG_DFLL0_SOURCE          (GENCLK_SRC_OSC32K)
-#   define CONFIG_DFLL0_MUL             (80000000UL / BOARD_OSC32_HZ)
-#   define CONFIG_DFLL0_DIV             (2)
-#elif UC3C
-#   define CONFIG_SYSCLK_SOURCE         (SYSCLK_SRC_RC8M)
-#elif XMEGA_A1 || XMEGA_A1U
-#   define CONFIG_SYSCLK_SOURCE         (SYSCLK_SRC_PLL)
-#   define CONFIG_SYSCLK_PSADIV         (SYSCLK_PSADIV_1)
-#   define CONFIG_SYSCLK_PSBCDIV        (SYSCLK_PSBCDIV_1_2)
-#   define CONFIG_PLL0_SOURCE           (PLL_SRC_RC32MHZ)
-#   define CONFIG_PLL0_MUL              (8)
-#   define CONFIG_PLL0_DIV              (4)
-#elif XMEGA_B1
-#   define CONFIG_USBCLK_SOURCE                (USBCLK_SRC_RCOSC)
-#   define CONFIG_OSC_RC32_CAL                 (48000000UL)
-#   define CONFIG_OSC_AUTOCAL_RC32MHZ_REF_OSC  (OSC_ID_USBSOF)
-#   define CONFIG_SYSCLK_SOURCE                (SYSCLK_SRC_RC32MHZ)
-#   define CONFIG_SYSCLK_PSADIV                (SYSCLK_PSADIV_2)
-#   define CONFIG_SYSCLK_PSBCDIV               (SYSCLK_PSBCDIV_1_1)
-#elif XMEGA_A3B || XMEGA_A3BU
+//#define CONFIG_SYSCLK_INIT_CPUMASK  (1 << SYSCLK_SYSTIMER)
+//#define CONFIG_SYSCLK_INIT_PBAMASK  (1 << SYSCLK_USART0)
+//#define CONFIG_SYSCLK_INIT_PBBMASK  (1 << SYSCLK_HMATRIX)
+//#define CONFIG_SYSCLK_INIT_HSBMASK  (1 << SYSCLK_MDMA_HSB)
 
-/*  Configuration using On-Chip RC oscillator at 48MHz */
-/*    The RC oscillator is calibrated via USB Start Of Frame */
-/*    Clk USB     = 48MHz (used by USB) */
-/*    Clk sys     = 48MHz */
-/*    Clk cpu/per = 24MHz */
-#   define CONFIG_USBCLK_SOURCE                (USBCLK_SRC_RCOSC)
-#   define CONFIG_OSC_RC32_CAL                 (48000000UL)
-#   define CONFIG_OSC_AUTOCAL_RC32MHZ_REF_OSC  (OSC_ID_USBSOF)
-#   define CONFIG_SYSCLK_SOURCE                (SYSCLK_SRC_RC32MHZ)
-#   define CONFIG_SYSCLK_PSADIV                (SYSCLK_PSADIV_2)
-#   define CONFIG_SYSCLK_PSBCDIV               (SYSCLK_PSBCDIV_1_1)
-#endif
+//#define CONFIG_SYSCLK_SOURCE          SYSCLK_SRC_RCSYS
+//#define CONFIG_SYSCLK_SOURCE        SYSCLK_SRC_OSC0
+//#define CONFIG_SYSCLK_SOURCE        SYSCLK_SRC_DFLL
+//#define CONFIG_SYSCLK_SOURCE        SYSCLK_SRC_RC120M
+#define CONFIG_SYSCLK_SOURCE        SYSCLK_SRC_PLL0
+
+/* Fbus = Fsys / (2 ^ BUS_div) */
+#define CONFIG_SYSCLK_CPU_DIV         0
+#define CONFIG_SYSCLK_PBA_DIV         1
+#define CONFIG_SYSCLK_PBB_DIV         1
+
+#define CONFIG_PLL0_SOURCE          PLL_SRC_OSC0
+
+/* Fpll0 = (Fclk * PLL_mul) / PLL_div */
+#define CONFIG_PLL0_MUL             (TARGET_MCUCLK_FREQ_HZ / BOARD_OSC0_HZ)
+#define CONFIG_PLL0_DIV             1
 
 #endif /* CONF_CLOCK_H_INCLUDED */

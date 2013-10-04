@@ -8,3 +8,7 @@ avr32/drivers/pm/power_clocks_lib.c
 avr32/drivers/pm/pm_uc3l.c
 avr32/drivers/scif/scif_uc3l.c
 avr32/drivers/usart/usart.c
+common/services/clock/uc3l/dfll.c
+common/services/clock/uc3l/osc.c
+common/services/clock/uc3l/pll.c
+common/services/clock/uc3l/sysclk.c

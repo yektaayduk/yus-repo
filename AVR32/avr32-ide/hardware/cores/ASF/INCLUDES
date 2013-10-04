@@ -7,4 +7,8 @@ avr32/drivers/scif
 avr32/drivers/usart
 avr32/utils
 avr32/utils/preprocessor
+common/boards
+common/boards/user_board
+common/services/clock
 common/utils
+../config
