@@ -21,6 +21,9 @@ public:
 	uint8_t isrx();
 	uint8_t getc();
 	
+	void flushRx();
+	void flushTx();
+	
 	/* from ChaN's embedded string functions */
 	void print( const char *fmt, ... );
 	void vprint( const char* fmt, va_list arp );

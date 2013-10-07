@@ -28,7 +28,7 @@ enum NETWORK
 #define DEFAULT_SIM900_BAUD         19200
 #define DEFAULT_SIM900_TIMEOUT      500
 #define DEFAULT_SIM900_RETRY        20
-//#define SIM900_DEBUG
+#define SIM900_DEBUG
 
 #ifdef SIM900_DEBUG
   #define gsmdebug(str, args...)        Serial.print(str, ##args)
@@ -44,16 +44,22 @@ public:
 	bool powerOn();
 	bool powerOff();
 	
-	void flushInput();
 	bool sendATcmd(const char *cmd="AT", const char *resp=NULL /*expected response*/,
 					uint32_t timeout=DEFAULT_SIM900_TIMEOUT,
 					uint8_t retry=DEFAULT_SIM900_RETRY,
 					bool clearRX=true);
+	int32_t portReceiveRaw( const char *str_to_wait = NULL, uint16_t timeout = DEFAULT_SIM900_TIMEOUT, bool bInt = false );
+	#define portFlushRX()			portReceiveRaw( NULL, 500, false )
+	#define getIntegerResponse()	portReceiveRaw( NULL, 1000, true )
+	#define waitResponse(rsp, to)	portReceiveRaw( rsp, to, false )
 	
 protected:
 	HardwareUart *m_ser; // serial port
 	uint8_t m_net; // enum NETWORK
 	int m_pwron; // power on pin
+	
+	#define SIM900_BUFF_SIZE    1024 //256
+	uint8_t m_buff[SIM900_BUFF_SIZE]; // temporary buffer
 };
 
 class SIM900GSM : public SIM900
