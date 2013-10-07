@@ -214,6 +214,15 @@ uint8_t HardwareUart::getc()
 	return c;
 }
 
+void HardwareUart::flushRx()
+{
+	while(isrx()) getc();
+}
+
+void HardwareUart::flushTx()
+{
+	while(TxFifo.outptr!=TxFifo.inptr) continue;
+}
 
 void HardwareUart::_isr()
 {
