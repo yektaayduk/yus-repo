@@ -40,7 +40,7 @@ class SIM900
 {
 public:
 	SIM900();
-	bool begin(HardwareUart *serial=NULL, uint8_t network=NET_SMART, int pwron=-1);
+	bool begin(HardwareUart *serial=&Serial0, uint8_t network=NET_SMART, int pwron=-1);
 	bool powerOn();
 	bool powerOff();
 	
@@ -49,9 +49,12 @@ public:
 					uint8_t retry=DEFAULT_SIM900_RETRY,
 					bool clearRX=true);
 	int32_t portReceiveRaw( const char *str_to_wait = NULL, uint16_t timeout = DEFAULT_SIM900_TIMEOUT, bool bInt = false );
-	#define portFlushRX()			portReceiveRaw( NULL, 500, false )
+	#define portFlushRX()			portReceiveRaw( NULL, 200, false )
 	#define getIntegerResponse()	portReceiveRaw( NULL, 1000, true )
 	#define waitResponse(rsp, to)	portReceiveRaw( rsp, to, false )
+	
+	size_t readBytes( char *buff, size_t max_len);
+	size_t readBytesUntil( char ch, char *buff, size_t max_len);
 	
 protected:
 	HardwareUart *m_ser; // serial port
@@ -79,12 +82,12 @@ public:
 	};
 	
 	SIM900GSM();
-	virtual bool begin(HardwareUart *serial=NULL, uint8_t network=NET_SMART, int pwron=-1);
+	virtual bool begin(HardwareUart *serial=&Serial0, uint8_t network=NET_SMART, int pwron=-1);
 	
 	// SMS functions
 	bool sendSMS( const char *number, const char *message );
 	bool deleteSMS( int16_t index = 1, delete_flag flag = DEL_INDEX );
-	bool getSMS( int16_t index, char *msg_txt, int16_t msg_len, char *sender = NULL, char *timestamp = NULL );
+	bool getSMS( int16_t index, char *msg_txt, size_t msg_len, char *sender = NULL, char *timestamp = NULL );
 	int16_t hasSMS( message_status status = MSG_ALL );
 		
 };
@@ -93,7 +96,7 @@ class SIM900GPRS : public SIM900
 {
 public:
 	SIM900GPRS();
-	virtual bool begin(HardwareUart *serial=NULL, uint8_t network=NET_SMART, int pwron=-1);
+	virtual bool begin(HardwareUart *serial=&Serial0, uint8_t network=NET_SMART, int pwron=-1);
 	
 	bool configGPRS(uint8_t network=NET_SMART);
 	bool openGPRS();
