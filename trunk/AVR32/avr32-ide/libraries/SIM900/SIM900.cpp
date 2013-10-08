@@ -130,3 +130,17 @@ int32_t SIM900::portReceiveRaw( const char *str_to_wait, uint16_t timeout, bool 
 	if(i<SIM900_BUFF_SIZE-1) return (-1); // timeout
 	return (-2); // rx buffer full
 }
+
+size_t SIM900::readBytes(char *buff, size_t max_len)
+{
+	size_t len = 0;
+	// todo
+	return len;
+}
+
+size_t SIM900::readBytesUntil( char ch, char *buff, size_t max_len)
+{
+	size_t len = 0;
+	// todo
+	return len;
+}
