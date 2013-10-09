@@ -134,13 +134,42 @@ int32_t SIM900::portReceiveRaw( const char *str_to_wait, uint16_t timeout, bool 
 size_t SIM900::readBytes(char *buff, size_t max_len)
 {
 	size_t len = 0;
-	// todo
+	uint32_t ms = millis();
+	
+	if(!m_ser) return 0;
+	
+	while(len < max_len)
+	{
+		if( m_ser->isrx() ) {
+			*buff++ = (char)m_ser->getc();
+			len++;
+			ms = millis();
+		}
+		else if((uint32_t)(millis()-ms)>500)
+			break; // time out occured
+	}
 	return len;
 }
 
 size_t SIM900::readBytesUntil( char ch, char *buff, size_t max_len)
 {
 	size_t len = 0;
-	// todo
+	char tmp;
+	uint32_t ms = millis();
+	
+	if(!m_ser) return 0;
+	
+	while(len < max_len)
+	{
+		if( m_ser->isrx() ) {
+			tmp = (char)m_ser->getc();
+			if(tmp ==  ch) break;
+			*buff++ = tmp;
+			len++;
+			ms = millis();
+		}
+		else if((uint32_t)(millis()-ms)>500)
+			break; // time out occured
+	}
 	return len;
 }
