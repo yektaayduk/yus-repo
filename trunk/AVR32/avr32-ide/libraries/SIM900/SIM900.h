@@ -19,7 +19,7 @@ enum NETWORK
 #define APN_SMART               "internet"
 #define APN_SMART_BRO           "smartbro"
 #define APN_SUN_POSTPAID        "fbband"
-#define APN_SUN_PREPAIDc        "minternet"
+#define APN_SUN_PREPAID         "minternet"
 #define APN_GLOBE_POSTPAID      "internet.globe.com.ph"
 #define APN_GLOBE_PREPAID       "http.globe.com.ph"
 #define APN_PLDT_WEROAM         "WEROAMPLAN"
