@@ -1,3 +1,4 @@
+avr32/drivers/adcifb
 avr32/drivers/cpu
 avr32/drivers/flashcdw
 avr32/drivers/gpio

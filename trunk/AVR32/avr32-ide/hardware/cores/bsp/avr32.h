@@ -26,6 +26,7 @@ extern "C"
 
 #include <bsp_clock.h>
 #include <bsp_gpio.h>
+#include <bsp_adc.h>
 #include <bsp_uart.h>
 
 #endif // YUS_AVR_H
