@@ -114,8 +114,14 @@ def getCoreSourceFiles(userIncludes = []):
     for fname in required:
         #srcs.append( os.path.join(os.getcwd(), fname) )
         srcs.append( fname )
+
+    coresrcs = []
+    for src in srcs:
+        filepath = src.replace('\\', '/')
+        if not (filepath in coresrcs):
+            coresrcs.append(filepath)
         
-    return srcs
+    return coresrcs
 
 def getIncludeDirs():
     dirs = [ BSP_DIR ]
