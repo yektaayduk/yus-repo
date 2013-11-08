@@ -60,7 +60,7 @@ __always_inline static void digitalWrite(uint32_t pin, uint32_t value)
 	if(value) gpio_set_pin_high(pin);
 	else gpio_set_pin_low(pin);
 }
-#define	digitalRead(pin)			(gpio_get_pin_value(pin) == 0)
+#define	digitalRead(pin)			(gpio_get_pin_value(pin) != 0)
 
 #define setPinHigh(pin)		gpio_set_pin_high(pin)
 #define setPinLow(pin)		gpio_set_pin_low(pin)

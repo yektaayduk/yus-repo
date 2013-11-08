@@ -1,5 +1,6 @@
 avr32/utils/startup/startup_uc3.S
 avr32/utils/startup/trampoline_uc3.S
+avr32/drivers/adcifb/adcifb.c
 avr32/drivers/flashcdw/flashcdw.c
 avr32/drivers/gpio/gpio.c
 avr32/drivers/intc/exception.S
