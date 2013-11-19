@@ -105,7 +105,7 @@ uint32_t adcRead(uint32_t pin)
 			channel_mask = AVR32_ADCIFB_CH8_MASK;
 			break;
 		default:
-			return 0;
+			return 0; // invalid pin
 		}
 		
 		if( !(config_channels & channel_mask) ) {
@@ -114,12 +114,10 @@ uint32_t adcRead(uint32_t pin)
 		}
 		
 		adcifb_channels_disable(&AVR32_ADCIFB, ~channel_mask);
+		/* Enable the selected ADCIFB channel. */
 		adcifb_channels_enable(&AVR32_ADCIFB, channel_mask);
-		
 		prev_pin = pin;
 	}
-	
-	if(!channel_mask) return 0; // invalid pin
 	
 	/* Wait until the ADC is ready to perform a conversion. */
 	while (adcifb_is_ready(&AVR32_ADCIFB) != true) { }
