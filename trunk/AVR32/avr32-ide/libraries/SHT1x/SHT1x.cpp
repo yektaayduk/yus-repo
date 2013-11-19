@@ -1,10 +1,17 @@
 
+/*
+
+based on SHT1x/7x demo program (SHT1x_sample_code.c) V2.4
+
+*/
+
 #include <SHT1x.h>
 #include <bsp_clock.h>
-extern "C"
-{
-  #include <gpio.h>
+#include <math.h> // for log10
+extern "C" {
+	#include <gpio.h>
 }
+
 
 #define NOACK 0
 #define ACK   1
@@ -49,23 +56,6 @@ bool SHT1x::begin(uint32_t dataPin, uint32_t clockPin)
 
 bool SHT1x::readTemperature(float *pConvertedValue, uint16_t *pRawValue, uint8_t *pChecksum)
 {
-/*
-  unsigned char error=0;
-  unsigned int i;
-
-  s_transstart();                   //transmission start
-  switch(mode){                     //send command to sensor
-    case TEMP	: error+=s_write_byte(MEASURE_TEMP); break;
-    case HUMI	: error+=s_write_byte(MEASURE_HUMI); break;
-    default     : break;	 
-  }
-  for (i=0;i<65535;i++) if(DATA==0) break; //wait until sensor has finished the measurement
-  if(DATA) error+=1;                // or timeout (~2 sec.) is reached
-  *(p_value)  =s_read_byte(ACK);    //read the first byte (MSB)
-  *(p_value+1)=s_read_byte(ACK);    //read the second byte (LSB)
-  *p_checksum =s_read_byte(noACK);  //read checksum
-  return error;
-*/
 	startTransmission();                   //transmission start
 	if(!writeByte(MEASURE_TEMP)) return false; //send command to sensor
 	DAT_INPUT;
@@ -75,19 +65,69 @@ bool SHT1x::readTemperature(float *pConvertedValue, uint16_t *pRawValue, uint8_t
 	while( (DAT_READ!=0) && ((unsigned long)(millis()-prev_millis)<2000) ) delay(1);
 	if(DAT_READ) return false; // timeout
 	
-	uint16_t raw = (readByte(ACK)<<8); // MSB
-	raw |= readByte(ACK); // LSB
+	uint16_t raw = (readByte(ACK)) << 8; //read the first byte (MSB)
+	raw |= readByte(ACK); //read the second byte (LSB)
 	if(pRawValue) *pRawValue = raw;
 	
-	uint8_t chk = readByte(NOACK);
+	uint8_t chk = readByte(NOACK); //read checksum
 	if(pChecksum) *pChecksum = chk;
+	
+	*pConvertedValue = ((float)raw * 0.01) - 39.7; // calculate temperature [°C] from 14 bit temp. VDD @ 3.5V
 	
 	return true;
 }
 
+bool SHT1x::readHumidity(float *pConvertedValue, float *pTemperature, uint8_t *pChecksum)
+{
+	startTransmission();                   //transmission start
+	if(!writeByte(MEASURE_HUMI)) return false; //send command to sensor
+	DAT_INPUT;
+	DELAY_SETUP;
+	volatile unsigned long prev_millis = millis();
+	//wait until sensor has finished the measurement
+	while( (DAT_READ!=0) && ((unsigned long)(millis()-prev_millis)<2000) ) delay(1);
+	if(DAT_READ) return false; // timeout
+	
+	uint16_t raw = (readByte(ACK)) << 8; //read the first byte (MSB)
+	raw |= readByte(ACK); //read the second byte (LSB)
+	
+	uint8_t chk = readByte(NOACK); //read checksum
+	if(pChecksum) *pChecksum = chk;
+	
+  // constants for 12 Bit RH
+  #define C1	-2.0468
+  #define C2	0.0367
+  #define C3	-0.0000015955
+  #define T1	0.01
+  #define T2	0.00008
+  
+	float rh_lin; // linear humidity
+	float rh_true; //  temperature compensated humidity
+	
+	rh_lin = C1 + C2*((float)raw) + C3*((float)raw)*((float)raw);
+	if(*pTemperature)
+		rh_true = (*pTemperature-25.0)*(T1+T2*((float)raw)) + rh_lin;
+	else // @ 25°C
+		rh_true = (T1+T2*((float)raw)) + rh_lin;
+	// limit range
+	if(rh_true>100) rh_true = 100.0;
+	if(rh_true<0.1) rh_true = 0.1;
+	
+	*pConvertedValue = rh_true;
+	
+	return true;
+}
+
+float SHT1x::dewpoint(float h, float t)
+{
+// calculates dew point [°C]
+	float k = (log10(h)-2)/0.4343 + (17.62*t)/(243.12+t);
+	return ( 243.12*k/(17.62-k) );
+}
+
 bool SHT1x::reset(void)
 {
-	// resets the sensor by a softreset 
+// resets the sensor by a softreset 
 	resetConnection(); //reset communication
 	return writeByte(RESET); //send RESET-command to sensor
 }
