@@ -12,6 +12,9 @@ public:
 	bool begin(uint32_t dataPin, uint32_t clockPin);
 	
 	bool readTemperature(float *pConvertedValue, uint16_t *pRawValue=NULL, uint8_t *pChecksum=NULL);
+	bool readHumidity(float *pConvertedValue, float *pTemperature=NULL, uint8_t *pChecksum=NULL);
+	
+	static float dewpoint(float h, float t);
 	
 	bool reset();
 	bool readStatusReg(uint8_t *pvalue, uint8_t *pchecksum);
