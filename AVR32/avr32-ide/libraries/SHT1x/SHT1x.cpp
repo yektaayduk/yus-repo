@@ -42,10 +42,10 @@ SHT1x::SHT1x(): m_datPin(0), m_clkPin(0)
 
 bool SHT1x::begin(uint32_t dataPin, uint32_t clockPin)
 {
-	if( !((dataPin<=AVR32_PIN_PA00 && dataPin>=AVR32_PIN_PA22) \
-		|| (dataPin<=AVR32_PIN_PB00 && dataPin>=AVR32_PIN_PB12))) return false;
-	if( !((clockPin<=AVR32_PIN_PA00 && clockPin>=AVR32_PIN_PA22) \
-		|| (clockPin<=AVR32_PIN_PB00 && clockPin>=AVR32_PIN_PB12))) return false;
+	if( !((dataPin>=AVR32_PIN_PA00 && dataPin<=AVR32_PIN_PA22) \
+		|| (dataPin>=AVR32_PIN_PB00 && dataPin<=AVR32_PIN_PB12))) return false;
+	if( !((clockPin>=AVR32_PIN_PA00 && clockPin<=AVR32_PIN_PA22) \
+		|| (clockPin>=AVR32_PIN_PB00 && clockPin<=AVR32_PIN_PB12))) return false;
 	
 	m_datPin = dataPin;
 	m_clkPin = clockPin;
@@ -170,9 +170,9 @@ bool SHT1x::writeByte(uint8_t value)
 	DELAY_SETUP;
 	CLK_HIGH;
 	DELAY_PULSE;
-	bool error = (DAT_READ!=0);
+	bool ack = (DAT_READ==0);
 	CLK_LOW;
-	return error;
+	return ack;
 }
 
 uint8_t SHT1x::readByte(bool ack)
