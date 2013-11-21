@@ -8,7 +8,7 @@ char result[64];
 int main(void)
 {
 	Serial.begin(115200);
-	sht.begin(PA00, PA01);
+	sht.begin(PB08, PB09);
 	
 	while(true)
 	{
@@ -17,11 +17,11 @@ int main(void)
 		sht.readHumidity(&RH, &degC);
 		
 		sprintf(result,
-			"Temperature = %.1fC, "\
+			"Temperature = %.2fC, "\
 			"Humidity = %.1f%%, "\
 			"Dew point = %.1fC\r\n",
 			degC, RH, SHT1x::dewpoint(RH, degC) );
-		Serial.print(result);
+		Serial.puts(result);
 		delay_ms(5000);
 	}
 }

@@ -21,8 +21,8 @@ public:
 	bool writeStatusReg(uint8_t *pvalue);
 	
 private:
-	uint32_t m_datPin;
-	uint32_t m_clkPin;
+	volatile uint32_t m_datPin;
+	volatile uint32_t m_clkPin;
 	bool writeByte(uint8_t value);
 	uint8_t readByte(bool ack);
 	void startTransmission();
