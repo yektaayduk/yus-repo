@@ -129,5 +129,5 @@ uint32_t adcRead(uint32_t pin)
 	while (adcifb_is_drdy(&AVR32_ADCIFB) != true) { }
 	
 	/* Get the last converted data. */
-	return adcifb_get_last_data(&AVR32_ADCIFB);
+	return ( adcifb_get_last_data(&AVR32_ADCIFB) & 0xFFF );
 }
