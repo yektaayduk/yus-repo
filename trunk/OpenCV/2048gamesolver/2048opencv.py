@@ -5,6 +5,7 @@ import win32api, win32gui, win32ui, win32con, win32com.client
 from PIL import Image, ImageFont, ImageDraw, ImageOps
 
 # create training model based on the given TTF font file
+# http://projectproto.blogspot.com/2014/07/opencv-python-digit-recognition.html
 def createDigitsModel(fontfile, digitheight):
     font = ImageFont.truetype(fontfile, digitheight)
     samples =  np.empty((0,digitheight*(digitheight/2)))
@@ -54,7 +55,7 @@ class Board(object):
         self.saveBitMap.CreateCompatibleBitmap(self.mfcDC, self.cw, self.ch)
         self.saveDC.SelectObject(self.saveBitMap)
 
-        self.tiles, self.tileheight = self.findTiles(self.getClientFrame())
+        self.tiles, self.tileheight, self.contour = self.findTiles(self.getClientFrame())
         self.digitheight = self.tileheight / 2
         self.digitsmodel = createDigitsModel(self.FONT, self.digitheight)
 
@@ -102,7 +103,7 @@ class Board(object):
         board = findBoard(contours)
         if board==None:
             print 'board not found!'
-            return tiles, avgh
+            return tiles, avgh, board
         
         bx,by,bw,bh = cv2.boundingRect(board)
         #cv2.rectangle(cvframe,(bx,by),(bx+bw,by+bh),(0,255,0),2)
@@ -119,7 +120,7 @@ class Board(object):
                 count += 1
         if not count:
             print 'no tile found!'
-            return tiles, avgh
+            return tiles, avgh, board
 
         avgh = avgh / count
         margin = (bh-avgh*4)/5
@@ -134,7 +135,7 @@ class Board(object):
         #cv2.imshow('tiles',cvframe)
         #cv2.waitKey(0)
         #cv2.destroyWindow( 'tiles' )       
-        return tiles, avgh
+        return tiles, avgh, board
     
     def getTileThreshold(self, tileimage):
         gray = cv2.cvtColor(tileimage,cv2.COLOR_BGR2GRAY)
@@ -238,15 +239,6 @@ class Board(object):
             self.setCell(tiles, i, y, line[i])
         return tiles
 
-    def canMove(self):
-        for y in range(4):
-            for x in range(4):
-                c = self.getCell(self.tilenumbers, x, y)
-                if (x < 4-1 and c == self.getCell(self.tilenumbers, x+1, y)) \
-                        or (y < 4-1 and c == self.getCell(self.tilenumbers, x, y+1)):
-                    return True
-        return False
-
     def validMove(self, tilenumbers, direction):
         if direction == self.UP or direction == self.DOWN:
             for x in range(4):
@@ -314,6 +306,8 @@ class Board(object):
                 
         return score, tilenumbers      
 
+# AI based on "term2048-AI"
+# https://github.com/Nicola17/term2048-AI
 class AI(object):
     def __init__(self, board):
         self.board = board
@@ -348,7 +342,6 @@ class AI(object):
             linearWeightedVal = 0
             invert = False if i<4 else True
             weight = 1.
-            malus = 0
             ctile = (-1,-1)
 
             cond = i%4
@@ -380,20 +373,17 @@ class AI(object):
 
         return maxVal, criticalTile
 
-    def updateBoard(self):
-        return self.board.update()
-
     def solveBoard(self, moveinterval=500):
         shell = win32com.client.Dispatch("WScript.Shell")
-        delay = moveinterval / 3
+        delay = moveinterval / 3 # ms delay to cancel board animation effect
         keymove = ['UP', 'DOWN', 'LEFT', 'RIGHT']
         prev_numbers = []
         while True:
-            numbers, inframe, outframe = self.updateBoard()
+            numbers, inframe, outframe = self.board.update()
             if numbers != prev_numbers:
                 cv2.waitKey(delay)
-                numbers, inframe, outframe = self.updateBoard()
-                if numbers == prev_numbers:
+                numbers, inframe, outframe = self.board.update()
+                if numbers == prev_numbers: # recheck if has changed
                     continue
                 prev_numbers = numbers
                 move = ai.nextMove()
