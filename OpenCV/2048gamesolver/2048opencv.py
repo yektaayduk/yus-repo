@@ -40,6 +40,8 @@ class Board(object):
     FONT = "font/ClearSans-Bold.ttf"
     def __init__(self, clientwindowtitle):
         self.hwnd = self.getClientWindow(clientwindowtitle)
+        if not self.hwnd:
+            return
         self.hwndDC = win32gui.GetWindowDC(self.hwnd)
         self.mfcDC  = win32ui.CreateDCFromHandle(self.hwndDC)
         self.saveDC = self.mfcDC.CreateCompatibleDC()
@@ -56,6 +58,8 @@ class Board(object):
         self.saveDC.SelectObject(self.saveBitMap)
 
         self.tiles, self.tileheight, self.contour = self.findTiles(self.getClientFrame())
+        if not len(self.tiles):
+            return
         self.digitheight = self.tileheight / 2
         self.digitsmodel = createDigitsModel(self.FONT, self.digitheight)
 
@@ -67,6 +71,8 @@ class Board(object):
             winlist.append((hwnd, win32gui.GetWindowText(hwnd)))
         win32gui.EnumWindows(enum_cb, toplist)
         window = [(hwnd, title) for hwnd, title in winlist if windowtitle.lower() in title.lower()]
+        if not len(window):
+            return 0
         return window[0][0]
 
     def getClientFrame(self):
@@ -192,7 +198,7 @@ class Board(object):
             dh = self.digitheight
             digits = []
             for cnt in contours:
-                [x,y,w,h] = cv2.boundingRect(cnt)
+                x,y,w,h = cv2.boundingRect(cnt)
                 if  h>w and h>(dh*1)/5 and h<(dh*6)/5:
                     cv2.rectangle(cvframe,(x0+x,y0+y),(x0+x+w,y0+y+h),(0,0,255),1)
                     roi = thresh[y:y+h,x:x+w]
@@ -207,6 +213,12 @@ class Board(object):
 
             numbers.append(guessNumber(digits))
         return numbers, outframe
+
+    def getWindowHandle(self):
+        return self.hwnd
+
+    def getBoardContour(self):
+        return self.contour
     
     def update(self):
         frame = self.getClientFrame()
@@ -374,9 +386,18 @@ class AI(object):
         return maxVal, criticalTile
 
     def solveBoard(self, moveinterval=500):
-        shell = win32com.client.Dispatch("WScript.Shell")
-        delay = moveinterval / 3 # ms delay to cancel board animation effect
+        boardHWND = self.board.getWindowHandle()
+        if not boardHWND:
+            return False
+        bx, by, bw, bh = cv2.boundingRect(self.board.getBoardContour())
+        x0, x1, y0, y1 = bx, bx+bw, by, by+bh
+
+        win32gui.SetForegroundWindow(boardHWND)
+        shell = win32com.client.Dispatch('WScript.Shell')
+        print 'Set the focus to the Game Window, and the press this arrow key:'
         keymove = ['UP', 'DOWN', 'LEFT', 'RIGHT']
+
+        delay = moveinterval / 3 # milliseconds delay to cancel board animation effect
         prev_numbers = []
         while True:
             numbers, inframe, outframe = self.board.update()
@@ -389,13 +410,13 @@ class AI(object):
                 move = ai.nextMove()
                 if move:
                     key = keymove[move-1]
-                    shell.SendKeys("{%s}"%key)
+                    shell.SendKeys('{%s}'%key)
                     print key
                     cv2.waitKey(delay)
-                    #cv2.imshow('CV copy',inframe)
-                    cv2.imshow('CV out', outframe)
+                    cv2.imshow('CV copy',inframe[y0:y1,x0:x1])
+                    cv2.imshow('CV out', outframe[y0:y1,x0:x1])
             cv2.waitKey(delay)
-        #cv2.destroyWindow( 'CV copy' )
+        cv2.destroyWindow( 'CV copy' )
         cv2.destroyWindow( 'CV out' )
         
 
@@ -405,6 +426,6 @@ board = Board("2048 - Google Chrome")
 #board = Board("2048 - Mozilla Firefox")
 
 ai = AI(board)
-ai.solveBoard(300)
+ai.solveBoard(360)
 
-print 'done.'
+print 'stopped.'
