@@ -386,7 +386,7 @@ class AI(object):
 
         return maxVal, criticalTile
 
-    def solveBoard(self, moveinterval=500):
+    def solveBoard(self, moveinterval=2000):
         boardHWND = self.board.getWindowHandle()
         if not boardHWND:
             return False
@@ -395,14 +395,10 @@ class AI(object):
         cx, cy = bx+bw/2, by+bh/2
         sh = bh*2/5
 
-        proc = subprocess.Popen(['adb', 'shell'],
-                        stdin=subprocess.PIPE,
-                        stdout=subprocess.PIPE,
-                        stderr=subprocess.PIPE,
-                        shell=True)
+        proc = subprocess.Popen(['adb', 'shell'], stdin=subprocess.PIPE, shell=True)
         keymove = ['UP', 'DOWN', 'LEFT', 'RIGHT']
 
-        delay = moveinterval / 3 # milliseconds delay to cancel board animation effect
+        delay = moveinterval / 2 # milliseconds delay to cancel board animation effect
         prev_numbers = []
         while True:
             numbers, inframe, outframe = self.board.update()
@@ -416,7 +412,6 @@ class AI(object):
                 if move:
                     key = keymove[move-1]
                     print key
-                    
                     if move==1:
                         xs, xe = cx, cx
                         ys, ye = cy+sh, cy-sh
@@ -431,8 +426,6 @@ class AI(object):
                         ys, ye = cy, cy
                     proc.stdin.write("input swipe %d %d %d %d\r\n"%(xs,ys,xe,ye))
                     proc.stdin.flush()
-                    
-                    cv2.waitKey(delay)
                     cv2.imshow('CV copy',inframe[y0:y1,x0:x1])
                     cv2.imshow('CV out', outframe[y0:y1,x0:x1])
             cv2.waitKey(delay)
