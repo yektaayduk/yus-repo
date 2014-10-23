@@ -8,7 +8,7 @@
     http://philrobotics.com | http://philrobotics.com/forum | http://facebook.com/philrobotics
     phirobotics.core@philrobotics.com
 
-    Copyright (C) 2013  Julius Constante
+    Copyright (C) 2014  Julius Constante
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -41,18 +41,18 @@ class MultipleCppEditor(QtGui.QTabWidget):
         Constructor
         '''
         super(MultipleCppEditor, self).__init__(parent)
-        
+
         self.setAttribute(QtCore.Qt.WA_DeleteOnClose)
-        
+
         self.DefaultKeywords = getLibraryKeywords()
-        
+
         self.findDlg = FindDialog(self)
-        
+
         self.setAcceptDrops(True)
         #self.setTabShape(QtGui.QTabWidget.Triangular)
         self.setMovable(True)
         self.setTabsClosable(True)
-        
+
         self.sampleProjects = []
         try:
             for group in getExampleProjects(scanFirmwareLibs()):
@@ -61,27 +61,27 @@ class MultipleCppEditor(QtGui.QTabWidget):
             # print self.sampleProjects
         except:
             pass
-        
+
         self.Outline = OutLineView(self)
-        
+
         self.connect(self, QtCore.SIGNAL('tabCloseRequested(int)'), self.closeFile)
         self.connect(self, QtCore.SIGNAL('currentChanged(int)'), self.Outline.update)
-        
+
         if self.count()==0:
             self.newFile()
-        
+
     def newFile(self):
         child = CppEditor(self, None, self.sampleProjects)
         self.addTab(child, PROJECT_NONAME + " * ")
         self.setCurrentIndex(self.count()-1)
         self.setTabToolTip(self.currentIndex(), child.currentFile())
         self.Outline.update(child.text())
-        
+
     def openFile(self, fileName=None):
         if fileName == None: # prompt open dialog if filename is not specified
             fileName = QtGui.QFileDialog.getOpenFileName(
                                 self, self.tr("Open Source File"),
-                                "", PROJECT_ALIAS + " (*" + USER_CODE_EXT + ");;" 
+                                "", PROJECT_ALIAS + " (*" + USER_CODE_EXT + ");;"
                                 "C Source File (*.c);;C++ Source File (*.cpp);;Text File (*.txt);;All files (*.*)" )
         if fileName == "":
             return False
@@ -100,7 +100,7 @@ class MultipleCppEditor(QtGui.QTabWidget):
         self.setTabToolTip(self.currentIndex(), child.currentFile())
         self.Outline.update(child.text())
         return True
-    
+
     def saveFile(self):
         child = self.currentWidget()
         if child == None:
@@ -116,7 +116,7 @@ class MultipleCppEditor(QtGui.QTabWidget):
             self.Outline.update(child.text())
             return True
         return False
-    
+
     def saveFileAs(self):
         child = self.currentWidget()
         rc = child.saveAs()
@@ -130,7 +130,7 @@ class MultipleCppEditor(QtGui.QTabWidget):
             self.Outline.update(child.text())
             return True
         return False
-    
+
     def closeFile(self, idx = 0):
         if self.count()==0:
             return True# nothing to close
@@ -149,58 +149,58 @@ class MultipleCppEditor(QtGui.QTabWidget):
         child.setParent(None)
         child.close()
         return True
-    
+
     def closeCurrentFile(self):
         return self.closeFile(self.currentIndex())
-        
+
     def getCurrentFile(self):
         child = self.currentWidget()
         if child:
             return child.currentFile()
         return None
-    
+
     def isCurrentFileModified(self):
         child = self.currentWidget()
         if child:
             return child.modified()
         return False
-    
+
     def editUndo(self):
         child = self.currentWidget()
         if child: child.undo()
-            
+
     def editRedo(self):
         child = self.currentWidget()
         if child: child.redo()
-    
+
     def editCut(self):
         child = self.currentWidget()
         if child:
             if child.hasSelectedText(): child.cut()
-            
+
     def editCopy(self):
         child = self.currentWidget()
         if child: child.copy()
-            
+
     def editPaste(self):
         child = self.currentWidget()
         if child: child.paste()
-        
+
     def editSelectAll(self):
         child = self.currentWidget()
         if child: child.selectAll()
-        
+
     def editClear(self):
         child = self.currentWidget()
         if child: child.clear()
-    
+
     def showFindDialog(self):
         child = self.currentWidget()
         if child:
             if child.hasSelectedText():
                 self.findDlg.setFindText(child.selectedText ())
         self.findDlg.show()
-        
+
     def findChildText(self, text=None, forwardDirection=True, caseSensitive=False,
                       wrapSearch=True, wholeWord=False, regExp=False):
         if text:
@@ -215,14 +215,14 @@ class MultipleCppEditor(QtGui.QTabWidget):
                             forwardDirection) # forward
                 return result
         return False
-    
+
     def replaceChildText(self, newText=None):
         child = self.currentWidget()
         if child and child.hasSelectedText():
             child.replaceSelectedText(newText) # returns None
-            return True                
+            return True
         return False
-    
+
     def replaceFindChildText(self, oldText=None, newText=None, forwardDirection=True,
                              caseSensitive=False, wrapSearch=True, wholeWord=False, regExp=False):
         if oldText:
@@ -235,9 +235,9 @@ class MultipleCppEditor(QtGui.QTabWidget):
                             wholeWord, # whole word matches only
                             wrapSearch,  # wraps around
                             forwardDirection) # forward
-                return result               
+                return result
         return False
-    
+
     def replaceAllChildText(self, oldText=None, newText=None, caseSensitive=False,
                             wholeWord=False, regExp=False):
         if oldText:
@@ -258,26 +258,26 @@ class MultipleCppEditor(QtGui.QTabWidget):
                         child.replace(newText)
                         cnt += 1
                         if not child.findNext(): break
-                    return True      
+                    return True
         return False
-                
+
     def onChildContentChanged(self):
         child = self.currentWidget()
         if child:
             title = self.tabText(self.currentIndex())
             if not title.contains('*', QtCore.Qt.CaseInsensitive):
                 self.setTabText(self.currentIndex(), title + " * ")
-            
+
             self.Outline.update(child.text())
-        
+
     def getDefaultKeywords(self):
         return self.DefaultKeywords
-    
-    def importFirmwareLib(self, library=''):        
+
+    def importFirmwareLib(self, library=''):
         child = self.currentWidget()
         if child and len(library):
             child.insertIncludeDirective(library)
-    
+
     def dragEnterEvent(self, e):
         if e.mimeData().hasUrls():
             url = str( e.mimeData().urls()[0].toString() ).lower()
@@ -286,15 +286,15 @@ class MultipleCppEditor(QtGui.QTabWidget):
                 url.rfind('.c') == len(url) - len('.c'):
                 e.accept()
                 return
-        e.ignore() 
-        
+        e.ignore()
+
     def dropEvent(self, e):
         try:
             fname = str(e.mimeData().urls()[0].toLocalFile() )
             self.openFile(fname)
         except:
             print "drop error"
-    
+
     def closeAllTabs(self):
         for index in range(self.count()):
             self.setCurrentIndex(index)
@@ -303,5 +303,4 @@ class MultipleCppEditor(QtGui.QTabWidget):
         return True
 
     def getOutLineView(self):
-        return self.Outline        
-        
+        return self.Outline

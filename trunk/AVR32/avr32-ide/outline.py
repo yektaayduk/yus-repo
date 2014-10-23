@@ -8,7 +8,7 @@
     http://philrobotics.com | http://philrobotics.com/forum | http://facebook.com/philrobotics
     phirobotics.core@philrobotics.com
 
-    Copyright (C) 2013  Julius Constante
+    Copyright (C) 2014  Julius Constante
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -32,11 +32,11 @@ from PyQt4 import QtGui, QtCore
 class CLangParserThread(QtCore.QThread):
     def __init__(self, parent=None):
         QtCore.QThread.__init__(self, parent)
-        self.parent = parent        
+        self.parent = parent
         self.queue = False
         self.nodes = []
         self.index = clang.Index.create()
-    
+
     def find_typerefs(self, node, fname=None, level=0):
         if str(node.location.file)==str(fname):
             knd = node.kind.name
@@ -49,7 +49,7 @@ class CLangParserThread(QtCore.QThread):
                 self.nodes.append((node, level))
         for c in node.get_children():
             self.find_typerefs(c, fname, level+1)
-    
+
     def run(self):
         self.msleep(200)
         del self.nodes[:]
@@ -61,23 +61,23 @@ class CLangParserThread(QtCore.QThread):
         self.find_typerefs(tu.cursor, tu.spelling)
         #print 'done parsing.'
         self.msleep(200)
-        
+
         if self.queue:
             self.queue = False
             self.run()
             return
         # print 'CLangParserThread done.'
-        
+
     def setQueue(self):
         if self.queue:
             return
         self.queue = True;
-        
+
     def getNodes(self):
         if self.isRunning():
             return []
         return self.nodes
-    
+
 
 class OutLineView(QtGui.QDockWidget):
 
@@ -87,22 +87,22 @@ class OutLineView(QtGui.QDockWidget):
         self.parser = CLangParserThread(self)
         self.itemStack = []
         self.updated = True
-        
+
         self.treeWidget = QtGui.QTreeWidget(self)
         self.treeWidget.setHeaderHidden(True)
         self.treeWidget.itemClicked.connect(self.onItemDoubleClicked)
         self.setWidget(self.treeWidget)
-        
+
         self.startTimer(2000)
-        
-        
+
+
     def update(self, newIndex=0):
         self.updated = False
         if self.parser.isRunning():
             self.parser.setQueue()
             return
         self.parser.start()
-        
+
     def getRawContent(self):
         try:
             child = self.parent.currentWidget()
@@ -111,7 +111,7 @@ class OutLineView(QtGui.QDockWidget):
         except:
             pass
         return 'empty'
-    
+
     def onItemDoubleClicked(self, item=None, column=-1):
         if item:
             try:
@@ -125,7 +125,7 @@ class OutLineView(QtGui.QDockWidget):
                     child.setSelection( line, col, line, col+len(item.text(0)) )
             except:
                 print "error: editor setSelection() failed!"
-        
+
     def timerEvent(self, *args, **kwargs):
         if not self.updated:
             previous_level = 0
@@ -135,12 +135,12 @@ class OutLineView(QtGui.QDockWidget):
                 self.treeWidget.clear()
                 for node, level in nodes:
                     if node.spelling:
-                        label = str(node.spelling)                        
+                        label = str(node.spelling)
                     elif node.displayname:
                         label = str(node.displayname)
                     else:
                         continue
-                    
+
                     try:
                         tip = "%s : %s [%d, %d]"%(label, node.kind.name, node.location.line, node.location.column)
                         if node.kind.name=='VAR_DECL' and level>3:
@@ -177,20 +177,19 @@ class OutLineView(QtGui.QDockWidget):
                                     item.setToolTip(0, tip)
                                     #print 'add to previous parent...', self.itemStack[level-2].text(0)
                                     self.itemStack[level-2].addChild( item )
-                                    break;                            
+                                    break;
                         # print level, label, node.kind, node.location.line
                     except:
                         print 'error adding %s, level(%d->%d), stack(%d)' %(label, previous_level, level, len(self.itemStack))
                     previous_level = level
-                
+
                 self.setWindowTitle("Outline")
                 self.updated = True
-                
+
             elif self.parser.isFinished():
                 self.treeWidget.clear()
                 self.setWindowTitle("Outline")
                 self.updated = True
-            
+
         #return QtGui.QDockWidget.timerEvent(self, *args, **kwargs)
-        
-    
+

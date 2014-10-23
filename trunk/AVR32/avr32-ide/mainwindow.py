@@ -8,7 +8,7 @@
     http://philrobotics.com | http://philrobotics.com/forum | http://facebook.com/philrobotics
     phirobotics.core@philrobotics.com
 
-    Copyright (C) 2013  Julius Constante
+    Copyright (C) 2014  Julius Constante
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -47,49 +47,49 @@ class AppMainWindow(QtGui.QMainWindow):
         super(AppMainWindow, self).__init__()
         print "AVR32 GCC IDE started..."
         print SPLASH_NOTICE
-        
+
         if False: # todo: set to True if building stand-alone package (cx_Freeze)
             setpath = os.path.dirname( os.path.realpath( __file__ ) )
             if os.name == 'nt':
                 os.chdir( setpath[:setpath.rfind('\\')] )
             else:
                 os.chdir( setpath[:setpath.rfind('/')] )
-        
+
         self.aboutDlg = AboutDialog(self)
         self.aboutDlg.show()
-        
+
         self.setWindowTitle("AVR32 GCC IDE")
         self.setWindowIcon(QtGui.QIcon('images/app.png'))
         self.setMinimumSize(300, 400)
-        
-        self.Editor = MultipleCppEditor(self)        
+
+        self.Editor = MultipleCppEditor(self)
         self.setCentralWidget(self.Editor)
-        
+
         self.OutLineView =  self.Editor.getOutLineView()
         self.OutLineView.setObjectName("OutLineView")
         self.addDockWidget(QtCore.Qt.BottomDockWidgetArea, self.OutLineView)
-        
+
         self.Compiler = GccCompilerThread(self)
         self.pollCompilerTimerID = None
-        
+
         self.serialPortName = None
         self.serialPortLabel = QtGui.QLabel('<font color=red><i>(select port)</i></font>')
         self.SerialPortMonitorDialog = SerialPortMonitor(self)
-        
+
         self.Configs = IdeConfig(self)
-        
+
         self.createLogWindow()
         self.createActions()
         self.createToolBars()
         self.createStatusBar()
-        
+
         self.Configs.restoreIdeSettings()
         self.createMenus()
-        
+
         self.aboutDlg.finish(self)
         print "IDE ready."
-        
-        
+
+
     def about(self):
         self.aboutDlg.show()
         kdbMod = QtGui.QApplication.keyboardModifiers()
@@ -100,10 +100,10 @@ class AppMainWindow(QtGui.QMainWindow):
         # todo: other informations
         self.aboutDlg.showMessage("AVR32 GCC IDE [ %s ]" % self.aboutDlg.getVersions(),
                            QtCore.Qt.AlignLeft | QtCore.Qt.AlignBottom, QtGui.QColor("#eecc77"))
-    
+
     def openProjectProtoSite(self):
         QtGui.QDesktopServices.openUrl( QtCore.QUrl("http://projectproto.blogspot.com") )
-        
+
     def openPhilRoboticsSite(self):
         # todo: change to .ORG
         QtGui.QDesktopServices.openUrl( QtCore.QUrl("http://www.philrobotics.com") )
@@ -114,7 +114,7 @@ class AppMainWindow(QtGui.QMainWindow):
             QtGui.QMessageBox.about( self, "Compiler Information", info )
         else:
             QtGui.QMessageBox.about( self, "Compiler Information", "no compiler found!" )
-    
+
     def startBuild(self):
         if self.Compiler.isRunning():
             self.insertLog('compiler busy..')
@@ -158,7 +158,7 @@ class AppMainWindow(QtGui.QMainWindow):
             self.insertLog("<font color=red>----- Stopped. -----</font>")
         else:
             self.insertLog("nothing to stop.")
-            
+
     def programChip(self):
         if self.Editor.isCurrentFileModified():
             self.insertLog('<font color=orange>Project was modified. Please re-build the project.</font>')
@@ -181,7 +181,7 @@ class AppMainWindow(QtGui.QMainWindow):
                 self.insertLog("<font color=red>Unable to start Timer.</font>")
         else:
             self.insertLog("<font color=red>%s</font>"%msg)
-        
+
     def selectSerialPort(self):
         act = self.serialPortGroup.checkedAction()
         if act:
@@ -195,18 +195,18 @@ class AppMainWindow(QtGui.QMainWindow):
                     if not self.SerialPortMonitorDialog.openPort(self.serialPortName):
                         self.SerialPortMonitorDialog.close()
                         self.insertLog( "<font color=red>unable to open %s</font>"%self.serialPortName)
-                        
+
     def updateSerialPortList(self):
         # clear previous actions list
         self.serialPortMenu.clear()
         for act in self.serialPortGroup.actions():
             self.serialPortGroup.removeAction(act)
             del act
-        
+
         # scan existing ports
         portList = scan_serialports() # serialport.py
         previousPortName = self.Configs.getSerialPortName()
-        
+
         # create new actions & update serial port menu
         if len(portList):
             for i in range(len(portList)):
@@ -218,16 +218,16 @@ class AppMainWindow(QtGui.QMainWindow):
                 if portList[i] == previousPortName:
                     act.setChecked(True)
                     act.trigger()
-                    
+
         if not self.serialPortGroup.checkedAction():
             self.serialPortName = ''
             self.insertLog( '<i><font color=gray>( please select a serial port. )</font></i>' )
-            
+
     def importFirmwareLib(self, action=None):
         if action:
             libname = str( action.text() )
             self.Editor.importFirmwareLib(libname)
-    
+
     def openSerialPortMonitorDialog(self):
         if self.serialPortName == None:
             self.insertLog( "<font color=red>no serial port selected!</font>" )
@@ -236,7 +236,7 @@ class AppMainWindow(QtGui.QMainWindow):
             self.SerialPortMonitorDialog.show() # non-modal open
         else:
             self.insertLog( "<font color=red>unable to open serial port!</font>" )
-        
+
     def createActions(self):
         # file menu
         self.newAct = QtGui.QAction( QtGui.QIcon("./images/new.png"), "&New",
@@ -251,14 +251,14 @@ class AppMainWindow(QtGui.QMainWindow):
                 statusTip="Close the current window", triggered=self.Editor.closeCurrentFile)
         self.saveAct = QtGui.QAction(QtGui.QIcon("./images/save.png"), "&Save",
                 self, shortcut=QtGui.QKeySequence("Ctrl+S"),
-                statusTip="Save the current file", triggered=self.Editor.saveFile)        
+                statusTip="Save the current file", triggered=self.Editor.saveFile)
         self.saveAsAct = QtGui.QAction("Save &As...", self, shortcut=QtGui.QKeySequence("Ctrl+Shift+S"),
                 statusTip="Save to another file", triggered=self.Editor.saveFileAs)
-        
+
         self.exitAct = QtGui.QAction("E&xit", self,
                 shortcut=QtGui.QKeySequence("Alt+F4"),
                 statusTip="Exit the application", triggered=QtGui.qApp.closeAllWindows)
-        
+
         # edit menu
         self.editUndoAct = QtGui.QAction("&Undo", self, shortcut=QtGui.QKeySequence("Ctrl+Z"),
                                          triggered=self.Editor.editUndo)
@@ -277,7 +277,7 @@ class AppMainWindow(QtGui.QMainWindow):
         self.findAct = QtGui.QAction("&Find/Replace...", self,
                 shortcut=QtGui.QKeySequence("Ctrl+F"),
                 statusTip="Find/Replace texts", triggered=self.Editor.showFindDialog)
-        
+
         # project menu
         self.compileAct = QtGui.QAction(QtGui.QIcon("./images/build.png"), "&Compile",
                 self, shortcut=QtGui.QKeySequence("Ctrl+B"),
@@ -285,9 +285,9 @@ class AppMainWindow(QtGui.QMainWindow):
         self.stopAct = QtGui.QAction(QtGui.QIcon("./images/stop.png"), "S&top",
                 self, statusTip="Cancel the build process", triggered=self.stopBuild)
         self.programAct = QtGui.QAction(QtGui.QIcon("./images/load.png"), "&Load",
-                self, shortcut=QtGui.QKeySequence("Ctrl+R"), 
+                self, shortcut=QtGui.QKeySequence("Ctrl+R"),
                 statusTip="Download program to the board using bootloader", triggered=self.programChip)
-         
+
         self.firmwareLibList = scanFirmwareLibs()
         self.firmwareLibActs = []
         if len(self.firmwareLibList):
@@ -295,7 +295,7 @@ class AppMainWindow(QtGui.QMainWindow):
                 self.firmwareLibActs.append(
                         QtGui.QAction(self.firmwareLibList[i],  self,
                             statusTip="include " + self.firmwareLibList[i] + " library" ) )
-                
+
         self.exampleProjects = getExampleProjects(self.firmwareLibList)
         self.exampleFolderMenus = []
         self.openExampleActs = []
@@ -306,7 +306,7 @@ class AppMainWindow(QtGui.QMainWindow):
                 baseName = os.path.basename(fname)
                 self.openExampleActs.append(QtGui.QAction(os.path.splitext(baseName)[0], self,
                                 statusTip = 'Open "' + str(fname).replace('\\', '/') + '"') )
-        
+
         # serial monitor/terminal window
         self.serialMonitorAct = QtGui.QAction(QtGui.QIcon("./images/serial.png"), "Serial &Monitor",
                 self, shortcut=QtGui.QKeySequence("Ctrl+Shift+M"),
@@ -321,7 +321,7 @@ class AppMainWindow(QtGui.QMainWindow):
                             statusTip="select " + self.serialPortList[i] + " serial port",
                             triggered=self.selectSerialPort) )
                 self.serialPortGroup.addAction( self.serialPortActs[i] )
-        
+
         # todo: board names??
         #self.boardAnitoAct = QtGui.QAction("PhilRobokit &Anito",  self,
         #        checkable=True, statusTip="Select PhilRobokit Anito board" )
@@ -331,13 +331,13 @@ class AppMainWindow(QtGui.QMainWindow):
         #self.boardGroup.addAction(self.boardAnitoAct)
         self.boardGroup.addAction(self.boardEgizmoAvr32Act)
         self.boardEgizmoAvr32Act.setChecked(True)
-        
+
         self.restoreDefaultsAct = QtGui.QAction("Restore Defaults",  self,
                 statusTip="Clear configuration files", triggered=self.Configs.setDefaults)
-        
+
         # help menu
         self.aboutAct = QtGui.QAction("&About", self, shortcut=QtGui.QKeySequence("F1"),
-                statusTip="About the IDE", triggered=self.about)        
+                statusTip="About the IDE", triggered=self.about)
         self.aboutCompilerAct = QtGui.QAction("About &Compiler", self,
                 statusTip="About GNU tools for AVR32", triggered=self.aboutCompiler)
         self.aboutQtAct = QtGui.QAction("About &Qt", self,
@@ -346,14 +346,14 @@ class AppMainWindow(QtGui.QMainWindow):
                 statusTip="Open ProjectProto blog site (yus' projects)", triggered=self.openProjectProtoSite)
         self.visitPhilroboticsSiteAct = QtGui.QAction("Visit Phil&Robotics", self,
                 statusTip="Open PhilRobotics website", triggered=self.openPhilRoboticsSite)
-        
+
     def createMenus(self):
         ### File Menu ###
         self.fileMenu = self.menuBar().addMenu("&File")
         self.fileMenu.addAction(self.newAct)
         self.fileMenu.addAction(self.openAct)
         self.fileMenu.addSeparator()
-        
+
         self.examplesMenu = QtGui.QMenu('Examples', self)
         fileCount = 0
         for dirCount in range( len(self.exampleFolderMenus) ):
@@ -368,13 +368,13 @@ class AppMainWindow(QtGui.QMainWindow):
             self.examplesMenu.addMenu(self.exampleFolderMenus[dirCount])
         self.fileMenu.addMenu(self.examplesMenu)
         self.fileMenu.addSeparator()
-        
+
         self.fileMenu.addAction(self.saveAct)
         self.fileMenu.addAction(self.saveAsAct)
         self.fileMenu.addAction(self.closeAct)
         self.fileMenu.addSeparator()
         self.fileMenu.addAction(self.exitAct)
-        
+
         ### Edit Menu ###
         self.editMenu = self.menuBar().addMenu("&Edit")
         self.editMenu.addAction(self.editUndoAct)
@@ -387,7 +387,7 @@ class AppMainWindow(QtGui.QMainWindow):
         self.editMenu.addAction(self.editClearAct)
         self.editMenu.addSeparator()
         self.editMenu.addAction(self.findAct)
-        
+
         ### Project Menu ###
         self.projectMenu = self.menuBar().addMenu("&Project")
         self.projectMenu.addAction(self.compileAct)
@@ -401,7 +401,7 @@ class AppMainWindow(QtGui.QMainWindow):
                 self.firmwareLibMenu.addAction(self.firmwareLibActs[i])
         self.connect(self.firmwareLibMenu,
                      QtCore.SIGNAL("triggered (QAction *)"), self.importFirmwareLib)
-        
+
         ### Tools Menu ###
         self.toolsMenu = self.menuBar().addMenu("&Tools")
         self.toolsMenu.addAction(self.serialMonitorAct)
@@ -416,7 +416,7 @@ class AppMainWindow(QtGui.QMainWindow):
         self.toolsMenu.addSeparator()
         self.toolsMenu.addAction(self.restoreDefaultsAct) # todo: create settings dialog
         #self.bootloaderMenu = self.toolsMenu.addMenu("&Booloader")
-        
+
         ### Help Menu ###
         self.helpMenu = self.menuBar().addMenu("&Help")
         self.helpMenu.addAction(self.visitPhilroboticsSiteAct)
@@ -424,28 +424,28 @@ class AppMainWindow(QtGui.QMainWindow):
         self.helpMenu.addAction(self.aboutCompilerAct)
         self.helpMenu.addAction(self.aboutQtAct)
         self.helpMenu.addAction(self.aboutAct)
-    
+
     def createToolBars(self):
         self.fileToolBar = self.addToolBar("File")
         self.fileToolBar.setObjectName("FileToolBar")
         self.fileToolBar.addAction(self.newAct)
         self.fileToolBar.addAction(self.openAct)
         self.fileToolBar.addAction(self.saveAct)
-        
+
         self.projectToolBar = self.addToolBar("Project")
         self.projectToolBar.setObjectName("ProjectToolBar")
         self.projectToolBar.addAction(self.compileAct)
         self.projectToolBar.addAction(self.stopAct)
         self.projectToolBar.addAction(self.programAct)
-        
+
         self.serialToolBar = self.addToolBar("Serial Port")
         self.serialToolBar.setObjectName("SerialPortToolBar")
         self.serialToolBar.addAction(self.serialMonitorAct)
         self.serialToolBar.addWidget(self.serialPortLabel)
-        
+
     def createStatusBar(self):
         self.statusBar().showMessage("Ready")
-        
+
     def createLogWindow(self):
         self.log = QtGui.QTextEdit(self)
         self.log.setReadOnly(True)
@@ -458,12 +458,12 @@ class AppMainWindow(QtGui.QMainWindow):
         logWindow.setObjectName("LogView")
         logWindow.setWidget(self.log)
         self.addDockWidget(QtCore.Qt.BottomDockWidgetArea, logWindow)
-    
+
     def insertLog(self, log='', resetWindow=False):
         if resetWindow:
             self.log.setText('')
         self.log.append(log)
-        
+
     def timerEvent(self, *args, **kwargs):
         timerID = args[0].timerId()
         if timerID == self.pollCompilerTimerID:
@@ -474,10 +474,10 @@ class AppMainWindow(QtGui.QMainWindow):
             else:
                 self.killTimer(timerID)
                 self.pollCompilerTimerID = None
-        
+
         #return QtGui.QMainWindow.timerEvent(self, *args, **kwargs)
-        
-   
+
+
     def closeEvent(self, event):
         if not self.Editor.closeAllTabs(): # check for unsaved changes in the project(s)
             event.ignore()

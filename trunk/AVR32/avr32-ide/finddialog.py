@@ -8,7 +8,7 @@
     http://philrobotics.com | http://philrobotics.com/forum | http://facebook.com/philrobotics
     phirobotics.core@philrobotics.com
 
-    Copyright (C) 2013  Julius Constante
+    Copyright (C) 2014  Julius Constante
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -33,11 +33,11 @@ class FindDialog(QtGui.QDialog):
     '''
     def __init__(self, parent=None):
         super(FindDialog, self).__init__(parent)
-        
+
         self.setWindowTitle('Find/Replace')
         self.setMaximumSize(720, 180)
         self.parent = parent
-        
+
         # string inputs
         self.findInput = QtGui.QLineEdit()
         self.replaceInput = QtGui.QLineEdit()
@@ -53,7 +53,7 @@ class FindDialog(QtGui.QDialog):
         self.wrapAroundCheckbox.setCheckState(QtCore.Qt.Checked)
         self.wholeWordCheckbox = QtGui.QCheckBox("Whole Word")
         self.regExpCheckbox = QtGui.QCheckBox("Regular expressions")
-        
+
         # grid layout (7 x 12 grid)
         layout = QtGui.QGridLayout()
         # string inputs layout position
@@ -72,15 +72,15 @@ class FindDialog(QtGui.QDialog):
         layout.addWidget(self.replaceButton, 5, 3, 1, 3)
         layout.addWidget(self.replaceFindButton, 5, 6, 1, 3)
         layout.addWidget(self.replaceAllButton, 5, 9, 1, 3)
-        
+
         self.setLayout(layout)
-        
+
         # signals
         self.findButton.clicked.connect(self.findBtnClicked)
         self.replaceButton.clicked.connect(self.replaceBtnClicked)
         self.replaceFindButton.clicked.connect(self.replaceFindBtnClicked)
         self.replaceAllButton.clicked.connect(self.replaceAllBtnClicked)
-        
+
     def setFindText(self, text):
         self.findInput.setText(text)
 
@@ -93,11 +93,11 @@ class FindDialog(QtGui.QDialog):
             whole = self.wholeWordCheckbox.isChecked()
             regexp = self.regExpCheckbox.isChecked()
             self.parent.findChildText(text, fw, cs, wrap, whole, regexp)
-        
+
     def replaceBtnClicked(self):
         newText = str( self.replaceInput.text() )
         self.parent.replaceChildText(newText)
-        
+
     def replaceFindBtnClicked(self):
         oldText = str( self.findInput.text() )
         newText = str( self.replaceInput.text() )
@@ -108,7 +108,7 @@ class FindDialog(QtGui.QDialog):
             whole = self.wholeWordCheckbox.isChecked()
             regexp = self.regExpCheckbox.isChecked()
             self.parent.replaceFindChildText(oldText, newText, fw, cs, wrap, whole, regexp)
-        
+
     def replaceAllBtnClicked(self):
         oldText = str( self.findInput.text() )
         newText = str( self.replaceInput.text() )
@@ -118,4 +118,3 @@ class FindDialog(QtGui.QDialog):
             regexp = self.regExpCheckbox.isChecked()
             self.parent.replaceAllChildText(oldText, newText, cs, whole, regexp)
 
-        
