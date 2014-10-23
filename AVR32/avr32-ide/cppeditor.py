@@ -8,7 +8,7 @@
     http://philrobotics.com | http://philrobotics.com/forum | http://facebook.com/philrobotics
     phirobotics.core@philrobotics.com
 
-    Copyright (C) 2013  Julius Constante
+    Copyright (C) 2014  Julius Constante
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -59,9 +59,9 @@ class CppEditor(QsciScintilla):
         super(CppEditor, self).__init__(parent)
         self.parent = parent
         self.roFiles = readOnlyFiles
-        
+
         self.setAcceptDrops(False) # drag&drop is on its parent
-        
+
         # Set the default font
         font = QtGui.QFont()
         font.setFamily('Courier')
@@ -69,51 +69,51 @@ class CppEditor(QsciScintilla):
         font.setPointSize(10)
         self.setFont(font)
         self.setMarginsFont(font)
-        
+
         # C/C++ lexer
         self.lexer = QsciLexerCPP(self,  True)
         self.lexer.setDefaultFont(font)
         self.libraryAPIs = QsciAPIs(QsciLexerCPP(self,True))
         self.setLexer(self.lexer)
         self.SendScintilla(QsciScintilla.SCI_STYLESETFONT, 1, 'Courier')
-        
+
         # Auto-indent
         self.setTabWidth(4)
         #self.setIndentationsUseTabs(False)
         self.setAutoIndent(True)
-        
+
         # Current line visible with special background color
         self.setCaretLineVisible(True)
         self.setCaretLineBackgroundColor(QtGui.QColor("#ffe4e4"))
-        
+
         # Enable brace matching
         self.setBraceMatching(QsciScintilla.SloppyBraceMatch)
-        
+
         # Enable folding visual- use boxes
         self.setFolding(QsciScintilla.BoxedTreeFoldStyle)
-        
+
         # show line numbers
         fontmetrics = QtGui.QFontMetrics(font)
         self.setMarginsFont(font)
         self.setMarginWidth(0, fontmetrics.width("00000") + 4)
         self.setMarginLineNumbers(0, True)
         self.setMarginsBackgroundColor(QtGui.QColor("#ccccee"))
-        
+
         # not too small
         self.setMinimumSize(400, 200)
-        
+
         # set the length of the string before the editor tries to auto-complete
         self.setAutoCompletionThreshold(3)
         # tell the editor we are using a QsciAPI for the auto-completion
         self.setAutoCompletionSource(QsciScintilla.AcsAPIs)
         # removed remaining right side characters from the current cursor
         self.setAutoCompletionReplaceWord(True)
-        
+
         # "CTRL+Space" autocomplete
-        self.shortcut_ctrl_space = QtGui.QShortcut(QtGui.QKeySequence("Ctrl+Space"), self)        
+        self.shortcut_ctrl_space = QtGui.QShortcut(QtGui.QKeySequence("Ctrl+Space"), self)
         self.connect(self.shortcut_ctrl_space,
             QtCore.SIGNAL('activated()'), self.autoCompleteFromAll)
-        
+
         if fileName:
             self.curFile = fileName
             self.loadFile(fileName)
@@ -122,22 +122,22 @@ class CppEditor(QsciScintilla):
             self.curFile = PROJECT_NONAME + USER_CODE_EXT
             self.setText( __default_content__ )
             self.isUntitled = True
-        
+
         self.updateApiKeywords()
         self.isModified = False
-        self.connect(self, QtCore.SIGNAL('textChanged()'), self.onTextChanged )    
-            
+        self.connect(self, QtCore.SIGNAL('textChanged()'), self.onTextChanged )
+
     def onTextChanged(self):
         self.isModified = True
         self.parent.onChildContentChanged()
-        
+
     def loadFile(self, fileName):
         qfile = QtCore.QFile(fileName)
         if not qfile.open(QtCore.QFile.ReadOnly | QtCore.QFile.Text):
             QtGui.QMessageBox.warning(self, PROJECT_ALIAS,
                     "Cannot read file %s:\n%s." % (fileName, qfile.errorString()))
             return False
-        
+
         ret = True
         try:
             # workaround for OS X QFile.readAll()
@@ -151,10 +151,10 @@ class CppEditor(QsciScintilla):
             ret = False
         finally:
             f.close()
-        
-        qfile.close()        
+
+        qfile.close()
         return ret
-    
+
     def saveFile(self, fileName):
         if str(fileName).find(' ')>=0:
             QtGui.QMessageBox.warning(self, PROJECT_ALIAS,
@@ -165,7 +165,7 @@ class CppEditor(QsciScintilla):
             QtGui.QMessageBox.warning(self, PROJECT_ALIAS,
                     "Cannot write file %s:\n%s." % (fileName, qfile.errorString()))
             return None
-        
+
         try:
             qfile.writeData(self.text())
         except:
@@ -173,21 +173,21 @@ class CppEditor(QsciScintilla):
                     "Failed to save %s." % fileName )
             qfile.close()
             return None
-        
-        qfile.close()        
+
+        qfile.close()
         self.curFile = fileName
         self.isUntitled = False
         self.isModified = False
         return fileName
-    
+
     def saveAs(self):
         fileName = QtGui.QFileDialog.getSaveFileName(self, "Save As",
-                self.curFile, PROJECT_ALIAS + " (*" + USER_CODE_EXT + ");;" + 
+                self.curFile, PROJECT_ALIAS + " (*" + USER_CODE_EXT + ");;" +
                     "C source (*.c);;C++ source (*.cpp);;Text File (*.txt);;All files (*.*)" )
         if not fileName:
             return None
         return self.saveFile(fileName)
-    
+
     def save(self):
         f1 = os.path.abspath(self.curFile)
         for fname in self.roFiles:
@@ -203,13 +203,13 @@ class CppEditor(QsciScintilla):
             return self.saveAs()
         else:
             return self.saveFile(self.curFile)
-        
+
     def currentFile(self):
         return self.curFile
-    
+
     def modified(self):
         return self.isModified
-    
+
     def updateApiKeywords(self):
         self.libraryAPIs.clear()
         self.apiKeywords = self.parent.getDefaultKeywords()
@@ -233,8 +233,8 @@ class CppEditor(QsciScintilla):
             self.libraryAPIs.add( keyword )
         self.libraryAPIs.prepare()
         self.lexer.setAPIs(self.libraryAPIs)
-    
-    def insertIncludeDirective(self, library=''):        
+
+    def insertIncludeDirective(self, library=''):
         directive =  '#include <' + library + '.h>\r\n'
         insert_pos = 0
         found_inc = False

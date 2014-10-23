@@ -8,7 +8,7 @@
     http://philrobotics.com | http://philrobotics.com/forum | http://facebook.com/philrobotics
     phirobotics.core@philrobotics.com
 
-    Copyright (C) 2013  Julius Constante
+    Copyright (C) 2014  Julius Constante
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -30,7 +30,7 @@ from PyQt4 import QtCore
 from firmware import USER_CODE_EXT, parseUserCode, getLinkerScript, getCompilerDefines
 from configs import CompilerConfig
 
-# output directory 
+# output directory
 OUT_DIR = '.output'
 # makefile filename
 MAKEFILE = 'Makefile'
@@ -47,7 +47,7 @@ class GccCompilerThread(QtCore.QThread):
     def __init__(self, parent=None):
         QtCore.QThread.__init__(self, parent)
         self.parent = parent
-        
+
         self.Configs = CompilerConfig(self)
         self.Configs.saveCompilerSettings()
 
@@ -55,7 +55,7 @@ class GccCompilerThread(QtCore.QThread):
         self.isWin32Platform = False
         if os.sys.platform == 'win32':
             self.isWin32Platform = True
-            
+
         self.TCHAIN = self.Configs.getCompiler()
         self.make = self.Configs.getMakeCmd()
 
@@ -63,14 +63,14 @@ class GccCompilerThread(QtCore.QThread):
         self.CleanBuild = True
         self.serialPortName = None
         self.CompilerProcess = None # todo: use QtCore.QProcess class instead
-        
+
         self.LogList = QtCore.QStringList()
-            
+
     def run(self):
         if not self.TCHAIN:
             print 'no supported compiler!'
             return
-        
+
         self.LogList.clear()
         if self._task == self.GET_INFO:
             command = [ self.TCHAIN + 'gcc', '--version' ]
@@ -85,7 +85,7 @@ class GccCompilerThread(QtCore.QThread):
             projectName = os.path.splitext(os.path.basename(self.UserCode))[0]
             # output folder - same location with user code
             outpath = os.path.join( os.path.dirname(self.UserCode) , OUT_DIR )
-            
+
             Result, Includes, Sources = parseUserCode( self.UserCode, outpath )
             #print Includes, Sources
             if not Result or not self.generateMakefile(outpath, projectName, Includes, Sources, self.CleanBuild):
@@ -97,7 +97,7 @@ class GccCompilerThread(QtCore.QThread):
             if self.CleanBuild:
                 command.append('clean')
             command.append('all')
-            
+
         try:
             self.CompilerProcess = subprocess.Popen( command,
                          stdin=subprocess.PIPE,
@@ -109,7 +109,7 @@ class GccCompilerThread(QtCore.QThread):
                 self.usleep(50000)
                 if not self.CompilerProcess:
                     break;
-                # read single lines    
+                # read single lines
                 buff = self.CompilerProcess.stdout.readline()
                 if buff == '': # got nothing
                     if self.CompilerProcess.poll() != None: # process exited
@@ -126,7 +126,7 @@ class GccCompilerThread(QtCore.QThread):
                     elif msg_lowered.find("error:") >= 0 \
                             or msg_lowered.find("make: ***") >= 0 \
                             or msg_lowered.find(": multiple definition") >= 0 \
-                            or msg_lowered.find("undefined reference to") >= 0:                    
+                            or msg_lowered.find("undefined reference to") >= 0:
                         self.LogList.append( "<font color=red>%s</font>" % msg )
                         error_count += 1
                     else:
@@ -136,14 +136,14 @@ class GccCompilerThread(QtCore.QThread):
             self.LogList.append( "<font color=red>ERROR: build failed!</font>")
             self.LogList.append( "<font color=red>%s</font>" % self.TCHAIN)
             self.CompilerProcess = None
-        
+
         if not error_count:
             self.LogList.append( "<font size=4 color=cyan>done.</font>" )
         else:
             self.LogList.append( "<font size=4 color=red>done with error(s) !</font>"  )
-        
+
         print 'compiler thread done.'
-            
+
     def getCompilerInfo(self):
         if self.isRunning():
             return None
@@ -153,7 +153,7 @@ class GccCompilerThread(QtCore.QThread):
         while True:
             self.usleep(1000)
             if not self.isRunning():
-                break;            
+                break;
         if not self.LogList.count():
             return None
         else:
@@ -161,7 +161,7 @@ class GccCompilerThread(QtCore.QThread):
             info = ''
             for msg in self.LogList:
                 info += msg
-            return info                        
+            return info
 
     def buildProject(self, userCode=None, cleanBuild=False):
         if self.isRunning():
@@ -169,28 +169,28 @@ class GccCompilerThread(QtCore.QThread):
         if not os.path.isfile(userCode):
             return False, "file not found"
 
-        self._task = self.BUILD_PROJECT            
+        self._task = self.BUILD_PROJECT
         self.UserCode = str(userCode)
         self.CleanBuild = cleanBuild
         self.start()
         return True, "Build process running. Please wait..."
-        
+
     def programHex(self, userCode=None, serialPort=None):
         if self.isRunning():
             return False, "busy"
         if not serialPort:
             return False, "no port selected"
-        
+
         self.serialPortName = str(serialPort)
         self.UserCode = str(userCode)
-        
+
         outpath = os.path.join( os.path.dirname(self.UserCode) , OUT_DIR )
         makefile = os.path.join(outpath, MAKEFILE)
         hexfile = self.getExpectedHexFileName(userCode)
-        
+
         if not os.path.isfile(makefile) or not os.path.isfile(hexfile):
             return False, "No *.hex file found! (re)build first the project."
-        
+
         self._task = self.PROGRAM_HEX
         self.start()
         return True, "Flash Loader running. Please wait..."
@@ -209,14 +209,14 @@ class GccCompilerThread(QtCore.QThread):
                     self.CompilerProcess.wait() # just wait for the process to finish
                     self.CompilerProcess = None
                     self.exit()
-                    return False, "waited"             
+                    return False, "waited"
             if self.LogList.count():
                 return True, str(self.LogList.takeFirst())
             else:
                 return True, ''
         else:
             return False, "process not running"
-            
+
     def generateMakefile(self, outPath='.', projectName='a', includePaths='', sourceFiles='', verbose=False):
         objects = []
         try:
@@ -275,7 +275,7 @@ class GccCompilerThread(QtCore.QThread):
                 if src_ext == USER_CODE_EXT:
                     fout.write( '\t@echo [CXX] $< \n\t' )
                     if not verbose: fout.write( '@' )
-                    fout.write( '$(TCHAIN)g++ $(INCLUDES) $(CXXFLAGS) -x c++ $< -o $@\n\n')                        
+                    fout.write( '$(TCHAIN)g++ $(INCLUDES) $(CXXFLAGS) -x c++ $< -o $@\n\n')
                 elif src_ext == '.s':
                     fout.write( '\t@echo [AS] $(<F)\n\t' )
                     if not verbose: fout.write( '@' )
@@ -288,13 +288,13 @@ class GccCompilerThread(QtCore.QThread):
                     fout.write( '\t@echo [CPP] $(<F)\n\t' )
                     if not verbose: fout.write( '@' )
                     fout.write( '$(TCHAIN)g++ $(INCLUDES) $(CXXFLAGS) $< -o $@\n\n')
-                    
+
                 i += 1
             fout.close()
             return True
         except:
             return False
-            
+
     def getExpectedHexFileName(self, userCode=None):
         if not userCode:
             return None
@@ -306,6 +306,6 @@ class GccCompilerThread(QtCore.QThread):
         else:
             hexfile = outpath + '/' + fname + '.hex'
         return hexfile
-    
+
 
 

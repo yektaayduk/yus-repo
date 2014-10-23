@@ -8,7 +8,7 @@
     http://philrobotics.com | http://philrobotics.com/forum | http://facebook.com/philrobotics
     phirobotics.core@philrobotics.com
 
-    Copyright (C) 2013  Julius Constante
+    Copyright (C) 2014  Julius Constante
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -110,7 +110,7 @@ def getCoreSourceFiles(userIncludes = []):
             fin.close()
         except:
             pass
-        
+
     for fname in required:
         #srcs.append( os.path.join(os.getcwd(), fname) )
         srcs.append( fname )
@@ -120,7 +120,7 @@ def getCoreSourceFiles(userIncludes = []):
         filepath = src.replace('\\', '/')
         if not (filepath in coresrcs):
             coresrcs.append(filepath)
-        
+
     return coresrcs
 
 def getIncludeDirs():
@@ -143,18 +143,18 @@ def getIncludeDirs():
 # output: { pass, [includes], [sources] }
 # [sources] contains the path name of the parsed used code
 def parseUserCode(userCode=None, outPath=None, toolChain=''):
-    
+
     # check if user code (e.g. test.cxx) exists
     if not os.path.isfile(userCode): # file not found
         return False, [], []
-    
+
     # create output directory, if not existing
     if not os.path.exists( outPath ):
         try:
             os.makedirs( outPath )
         except: # unable to create the directory
             return False, [], []
-    
+
     # initial return values (empty)
     includes = []
     sources = [userCode]
@@ -179,12 +179,12 @@ def parseUserCode(userCode=None, outPath=None, toolChain=''):
         fin.close()
     except:
         return False, [], []
-        
-    
+
+
     # lib core include paths and source files
     sources += getCoreSourceFiles(includes)
     includes += getIncludeDirs()
-    
+
     return True, includes, sources
 
 def getLinkerScript():
@@ -219,17 +219,17 @@ def getLibraryKeywords(headerFiles=[]):
         # search default header files
         headerFiles = glob.glob( BSP_DIR + '/*.h' )
         headerFiles += glob.glob( DRV_DIR + '/*/*.h' )
-        
+
     #print headerFiles
     fwconfig.saveFwSettings()
     #print getCompilerDefines()
-    
+
     del _clang_nodes[:]
     index = clang.Index.create()
     for fname in headerFiles:
         tu = index.parse(fname, [getCompilerDefines()], [], 0xFF)
         find_typerefs(tu.cursor, tu.spelling)
-    
+
     keywords = list(set(_clang_nodes)) # remove duplicate items
     #print keywords
     #print 'found %d keywords' %len(keywords)
@@ -239,30 +239,30 @@ class FirmwareLibUpdate(QtCore.QThread):
     version_file = 'hardware/cores/bsp/version'
     version_url = 'http://yus-repo.googlecode.com/svn/trunk/AVR32/avr32-ide/' + version_file
     history_url = 'http://yus-repo.googlecode.com/svn-history/'
-    
+
     corelib = '/trunk/AVR32/avr32-ide/hardware/cores/'
     userlib = '/trunk/AVR32/avr32-ide/libraries/'
     examples = '/trunk/AVR32/avr32-ide/examples/'
-    
+
     href_str = '<li><a href="'
     file_list = []
     revision = 0
     revisionList = []
-    
+
     def __init__(self, parent=None):
         QtCore.QThread.__init__(self, parent)
         self.parent = parent
-        
+
         self.LogList = QtCore.QStringList()
-    
+
     def setDesiredRevision(self, rev):
         self.revision = rev
-        
+
     def getLog(self):
         if self.LogList.count()>0:
             return str(self.LogList.takeFirst())
         return None
-    
+
     def run(self):
         self.LogList.clear()
         self.LogList.append('searching AVR32-GCC-IDE repository. please wait....')
@@ -280,7 +280,7 @@ class FirmwareLibUpdate(QtCore.QThread):
             self.LogList.append('abort update! latest is svn-%s '% self.revisionList[latest_rev] )
             return
         self.msleep(2000)
-        
+
         dl_folder = 'tmp/fwlib_v%d_'%self.revision + str(QtCore.QDateTime.currentDateTime().toString('yyyyMMdd_hhmmss'))
         if not os.path.exists(dl_folder):
             try:
@@ -288,7 +288,7 @@ class FirmwareLibUpdate(QtCore.QThread):
             except:
                 self.LogList.append('unable to create temporary download folder!')
                 return
-        
+
         done, total = 0, 0
         self.LogList.append('downloading new files. please wait...')
         updated, count = self.download_corelib(os.path.join(dl_folder,'hardware/cores'))
@@ -300,14 +300,14 @@ class FirmwareLibUpdate(QtCore.QThread):
         updated, count = self.download_examples(os.path.join(dl_folder,'examples'))
         done += updated
         total += count
-        
+
         if total == 0:
             self.LogList.append('error: no files saved!')
             return
         elif done < total:
             self.LogList.append('error: failed to download all files!')
             return
-        
+
         bkp_folder = 'tmp/fwlib_backup_' + str(QtCore.QDateTime.currentDateTime().toString('yyyyMMdd_hhmmss'))
         try:
             shutil.move('hardware/cores', os.path.join(bkp_folder,'hardware/cores'))
@@ -315,7 +315,7 @@ class FirmwareLibUpdate(QtCore.QThread):
             shutil.move('examples', os.path.join(bkp_folder,'examples'))
         except:
             self.LogList.append('warning: failed to move previous library files to backup folder!')
-            
+
         try:
             shutil.copytree(os.path.join(dl_folder,'hardware/cores'), 'hardware/cores')
             shutil.copytree(os.path.join(dl_folder,'libraries'), 'libraries')
@@ -323,10 +323,10 @@ class FirmwareLibUpdate(QtCore.QThread):
         except:
             self.LogList.append('error: failed to copy new library files!')
             return
-        
+
         self.LogList.append('done updating to svn-%s. ( %d/%d files saved. )'%(self.revisionList[self.revision], done, total))
         self.msleep(2000)
-        
+
     def latest_fwlib_svnrev(self):
         del self.revisionList[:]
         try:
@@ -345,7 +345,7 @@ class FirmwareLibUpdate(QtCore.QThread):
             return latest
         except:
             return -1
-        
+
     def getCurrentRevision(self):
         try:
             f = open(self.version_file)
@@ -355,7 +355,7 @@ class FirmwareLibUpdate(QtCore.QThread):
             return 'v%.2f'%(rev/100.0)
         except:
             return None
-    
+
     def _browse(self, url):
         try:
             for line in urllib2.urlopen(url).readlines():
@@ -370,7 +370,7 @@ class FirmwareLibUpdate(QtCore.QThread):
                         self.file_list.append( url + fname )
         except:
             print 'unable to open: ', url
-            
+
     def browse_corelib(self, rev=100):
         if rev > len(self.revisionList):
             return []
@@ -394,7 +394,7 @@ class FirmwareLibUpdate(QtCore.QThread):
         del self.file_list[:]
         self._browse(url)
         return self.file_list
-    
+
     def _download(self, pre_url, folder):
         updated = 0
         for fname in self.file_list:
@@ -412,7 +412,7 @@ class FirmwareLibUpdate(QtCore.QThread):
                     fout.write( urllib2.urlopen(fname).read() )
                     fout.close()
                     updated += 1
-                    self.LogList.append('updated (v%d): %s' %(self.revision, os.path.basename(dst)))                    
+                    self.LogList.append('updated (v%d): %s' %(self.revision, os.path.basename(dst)))
                 except:
                     print 'unable to save: ', dst
         return updated, len(self.file_list)
@@ -428,5 +428,4 @@ class FirmwareLibUpdate(QtCore.QThread):
     def download_examples(self, folder='examples'):
         self.browse_examples(self.revision)
         return self._download(self.examples, folder)
-        
-        
+

@@ -8,7 +8,7 @@
     http://philrobotics.com | http://philrobotics.com/forum | http://facebook.com/philrobotics
     phirobotics.core@philrobotics.com
 
-    Copyright (C) 2013  Julius Constante
+    Copyright (C) 2014  Julius Constante
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -58,10 +58,10 @@ class SerialPortMonitor(QtGui.QDialog):
         super(SerialPortMonitor, self).__init__(parent)
         self.resize(400,360)
         self.setWindowTitle('Serial Port Monitor')
-        
+
         self.serialPort = None
         self.timerId = None
-        
+
         self.userInput = QtGui.QLineEdit()
         self.sendButton = QtGui.QPushButton('Send')
         self.sendButton.setAutoDefault(True)
@@ -87,18 +87,18 @@ class SerialPortMonitor(QtGui.QDialog):
         self.charModeGroup.addButton(self.asciiModeButton, 0)
         self.charModeGroup.addButton(self.hexModeButton, 1)
         self.asciiModeButton.setChecked(True) # default to ascii display
-        
+
         # signals
         self.baudList.currentIndexChanged.connect(self.baudrateChange)
         self.sendButton.clicked.connect(self.sendString)
         self.clearButton.clicked.connect(self.monitorWindow.clear)
-        
+
         layout = QtGui.QGridLayout()
-        # 20x10 grid addWidget( widget, row, column, row_span, column_span ) 
+        # 20x10 grid addWidget( widget, row, column, row_span, column_span )
         layout.addWidget(self.userInput, 0, 0, 1, 18)
         layout.addWidget(self.sendButton, 0, 18, 1, 2)
         layout.addWidget(self.monitorWindow, 1, 0, 8, 20)
-        
+
         layout.addWidget(self.clearButton, 9, 0, 2, 1)
         #layout.addItem(QtGui.QSpacerItem(30,10), 9, 3, 1, 1)
 
@@ -116,7 +116,7 @@ class SerialPortMonitor(QtGui.QDialog):
         layout.addWidget(self.baudList, 9, 17, 2, 3)
 
         self.setLayout(layout)
-        
+
     def openPort(self, portname=None):
         if portname:
             self.closePort() # close first previous port
@@ -129,12 +129,12 @@ class SerialPortMonitor(QtGui.QDialog):
                     return False
                 self.serialPort.flushInput()
                 self.serialPort.flushOutput()
-                self.setWindowTitle('Serial Port Monitor - ' + portname)        
+                self.setWindowTitle('Serial Port Monitor - ' + portname)
                 return True
             except:
                 self.serialPort = None # error in opening
         return False
-            
+
     def closePort(self):
         if self.serialPort:
             try:
@@ -144,17 +144,17 @@ class SerialPortMonitor(QtGui.QDialog):
         if self.timerId:
             self.killTimer(self.timerId)
         self.serialPort, self.timerId = None, None
-        
+
     def isPortOpen(self):
         if self.serialPort:
             return True
         return False
-        
+
     def baudrateChange(self, index=0):
         if self.serialPort:
             newbaud = int(self.baudList.currentText())
             self.serialPort.baudrate = newbaud
-        
+
     def sendString(self):
         if self.serialPort:
             string = str( self.userInput.text() )
@@ -169,7 +169,7 @@ class SerialPortMonitor(QtGui.QDialog):
             if self.addLF.isChecked():
                 string += '\n'
             self.serialPort.write(string)
-        
+
     def timerEvent(self, *args, **kwargs):
         if self.serialPort:
             bytestoread = self.serialPort.inWaiting()
@@ -180,14 +180,13 @@ class SerialPortMonitor(QtGui.QDialog):
                     self.monitorWindow.setText( prev + rcv.encode('hex') )
                 else:
                     self.monitorWindow.setText( prev + rcv )
-                self.monitorWindow.moveCursor(QtGui.QTextCursor.End) # auto scroll       
+                self.monitorWindow.moveCursor(QtGui.QTextCursor.End) # auto scroll
         return QtGui.QDialog.timerEvent(self, *args, **kwargs)
-        
+
     def showEvent(self, *args, **kwargs):
         self.monitorWindow.clear() # clear monitor window on dialog open
         return QtGui.QDialog.showEvent(self, *args, **kwargs)
-    
+
     def closeEvent(self, *args, **kwargs):
         self.closePort() # close serial port on dialog hide
         return QtGui.QDialog.closeEvent(self, *args, **kwargs)
-        
