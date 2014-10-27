@@ -54,8 +54,10 @@ DEFAULT_RMCMD_OSX   = 'rm -rf'
 # compiler defines (used also for header parser)
 DEFAULT_COMPILER_DEFINES = 'USE_ASF:1;BOARD:USER_BOARD'
 
+DEFAULT_MCUPART = 'uc3l0128'
+
 # default flags
-COMMON_FLAGS     = '-march=ucr3 -mpart=uc3l0128'
+COMMON_FLAGS     = '-march=ucr3 -mpart=$(MCUPART)'
 DEFAULT_CFLAGS   = COMMON_FLAGS + ' -c -Os -mrelax -mno-cond-exec-before-reload'
 DEFAULT_CFLAGS  += ' -fno-common -ffunction-sections -fdata-sections -funsigned-char -fno-strict-aliasing'
 DEFAULT_CFLAGS  += ' -Wall -Wl,--gc-sections -Wno-psabi'
@@ -89,9 +91,13 @@ class IdeConfig:
         self.serialPortName = self.ideCfg.value("Name", QtCore.QVariant('')).toString()
         self.ideCfg.endGroup()
 
+        self.ideCfg.beginGroup( "MCUPart" )
+        self.McuPartName = self.ideCfg.value("Name", QtCore.QVariant(DEFAULT_MCUPART)).toString()
+        self.ideCfg.endGroup()
+
         #todo: other IDE settings
 
-    def saveIdeSettings( self, serialPortName='' ):
+    def saveIdeSettings( self, serialPortName='', mcuPartName='' ):
         if self.defaults:
             return
         # save IDE settings.
@@ -104,6 +110,12 @@ class IdeConfig:
             self.ideCfg.beginGroup( "SerialPort" )
             self.ideCfg.setValue( "Name", QtCore.QVariant( serialPortName ) )
             self.serialPortName = serialPortName
+            self.ideCfg.endGroup()
+
+        if mcuPartName:
+            self.ideCfg.beginGroup( "MCUPart" )
+            self.ideCfg.setValue( "Name", QtCore.QVariant( mcuPartName ) )
+            self.McuPartName = mcuPartName
             self.ideCfg.endGroup()
 
         #todo: other IDE settings
@@ -130,6 +142,9 @@ class IdeConfig:
 
     def getSerialPortName(self):
         return self.serialPortName
+
+    def getMcuPartName(self):
+        return self.McuPartName
 
 
 class CompilerConfig:
