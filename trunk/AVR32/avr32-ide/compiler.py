@@ -59,6 +59,7 @@ class GccCompilerThread(QtCore.QThread):
         self.TCHAIN = self.Configs.getCompiler()
         self.make = self.Configs.getMakeCmd()
 
+        self.McuPart = None
         self.UserCode = None
         self.CleanBuild = True
         self.serialPortName = None
@@ -163,24 +164,26 @@ class GccCompilerThread(QtCore.QThread):
                 info += msg
             return info
 
-    def buildProject(self, userCode=None, cleanBuild=False):
+    def buildProject(self, mcuPart, userCode, cleanBuild=False):
         if self.isRunning():
             return False, "busy"
         if not os.path.isfile(userCode):
             return False, "file not found"
 
         self._task = self.BUILD_PROJECT
+        self.McuPart = str(mcuPart)
         self.UserCode = str(userCode)
         self.CleanBuild = cleanBuild
         self.start()
         return True, "Build process running. Please wait..."
 
-    def programHex(self, userCode=None, serialPort=None):
+    def programHex(self, mcuPart, userCode, serialPort=None):
         if self.isRunning():
             return False, "busy"
         if not serialPort:
             return False, "no port selected"
 
+        self.McuPart = str(mcuPart)
         self.serialPortName = str(serialPort)
         self.UserCode = str(userCode)
 
@@ -222,12 +225,13 @@ class GccCompilerThread(QtCore.QThread):
         try:
             fout = open( os.path.join(outPath, MAKEFILE), 'w' )
             fout.write( '#\n# Automatically generated Makefile\n#\n\n' )
-            fout.write( 'PROJECT = ' + projectName + '\n\n' )
+            fout.write( 'PROJECT = ' + projectName + '\n' )
+            fout.write( 'MCUPART = ' + self.McuPart + '\n\n' )
             fout.write( 'OUTPUT_DIR = ' + outPath + '\n' )
             fout.write( 'ELF_FILE = $(OUTPUT_DIR)/$(PROJECT).elf\n' )
             fout.write( 'HEX_FILE = $(OUTPUT_DIR)/$(PROJECT).hex\n' )
             fout.write( 'MAP_FILE = $(OUTPUT_DIR)/$(PROJECT).map\n' )
-            fout.write( 'LKR_SCRIPT = ' + getLinkerScript() + '\n\n')
+            fout.write( 'LKR_SCRIPT = ' + getLinkerScript(self.McuPart) + '\n\n')
             fout.write( 'TCHAIN = ' + self.TCHAIN.replace('\\','/') + '\n\n' )
             fout.write( 'INCLUDES =  \\\n' )
             for path in includePaths:
@@ -264,7 +268,7 @@ class GccCompilerThread(QtCore.QThread):
             fout.write( '\t@echo [HEX] $(@F)\n')
             fout.write( '\t@$(TCHAIN)objcopy -O ihex -R .eeprom -R .fuse -R .lock -R .signature $< $@\n\n' )
             fout.write( 'program: $(HEX_FILE)\n' )
-            fout.write( '\tbatchisp -device at32uc3l0128 -hardware RS232 -port $(COMPORT) ' )
+            fout.write( '\tbatchisp -device at32$(MCUPART) -hardware RS232 -port $(COMPORT) ' )
             fout.write( '-operation erase f memory flash blankcheck loadbuffer $(HEX_FILE) ' )
             fout.write( 'program verify start reset 0\n\n\n' )
             i = 0

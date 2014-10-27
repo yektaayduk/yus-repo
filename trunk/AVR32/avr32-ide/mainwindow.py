@@ -70,6 +70,7 @@ class AppMainWindow(QtGui.QMainWindow):
         self.addDockWidget(QtCore.Qt.BottomDockWidgetArea, self.OutLineView)
 
         self.Compiler = GccCompilerThread(self)
+        self.McuPartName = None
         self.pollCompilerTimerID = None
 
         self.serialPortName = None
@@ -119,6 +120,9 @@ class AppMainWindow(QtGui.QMainWindow):
         if self.Compiler.isRunning():
             self.insertLog('compiler busy..')
             return
+        if not self.McuPartName or not self.boardGroup.checkedAction():
+            self.insertLog('<font color=orange>Please select first a Target Board.</font>')
+            return
         kdbMod = QtGui.QApplication.keyboardModifiers()
         if not os.path.isfile(self.Editor.getCurrentFile()) or self.Editor.isCurrentFileModified():
             ret = self.Editor.saveFile() # save the file first before starting the build.
@@ -134,7 +138,7 @@ class AppMainWindow(QtGui.QMainWindow):
         if kdbMod == QtCore.Qt.ShiftModifier:
             #print 'Shift-Click PushButton'
             cleanBuild = True
-        ret, msg = self.Compiler.buildProject(fn, cleanBuild)
+        ret, msg = self.Compiler.buildProject(self.McuPartName, fn, cleanBuild)
         if not ret:
             self.insertLog( "<font color=red>%s</font>"%msg )
             if msg == "file not found":
@@ -163,6 +167,9 @@ class AppMainWindow(QtGui.QMainWindow):
         if self.Editor.isCurrentFileModified():
             self.insertLog('<font color=orange>Project was modified. Please re-build the project.</font>')
             return
+        if not self.McuPartName or not self.boardGroup.checkedAction():
+            self.insertLog('<font color=orange>Please select first a Target Board.</font>')
+            return
         if not self.serialPortName:
             self.insertLog('<font color=orange>Please select first a Serial Port.</font>')
             return
@@ -172,7 +179,7 @@ class AppMainWindow(QtGui.QMainWindow):
         if self.SerialPortMonitorDialog.isPortOpen():
             self.SerialPortMonitorDialog.close() # close first serial port monitor
         fn = self.Editor.getCurrentFile()
-        ret, msg = self.Compiler.programHex( fn, self.serialPortName )
+        ret, msg = self.Compiler.programHex( self.McuPartName, fn, self.serialPortName )
         if ret:
             self.insertLog("<font color=green>Bootload/Program Device:</font>", True)
             self.insertLog("<font color=lightblue><i>   %s   </i></font>"%msg)
@@ -182,13 +189,22 @@ class AppMainWindow(QtGui.QMainWindow):
         else:
             self.insertLog("<font color=red>%s</font>"%msg)
 
+    def selectMcuPart(self):
+        act = self.boardGroup.checkedAction()
+        if act:
+            mcuname = str( act.text() ).split(' ')[1].lower()
+            if mcuname != self.McuPartName:
+                self.McuPartName = mcuname
+                self.Configs.saveIdeSettings( mcuPartName=self.McuPartName )
+                self.insertLog( 'selected mcu part: <b><font color=green>%s</font></b>' % self.McuPartName.upper() )
+
     def selectSerialPort(self):
         act = self.serialPortGroup.checkedAction()
         if act:
             portname = str( act.text() )
             if portname != self.serialPortName:
                 self.serialPortName = portname
-                self.Configs.saveIdeSettings( self.serialPortName )
+                self.Configs.saveIdeSettings( serialPortName=self.serialPortName )
                 self.insertLog( 'selected port: <b><font color=green>%s</font></b>' % self.serialPortName )
                 self.serialPortLabel.setText('<font color=green>%s</font>'%self.serialPortName)
                 if self.SerialPortMonitorDialog.isPortOpen():
@@ -325,12 +341,20 @@ class AppMainWindow(QtGui.QMainWindow):
         # todo: board names??
         #self.boardAnitoAct = QtGui.QAction("PhilRobokit &Anito",  self,
         #        checkable=True, statusTip="Select PhilRobokit Anito board" )
-        self.boardEgizmoAvr32Act = QtGui.QAction("e&Gizmo AVR32",  self,
-                checkable=True, statusTip="Select eGizmo AT32UC3L0128 MCU board" )
+        self.boardEgizmoUC3L0128Act = QtGui.QAction("eGizmo UC3L0128",  self, checkable=True,
+                statusTip="Select eGizmo AT32UC3L0128 MCU board", triggered=self.selectMcuPart)
+        self.boardEgizmoUCL0256Act = QtGui.QAction("eGizmo UC3L0256",  self, checkable=True,
+                statusTip="Select eGizmo AT32UC3L0256 MCU board", triggered=self.selectMcuPart)
+        self.boardEgizmoUC3C264Act = QtGui.QAction("eGizmo UC3C264C",  self, checkable=True,
+                statusTip="Select eGizmo AT32UC3C264 MCU board", triggered=self.selectMcuPart)
+        self.boardEgizmoUC3C2128Act = QtGui.QAction("eGizmo UC3C2128C",  self, checkable=True,
+                statusTip="Select eGizmo AT32UC3C2128 MCU board", triggered=self.selectMcuPart)
         self.boardGroup = QtGui.QActionGroup(self)
         #self.boardGroup.addAction(self.boardAnitoAct)
-        self.boardGroup.addAction(self.boardEgizmoAvr32Act)
-        self.boardEgizmoAvr32Act.setChecked(True)
+        self.boardGroup.addAction(self.boardEgizmoUC3L0128Act)
+        self.boardGroup.addAction(self.boardEgizmoUCL0256Act)
+        self.boardGroup.addAction(self.boardEgizmoUC3C264Act)
+        self.boardGroup.addAction(self.boardEgizmoUC3C2128Act)
 
         self.restoreDefaultsAct = QtGui.QAction("Restore Defaults",  self,
                 statusTip="Clear configuration files", triggered=self.Configs.setDefaults)
@@ -408,7 +432,18 @@ class AppMainWindow(QtGui.QMainWindow):
         self.toolsMenu.addSeparator()
         self.boardMenu = self.toolsMenu.addMenu("&Board")
         #self.boardMenu.addAction(self.boardAnitoAct)
-        self.boardMenu.addAction(self.boardEgizmoAvr32Act)
+        self.boardMenu.addAction(self.boardEgizmoUC3L0128Act)
+        self.boardMenu.addAction(self.boardEgizmoUCL0256Act)
+        self.boardMenu.addAction(self.boardEgizmoUC3C264Act)
+        self.boardMenu.addAction(self.boardEgizmoUC3C2128Act)
+        previousMcuPart = self.Configs.getMcuPartName()
+        for act in self.boardGroup.actions():
+            mcuname = str(act.text()).split(' ')[1].lower()
+            if mcuname == previousMcuPart:
+                act.setChecked(True)
+                act.trigger()
+                break
+
         self.serialPortMenu = self.toolsMenu.addMenu("&Serial Port")
         self.serialPortGroup = QtGui.QActionGroup(self)
         self.connect(self.serialPortMenu, QtCore.SIGNAL("aboutToShow ()"), self.updateSerialPortList )
@@ -482,6 +517,6 @@ class AppMainWindow(QtGui.QMainWindow):
         if not self.Editor.closeAllTabs(): # check for unsaved changes in the project(s)
             event.ignore()
             return
-        self.Configs.saveIdeSettings(self.serialPortName)
+        self.Configs.saveIdeSettings(self.serialPortName, self.McuPartName)
         return QtGui.QMainWindow.closeEvent(self, event)
 

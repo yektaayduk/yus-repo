@@ -39,8 +39,6 @@ BSP_DIR = CORE_LIB_DIR + '/bsp'
 ASF_DIR = CORE_LIB_DIR + '/ASF'
 DRV_DIR = ASF_DIR + '/avr32/drivers'
 
-LINKER_SCRIPT = BSP_DIR + '/link_uc3l0128.lds'
-
 # Example Projects
 EXAMPLES_DIR = 'examples'
 # required header file
@@ -187,9 +185,10 @@ def parseUserCode(userCode=None, outPath=None, toolChain=''):
 
     return True, includes, sources
 
-def getLinkerScript():
+def getLinkerScript(mcupart="uc3l0128"):
+    #LINKER_SCRIPT = BSP_DIR + '/link_uc3l0128.lds'
     #return os.path.join( os.getcwd(), LINKER_SCRIPT )
-    return LINKER_SCRIPT
+    return BSP_DIR + '/link_' + str(mcupart) + '.lds'
 
 def getCompilerDefines():
     defines = ''
