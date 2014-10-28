@@ -54,10 +54,11 @@ DEFAULT_RMCMD_OSX   = 'rm -rf'
 # compiler defines (used also for header parser)
 DEFAULT_COMPILER_DEFINES = 'USE_ASF:1;BOARD:USER_BOARD'
 
+DEFAULT_MCUARCH = 'ucr3'
 DEFAULT_MCUPART = 'uc3l0128'
 
 # default flags
-COMMON_FLAGS     = '-march=ucr3 -mpart=$(MCUPART)'
+COMMON_FLAGS     = '-march=$(MCUARCH) -mpart=$(MCUPART)'
 DEFAULT_CFLAGS   = COMMON_FLAGS + ' -c -Os -mrelax -mno-cond-exec-before-reload'
 DEFAULT_CFLAGS  += ' -fno-common -ffunction-sections -fdata-sections -funsigned-char -fno-strict-aliasing'
 DEFAULT_CFLAGS  += ' -Wall -Wl,--gc-sections -Wno-psabi'

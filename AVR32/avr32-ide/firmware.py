@@ -190,6 +190,13 @@ def getLinkerScript(mcupart="uc3l0128"):
     #return os.path.join( os.getcwd(), LINKER_SCRIPT )
     return BSP_DIR + '/link_' + str(mcupart) + '.lds'
 
+def getMcuArchitecture(mcupart="uc3l0128"):
+    if mcupart[:4] == "uc3l":
+        return "ucr3"
+    if mcupart[:4] == "uc3c":
+        return "ucr3fp"
+    return ""
+
 def getCompilerDefines():
     defines = ''
     for flag, val in fwconfig.getDefines().items():

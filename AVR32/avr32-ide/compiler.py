@@ -27,7 +27,7 @@
 
 import os, subprocess
 from PyQt4 import QtCore
-from firmware import USER_CODE_EXT, parseUserCode, getLinkerScript, getCompilerDefines
+from firmware import USER_CODE_EXT, parseUserCode, getLinkerScript, getMcuArchitecture, getCompilerDefines
 from configs import CompilerConfig
 
 # output directory
@@ -226,6 +226,7 @@ class GccCompilerThread(QtCore.QThread):
             fout = open( os.path.join(outPath, MAKEFILE), 'w' )
             fout.write( '#\n# Automatically generated Makefile\n#\n\n' )
             fout.write( 'PROJECT = ' + projectName + '\n' )
+            fout.write( 'MCUARCH = ' + getMcuArchitecture(self.McuPart) + '\n' )
             fout.write( 'MCUPART = ' + self.McuPart + '\n\n' )
             fout.write( 'OUTPUT_DIR = ' + outPath + '\n' )
             fout.write( 'ELF_FILE = $(OUTPUT_DIR)/$(PROJECT).elf\n' )
@@ -255,18 +256,16 @@ class GccCompilerThread(QtCore.QThread):
                 fout.write( '\t' + obj + ' \\\n' )
                 objects.append(obj)
             fout.write( '\n\n' )
-            fout.write( 'all : $(HEX_FILE)\n' )
+            fout.write( 'all : $(OBJECTS)\n' )
+            fout.write( '\t@echo [LINK] $(notdir $(ELF_FILE))\n\t')
+            if not verbose: fout.write( '@' )
+            fout.write( '$(TCHAIN)g++ $(LFLAGS) $^ -o $(ELF_FILE)\n' )
+            fout.write( '\t@echo [HEX] $(notdir $(HEX_FILE))\n')
+            fout.write( '\t@$(TCHAIN)objcopy -O ihex -R .eeprom -R .fuse -R .lock -R .signature $(ELF_FILE) $(HEX_FILE)\n' )
             fout.write( '\t@$(TCHAIN)size $(ELF_FILE)\n\n' )
             fout.write( 'clean:\n' )
             fout.write( '\t@$(RM) $(OBJECTS)\n' )
             fout.write( '\t@$(RM) $(OUTPUT_DIR)/$(PROJECT).*\n\n\n' )
-            fout.write( '$(ELF_FILE): $(OBJECTS)\n' )
-            fout.write( '\t@echo [LINK] $(@F)\n\t')
-            if not verbose: fout.write( '@' )
-            fout.write( '$(TCHAIN)g++ $(LFLAGS) $^ -o $@\n\n' )
-            fout.write( '$(HEX_FILE): $(ELF_FILE)\n' )
-            fout.write( '\t@echo [HEX] $(@F)\n')
-            fout.write( '\t@$(TCHAIN)objcopy -O ihex -R .eeprom -R .fuse -R .lock -R .signature $< $@\n\n' )
             fout.write( 'program: $(HEX_FILE)\n' )
             fout.write( '\tbatchisp -device at32$(MCUPART) -hardware RS232 -port $(COMPORT) ' )
             fout.write( '-operation erase f memory flash blankcheck loadbuffer $(HEX_FILE) ' )
