@@ -42,8 +42,8 @@
  *
  *****************************************************************************/
 
-#ifndef _PM_UC3L_H_
-#define _PM_UC3L_H_
+#ifndef _PM_UC3C_H_
+#define _PM_UC3C_H_
 
 /**
  * \defgroup group_avr32_drivers_pm CPU - PM - Power Manager
@@ -61,23 +61,25 @@ extern "C" {
 #include <avr32/io.h>
 #include "compiler.h"
 
+//  These defines are missing from or wrong in the toolchain header file ip_xxx.h or part.h
+#ifdef AVR32_PM_410_H_INCLUDED
+// Optional #undef AVR32_PM_UNLOCK_KEY_VALUE if the define values is wrong.
+#define AVR32_PM_UNLOCK_KEY_VALUE       0x000000AA
+#endif
+
 //! Device-specific data
 
 //! The clock sources of the power manager.
 typedef enum
 {
-#if UC3L3_L4
-  PM_CLK_SRC_SLOW = AVR32_PM_MCCTRL_MCSEL_RCSYS,
-  PM_CLK_SRC_OSC0 = AVR32_PM_MCCTRL_MCSEL_OSC0,
-  PM_CLK_SRC_DFLL0 = AVR32_PM_MCCTRL_MCSEL_DFLL,
-  PM_CLK_SRC_RC120M = AVR32_PM_MCCTRL_MCSEL_RC120M,
-#else
   PM_CLK_SRC_SLOW = AVR32_PM_MCSEL_SLOW,
   PM_CLK_SRC_OSC0 = AVR32_PM_MCSEL_OSC0,
-  PM_CLK_SRC_DFLL0 = AVR32_PM_MCSEL_DFLL0,
+  PM_CLK_SRC_OSC1 = AVR32_PM_MCSEL_OSC1,
+  PM_CLK_SRC_PLL0 = AVR32_PM_MCSEL_PLL0,
+  PM_CLK_SRC_PLL1 = AVR32_PM_MCSEL_PLL1,
+  PM_CLK_SRC_RC8M = AVR32_PM_MCSEL_RCOSC8,
+  PM_CLK_SRC_RCRIPOSC = AVR32_PM_MCSEL_CRIPOSC,
   PM_CLK_SRC_RC120M = AVR32_PM_MCSEL_RC120M,
-
-#endif
   PM_CLK_SRC_INVALID
 } pm_clk_src_t;
 
@@ -88,6 +90,7 @@ typedef enum
   PM_CLK_DOMAIN_1 = AVR32_PM_CLK_GRP_HSB,
   PM_CLK_DOMAIN_2 = AVR32_PM_CLK_GRP_PBA,
   PM_CLK_DOMAIN_3 = AVR32_PM_CLK_GRP_PBB,
+  PM_CLK_DOMAIN_4 = AVR32_PM_CLK_GRP_PBC,
   PM_CLK_DOMAIN_INVALID
 } pm_clk_domain_t;
 
@@ -102,18 +105,8 @@ typedef enum
   PM_CKSEL_DIVRATIO_32,     // Divide the main clock by 2^5
   PM_CKSEL_DIVRATIO_64,     // Divide the main clock by 2^6
   PM_CKSEL_DIVRATIO_128,    // Divide the main clock by 2^7
-  PM_CKSEL_DIVRATIO_256,    // Divide the main clock by 2^8
-  PM_CKSEL_DIVRATIO_ERROR
+  PM_CKSEL_DIVRATIO_256     // Divide the main clock by 2^8
 } pm_divratio_t;
-
-//! The maximum synchronous clock division ratio for each clock domain.
-typedef enum
-{
-  PM_CPUSEL_DIVRATIO_MAX = AVR32_PM_CPUSEL_CPUSEL_MASK >> AVR32_PM_CPUSEL_CPUSEL_OFFSET,
-  PM_HSBSEL_DIVRATIO_MAX = AVR32_PM_HSBSEL_HSBSEL_MASK >> AVR32_PM_HSBSEL_HSBSEL_OFFSET,
-  PM_PBASEL_DIVRATIO_MAX = AVR32_PM_PBASEL_PBSEL_MASK >> AVR32_PM_PBASEL_PBSEL_OFFSET,
-  PM_PBBSEL_DIVRATIO_MAX = AVR32_PM_PBBSEL_PBSEL_MASK >> AVR32_PM_PBBSEL_PBSEL_OFFSET
-} pm_divratio_max_t;
 
 //! The timeguard used for polling (expressed in ticks).
 #define PM_POLL_TIMEOUT 100000
@@ -151,14 +144,13 @@ extern long pm_set_mclk_source(pm_clk_src_t src);
  *          enabling the Over Clock Protection mechanism.
  *
  * \param cfd Enable/disable the Clock Failure Detection mechanism
- * \param ocp Enable/disable the Over Clock Protection mechanism
  * \param final If true, make this configuration definitive
  *
  * \return Status.
  *   \retval =0 Success.
  *   \retval <0 An error occurred.
  */
-extern long pm_config_mainclk_safety(bool cfd, bool ocp, bool final);
+extern long pm_config_mainclk_safety(bool cfd,  bool final);
 
 /*! \brief Set the division ratio for a clock domain.
  *
@@ -186,21 +178,6 @@ extern long pm_set_clk_domain_div(pm_clk_domain_t clock_domain, pm_divratio_t di
  *   \retval <0 An error occurred.
  */
 extern long pm_disable_clk_domain_div(pm_clk_domain_t clock_domain);
-
-/*! \brief Enable or Disable the division ratio for each clock domain depending
- *         on the main source clock frequency and each clock domain target frequency.
- *
- * \param main_clock_f_hz The main source clock frequency
- * \param cpu_f_hz The target CPU clock domain frequency
- * \param pba_f_hz The target PBA clock domain frequency
- * \param pbb_f_hz The target PBB clock domain frequency
- *
- * \warning Care should be taken that each new frequency of the synchronous clocks
- *          does not exceed the maximum frequency for each clock domain.
- *
- */
-extern void pm_set_all_cksel( unsigned long main_clock_f_hz, unsigned long cpu_f_hz,
-                              unsigned long pba_f_hz, unsigned long pbb_f_hz );
 
 /*! \brief Wait actively for the clock settings to be effective.
  *
@@ -392,4 +369,4 @@ __always_inline static unsigned long pm_get_status(void)
  * \}
  */
 
-#endif  // _PM_UC3L_H_
+#endif  // _PM_UC3C_H_

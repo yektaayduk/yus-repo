@@ -87,7 +87,7 @@ class GccCompilerThread(QtCore.QThread):
             # output folder - same location with user code
             outpath = os.path.join( os.path.dirname(self.UserCode) , OUT_DIR )
 
-            Result, Includes, Sources = parseUserCode( self.UserCode, outpath )
+            Result, Includes, Sources = parseUserCode( self.UserCode, outpath, self.McuPart )
             #print Includes, Sources
             if not Result or not self.generateMakefile(outpath, projectName, Includes, Sources, self.CleanBuild):
                 self.BuildProcess = None
@@ -265,7 +265,7 @@ class GccCompilerThread(QtCore.QThread):
             fout.write( '\t@$(TCHAIN)size $(ELF_FILE)\n\n' )
             fout.write( 'clean:\n' )
             fout.write( '\t@$(RM) $(OBJECTS)\n' )
-            fout.write( '\t@$(RM) $(OUTPUT_DIR)/$(PROJECT).*\n\n\n' )
+            fout.write( '\t@$(RM) $(ELF_FILE) $(HEX_FILE) $(MAP_FILE)\n\n\n' )
             fout.write( 'program: $(HEX_FILE)\n' )
             fout.write( '\tbatchisp -device at32$(MCUPART) -hardware RS232 -port $(COMPORT) ' )
             fout.write( '-operation erase f memory flash blankcheck loadbuffer $(HEX_FILE) ' )

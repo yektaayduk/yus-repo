@@ -3,7 +3,7 @@
  *
  * \brief Chip-specific PLL implementation
  *
- * Copyright (c) 2010-2011 Atmel Corporation. All rights reserved.
+ * Copyright (c) 2010 Atmel Corporation. All rights reserved.
  *
  * \asf_license_start
  *
@@ -51,10 +51,8 @@ void pll_config_write(const struct pll_config *cfg, unsigned int pll_id)
 	Assert(pll_id < NR_PLLS);
 
 	flags = cpu_irq_save();
-	AVR32_SCIF.unlock =
-			(AVR32_SCIF_UNLOCK_KEY_VALUE<<AVR32_SCIF_UNLOCK_KEY_OFFSET) |
-			(AVR32_SCIF_PLL0 + (4 * pll_id));
-	AVR32_SCIF.pll0 = cfg->ctrl;
+	AVR32_SCIF.unlock = 0xaa000000 | (AVR32_SCIF_PLL + (4 * pll_id));
+	AVR32_SCIF.pll[pll_id] = cfg->ctrl;
 	cpu_irq_restore(flags);
 }
 
@@ -65,10 +63,8 @@ void pll_enable(const struct pll_config *cfg, unsigned int pll_id)
 	Assert(pll_id < NR_PLLS);
 
 	flags = cpu_irq_save();
-	AVR32_SCIF.unlock =
-			(AVR32_SCIF_UNLOCK_KEY_VALUE<<AVR32_SCIF_UNLOCK_KEY_OFFSET) |
-			(AVR32_SCIF_PLL0 + (4 * pll_id));
-	AVR32_SCIF.pll0 = cfg->ctrl | (1U << AVR32_SCIF_PLLEN);
+	AVR32_SCIF.unlock = 0xaa000000 | (AVR32_SCIF_PLL + (4 * pll_id));
+	AVR32_SCIF.pll[pll_id] = cfg->ctrl | (1U << AVR32_SCIF_PLLEN);
 	cpu_irq_restore(flags);
 }
 
@@ -79,9 +75,7 @@ void pll_disable(unsigned int pll_id)
 	Assert(pll_id < NR_PLLS);
 
 	flags = cpu_irq_save();
-	AVR32_SCIF.unlock =
-			(AVR32_SCIF_UNLOCK_KEY_VALUE<<AVR32_SCIF_UNLOCK_KEY_OFFSET) |
-			(AVR32_SCIF_PLL0 + (4 * pll_id));
-	AVR32_SCIF.pll0 = 0;
+	AVR32_SCIF.unlock = 0xaa000000 | (AVR32_SCIF_PLL + (4 * pll_id));
+	AVR32_SCIF.pll[pll_id] = 0;
 	cpu_irq_restore(flags);
 }
