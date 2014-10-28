@@ -43,23 +43,36 @@
 #ifndef CHIP_PLL_H_INCLUDED
 #define CHIP_PLL_H_INCLUDED
 
+#include <osc.h>
+
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-
-#define AVR32_SCIF0_PLL_VCO_RANGE0_MAX_FREQ   240000000
-#define AVR32_SCIF_PLL0_VCO_RANGE0_MIN_FREQ   160000000
-#define AVR32_SCIF_PLL0_VCO_RANGE1_MAX_FREQ   180000000
-#define AVR32_SCIF_PLL0_VCO_RANGE1_MIN_FREQ   80000000
-
+// Bugzilla #11801
+#ifdef AVR32_SCIF_PLL_VCO_RANGE0_MAX_FREQ
+#undef AVR32_SCIF_PLL_VCO_RANGE0_MAX_FREQ
+#endif
+#define AVR32_SCIF_PLL_VCO_RANGE0_MAX_FREQ   240000000
+#ifdef AVR32_SCIF_PLL_VCO_RANGE0_MIN_FREQ
+#undef AVR32_SCIF_PLL_VCO_RANGE0_MIN_FREQ
+#endif
+#define AVR32_SCIF_PLL_VCO_RANGE0_MIN_FREQ   160000000
+#ifdef AVR32_SCIF_PLL_VCO_RANGE1_MAX_FREQ
+#undef AVR32_SCIF_PLL_VCO_RANGE1_MAX_FREQ
+#endif
+#define AVR32_SCIF_PLL_VCO_RANGE1_MAX_FREQ   180000000
+#ifdef AVR32_SCIF_PLL_VCO_RANGE1_MIN_FREQ
+#undef AVR32_SCIF_PLL_VCO_RANGE1_MIN_FREQ
+#endif
+#define AVR32_SCIF_PLL_VCO_RANGE1_MIN_FREQ   80000000
 /**
  * \weakgroup pll_group
  * @{
  */
 
-#define PLL_MAX_STARTUP_CYCLES    ((1 << AVR32_SCIF_PLL0_PLLCOUNT_SIZE) - 1)
-#define NR_PLLS                   1
+#define PLL_MAX_STARTUP_CYCLES    ((1 << AVR32_SCIF_PLL_PLLCOUNT_SIZE) - 1)
+#define NR_PLLS                   2
 
 /**
  * \brief Number of milliseconds to wait for PLL lock
@@ -83,10 +96,10 @@ extern "C" {
 //! Disable wide-bandwidth mode
 #define PLL_OPT_WBM_DISABLE       2
 //! Number of PLL options
-#define PLL_NR_OPTIONS            AVR32_SCIF_PLL0_PLLOPT_SIZE
+#define PLL_NR_OPTIONS            AVR32_SCIF_PLL_PLLOPT_SIZE
 //! The threshold under which to set the #PLL_OPT_VCO_RANGE_LOW option
-#define PLL_VCO_LOW_THRESHOLD     ((AVR32_SCIF_PLL0_VCO_RANGE0_MIN_FREQ         \
-		+ AVR32_SCIF_PLL0_VCO_RANGE1_MAX_FREQ) / 2)
+#define PLL_VCO_LOW_THRESHOLD     ((AVR32_SCIF_PLL_VCO_RANGE0_MIN_FREQ         \
+		+ AVR32_SCIF_PLL_VCO_RANGE1_MAX_FREQ) / 2)
 //@}
 
 #ifndef __ASSEMBLY__
@@ -98,6 +111,8 @@ extern "C" {
 
 enum pll_source {
 	PLL_SRC_OSC0            = 0,    //!< Oscillator 0
+	PLL_SRC_OSC1            = 1,    //!< Oscillator 1
+	PLL_SRC_RC8M            = 2,    //!< 8MHz/1MHz RC oscillator
 	PLL_NR_SOURCES,                 //!< Number of PLL sources
 };
 
@@ -175,7 +190,7 @@ static inline void pll_config_read(struct pll_config *cfg, unsigned int pll_id)
 {
 	Assert(pll_id < NR_PLLS);
 
-	cfg->ctrl = AVR32_SCIF.pll0;
+	cfg->ctrl = AVR32_SCIF.pll[pll_id];
 }
 
 extern void pll_config_write(const struct pll_config *cfg, unsigned int pll_id);
@@ -185,11 +200,8 @@ extern void pll_disable(unsigned int pll_id);
 static inline bool pll_is_locked(unsigned int pll_id)
 {
 	Assert(pll_id < NR_PLLS);
-#if (UC3L3_L4 || UC3L0128 || UC3L0256)
-	return !!(AVR32_SCIF.pclksr & (1U << (AVR32_SCIF_PCLKSR_PLLLOCK0 + pll_id)));
-#else
-	return !!(AVR32_SCIF.pclksr & (1U << (AVR32_SCIF_PLLLOCK0 + pll_id)));
-#endif
+
+	return !!(AVR32_SCIF.pclksr & (1U << (AVR32_SCIF_PLL0_LOCK + pll_id)));
 }
 
 static inline void pll_enable_source(enum pll_source src)
@@ -199,6 +211,20 @@ static inline void pll_enable_source(enum pll_source src)
 		if (!osc_is_ready(OSC_ID_OSC0)) {
 			osc_enable(OSC_ID_OSC0);
 			osc_wait_ready(OSC_ID_OSC0);
+		}
+		break;
+
+	case PLL_SRC_OSC1:
+		if (!osc_is_ready(OSC_ID_OSC1)) {
+			osc_enable(OSC_ID_OSC1);
+			osc_wait_ready(OSC_ID_OSC1);
+		}
+		break;
+
+	case PLL_SRC_RC8M:
+		if (!osc_is_ready(OSC_ID_RC8M)) {
+			osc_enable(OSC_ID_RC8M);
+			osc_wait_ready(OSC_ID_RC8M);
 		}
 		break;
 
@@ -223,6 +249,15 @@ static inline void pll_enable_config_defaults(unsigned int pll_id)
 				CONFIG_PLL0_SOURCE,
 				CONFIG_PLL0_DIV,
 				CONFIG_PLL0_MUL);
+		break;
+#endif
+#ifdef CONFIG_PLL1_SOURCE
+	case 1:
+		pll_enable_source(CONFIG_PLL1_SOURCE);
+		pll_config_init(&pllcfg,
+				CONFIG_PLL1_SOURCE,
+				CONFIG_PLL1_DIV,
+				CONFIG_PLL1_MUL);
 		break;
 #endif
 	default:

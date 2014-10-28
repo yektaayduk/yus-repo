@@ -1,13 +1,17 @@
 
 extern "C"
 {
-#include <avr32/io.h>
-#include <sysclk.h>
-#include <gpio.h>
-#include <adcifb.h>
+  #include <avr32/io.h>
+  #include <sysclk.h>
+  #include <gpio.h>
 }
 
 #include "bsp_adc.h"
+
+#if UC3L
+extern "C" {
+  #include <adcifb.h>
+}
 
 static bool adc_inited = false; // is adc module initialized
 static uint32_t prev_pin = 0; // previous pin used for adc read
@@ -131,3 +135,22 @@ uint32_t adcRead(uint32_t pin)
 	/* Get the last converted data. */
 	return ( adcifb_get_last_data(&AVR32_ADCIFB) & 0xFFF );
 }
+
+#elif UC3C
+extern "C" {
+  #include <adcifa.h>
+}
+
+#warning not yet supported
+
+bool adcMode(uint32_t pin)
+{
+	return false;
+}
+
+uint32_t adcRead(uint32_t pin)
+{
+	return 0xFF;
+}
+
+#endif

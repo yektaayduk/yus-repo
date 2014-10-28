@@ -43,8 +43,13 @@
 #ifndef CONF_CLOCK_H_INCLUDED
 #define CONF_CLOCK_H_INCLUDED
 
-#define TARGET_MCUCLK_FREQ_HZ        48000000UL  // MCU clock target frequency, in Hz
-
+#if UC3L
+  #define TARGET_MCUCLK_FREQ_HZ       48000000UL  // MCU clock target frequency, in Hz
+  #define CONFIG_SYSCLK_SOURCE        SYSCLK_SRC_PLL0
+#elif UC3C
+  #define TARGET_MCUCLK_FREQ_HZ       66000000UL  // MCU clock target frequency, in Hz
+  #define CONFIG_SYSCLK_SOURCE        SYSCLK_SRC_PLL0
+#endif
 //#define CONFIG_SYSCLK_INIT_CPUMASK  (1 << SYSCLK_SYSTIMER)
 //#define CONFIG_SYSCLK_INIT_PBAMASK  (1 << SYSCLK_USART0)
 //#define CONFIG_SYSCLK_INIT_PBBMASK  (1 << SYSCLK_HMATRIX)
@@ -54,7 +59,6 @@
 //#define CONFIG_SYSCLK_SOURCE        SYSCLK_SRC_OSC0
 //#define CONFIG_SYSCLK_SOURCE        SYSCLK_SRC_DFLL
 //#define CONFIG_SYSCLK_SOURCE        SYSCLK_SRC_RC120M
-#define CONFIG_SYSCLK_SOURCE        SYSCLK_SRC_PLL0
 
 /* Fbus = Fsys / (2 ^ BUS_div) */
 #define CONFIG_SYSCLK_CPU_DIV         0

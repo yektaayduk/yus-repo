@@ -79,12 +79,13 @@ def getExampleProjects(libFolders=[]):
     #print sampleProjects
     return sorted(sampleProjects.items(), key=lambda x: x[1]) # sort according to keys (folder name)
 
-def getCoreSourceFiles(userIncludes = []):
+def getCoreSourceFiles(userIncludes = [], mcuPart="uc3l0128"):
     # scan all *.c files
     srcs = []
     required = glob.glob(BSP_DIR + '/*.c') + glob.glob(BSP_DIR + '/*.cpp')
     try:
-        f = open( os.path.join(ASF_DIR, 'SOURCES'), 'r' )
+        # print 'open SOURCES_' + mcuPart[:4].upper()
+        f = open( os.path.join(ASF_DIR, 'SOURCES_' + mcuPart[:4].upper()), 'r' )
         for entry in f.readlines():
             src = os.path.join(ASF_DIR, entry.strip())
             if os.path.isfile(src) and not (src in required):
@@ -121,10 +122,11 @@ def getCoreSourceFiles(userIncludes = []):
 
     return coresrcs
 
-def getIncludeDirs():
+def getIncludeDirs(mcuPart="uc3l0128"):
     dirs = [ BSP_DIR ]
     try:
-        f = open( os.path.join(ASF_DIR, 'INCLUDES'), 'r' )
+        # print 'open INCLUDES_' + mcuPart[:4].upper()
+        f = open( os.path.join(ASF_DIR, 'INCLUDES_' + mcuPart[:4].upper()), 'r' )
         for entry in f.readlines():
             path = os.path.join(ASF_DIR, entry.strip())
             if os.path.exists( path ):
@@ -140,7 +142,7 @@ def getIncludeDirs():
 
 # output: { pass, [includes], [sources] }
 # [sources] contains the path name of the parsed used code
-def parseUserCode(userCode=None, outPath=None, toolChain=''):
+def parseUserCode(userCode=None, outPath=None, mcuPart="uc3l0128"):
 
     # check if user code (e.g. test.cxx) exists
     if not os.path.isfile(userCode): # file not found
@@ -180,20 +182,20 @@ def parseUserCode(userCode=None, outPath=None, toolChain=''):
 
 
     # lib core include paths and source files
-    sources += getCoreSourceFiles(includes)
-    includes += getIncludeDirs()
+    sources += getCoreSourceFiles(includes, mcuPart)
+    includes += getIncludeDirs(mcuPart)
 
     return True, includes, sources
 
-def getLinkerScript(mcupart="uc3l0128"):
+def getLinkerScript(mcuPart="uc3l0128"):
     #LINKER_SCRIPT = BSP_DIR + '/link_uc3l0128.lds'
     #return os.path.join( os.getcwd(), LINKER_SCRIPT )
-    return BSP_DIR + '/link_' + str(mcupart) + '.lds'
+    return BSP_DIR + '/link_' + str(mcuPart) + '.lds'
 
-def getMcuArchitecture(mcupart="uc3l0128"):
-    if mcupart[:4] == "uc3l":
+def getMcuArchitecture(mcuPart="uc3l0128"):
+    if mcuPart[:4] == "uc3l":
         return "ucr3"
-    if mcupart[:4] == "uc3c":
+    if mcuPart[:4] == "uc3c":
         return "ucr3fp"
     return ""
 

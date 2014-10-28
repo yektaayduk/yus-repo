@@ -6,8 +6,6 @@
 extern "C" {
 #endif
 
-#include <avr32.h>
-
 bool adcMode(uint32_t pin);
 uint32_t adcRead(uint32_t pin);
 

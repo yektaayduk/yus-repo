@@ -3,7 +3,7 @@
  *
  * \brief Chip-specific oscillator management functions
  *
- * Copyright (c) 2010-2011 Atmel Corporation. All rights reserved.
+ * Copyright (c) 2010-2012 Atmel Corporation. All rights reserved.
  *
  * \asf_license_start
  *
@@ -49,21 +49,21 @@
 extern "C" {
 #endif
 
-// These defines are missing from or wrong in the toolchain header files.
-// #11802
+#ifndef AVR32_SCIF_OSCCTRL1
+#define AVR32_SCIF_OSCCTRL1                                0x00000028
+#else
+#warning "Duplicate define(s) to remove from the ASF"
+#endif  //end AVR32_SCIF_OSCCTRL1
+
+// Bugzilla #11803
 #ifdef AVR32_SCIF_OSCCTRL32_MODE_CRYSTAL_AGC
 #undef AVR32_SCIF_OSCCTRL32_MODE_CRYSTAL_AGC
 #endif
-#define AVR32_SCIF_OSCCTRL32_MODE_CRYSTAL_AGC      0x00000001
+#define AVR32_SCIF_OSCCTRL32_MODE_CRYSTAL_AGC               AVR32_SCIF_OSCCTRL32_MODE_CRYSTAL_ACG
 #ifdef AVR32_SCIF_OSCCTRL32_MODE_CRYSTAL_NO_AGC
 #undef AVR32_SCIF_OSCCTRL32_MODE_CRYSTAL_NO_AGC
 #endif
-#define AVR32_SCIF_OSCCTRL32_MODE_CRYSTAL_NO_AGC   0x00000004
-#ifdef AVR32_SCIF_OSCCTRL32_MODE_EXT_CLOCK
-#undef AVR32_SCIF_OSCCTRL32_MODE_EXT_CLOCK
-#endif
-#define AVR32_SCIF_OSCCTRL32_MODE_EXT_CLOCK        0x00000000
-
+#define AVR32_SCIF_OSCCTRL32_MODE_CRYSTAL_NO_AGC            AVR32_SCIF_OSCCTRL32_MODE_CRYSTAL_NO_ACG
 
 /**
  * \weakgroup osc_group
@@ -73,18 +73,19 @@ extern "C" {
 //! \name Oscillator identifiers
 //@{
 #define OSC_ID_OSC0             0       //!< External Oscillator 0
-#define OSC_ID_OSC32            1       //!< External 32 kHz oscillator
-#define OSC_ID_RC32K            2       //!< Internal 32 kHz RC oscillator
-#define OSC_ID_RC120M           3       //!< Internal 120 MHz RC oscillator
-#define OSC_ID_RCSYS            4       //!< Internal System RC oscillator
+#define OSC_ID_OSC1             1       //!< External Oscillator 1
+#define OSC_ID_RC8M             2       //!< Internal 8 MHz RC oscillator
+#define OSC_ID_OSC32            3       //!< External 32 kHz oscillator
+#define OSC_ID_RC120M           4       //!< Internal 120 MHz RC oscillator
+#define OSC_ID_RCSYS            5       //!< Internal System RC oscillator
 //@}
 
-//! \name OSC0 mode values
+//! \name OSC0/OSC1 mode values
 //@{
 //! External clock connected to XIN
-#define OSC_MODE_EXTERNAL       AVR32_SCIF_OSCCTRL0_MODE_EXT_CLOCK
+#define OSC_MODE_EXTERNAL       AVR32_SCIF_OSCCTRL_MODE_EXT_CLOCK
 //! Crystal connected to XIN/XOUT
-#define OSC_MODE_XTAL           AVR32_SCIF_OSCCTRL0_MODE_CRYSTAL
+#define OSC_MODE_XTAL           AVR32_SCIF_OSCCTRL_MODE_CRYSTAL
 //@}
 
 //! \name OSC32 mode values
@@ -97,14 +98,28 @@ extern "C" {
 #define OSC32_MODE_XTAL_HC      AVR32_SCIF_OSCCTRL32_MODE_CRYSTAL_NO_AGC
 //@}
 
-//! \name OSC0 startup values
+//! \name OSC0/OSC1 startup values
 //@{
 //! 0 cycles
 #define OSC_STARTUP_0           AVR32_SCIF_OSCCTRL0_STARTUP_0_RCOSC
+//! 4 cycles (35 us)
+#define OSC_STARTUP_4          AVR32_SCIF_OSCCTRL0_STARTUP_4_RCOSC
+//! 8 cycles (70 us)
+#define OSC_STARTUP_8          AVR32_SCIF_OSCCTRL0_STARTUP_8_RCOSC
+//! 16 cycles (140 us)
+#define OSC_STARTUP_16          AVR32_SCIF_OSCCTRL0_STARTUP_16_RCOSC
+//! 32 cycles (280 us)
+#define OSC_STARTUP_32          AVR32_SCIF_OSCCTRL0_STARTUP_32_RCOSC
 //! 64 cycles (560 us)
 #define OSC_STARTUP_64          AVR32_SCIF_OSCCTRL0_STARTUP_64_RCOSC
 //! 128 cycles (1.1 ms)
 #define OSC_STARTUP_128         AVR32_SCIF_OSCCTRL0_STARTUP_128_RCOSC
+//! 256 cycles (2.2 ms)
+#define OSC_STARTUP_256         AVR32_SCIF_OSCCTRL0_STARTUP_256_RCOSC
+//! 512 cycles (4.5 ms)
+#define OSC_STARTUP_512         AVR32_SCIF_OSCCTRL0_STARTUP_512_RCOSC
+//! 1024 cycles (9.0 ms)
+#define OSC_STARTUP_1024         AVR32_SCIF_OSCCTRL0_STARTUP_1024_RCOSC
 //! 2048 cycles (18 ms)
 #define OSC_STARTUP_2048        AVR32_SCIF_OSCCTRL0_STARTUP_2048_RCOSC
 //! 4096 cycles (36 ms)
@@ -154,17 +169,57 @@ extern "C" {
  * \brief Board-dependent value written to the STARTUP bitfield of
  * PM_OSCCTRL(0)
  */
+/**
+ * \def OSC1_STARTUP_TIMEOUT
+ * \brief Number of slow clock cycles to wait for OSC1 to start
+ *
+ * This is the number of slow clock cycles corresponding to
+ * OSC1_STARTUP_VALUE with an additional 25% safety margin. If the
+ * oscillator isn't running when this timeout has expired, it is assumed
+ * to have failed to start.
+ */
+/**
+ * \def OSC1_MODE_VALUE
+ * \brief Board-dependent value written to the MODE bitfield of
+ * PM_OSCCTRL(1)
+ */
+/**
+ * \def OSC1_STARTUP_VALUE
+ * \brief Board-dependent value written to the STARTUP bitfield of
+ * PM_OSCCTRL(1)
+ */
 
 #if defined(BOARD_OSC0_STARTUP_US)
 # if BOARD_OSC0_STARTUP_US == 0
 #  define OSC0_STARTUP_VALUE    OSC_STARTUP_0
-#  define OSC0_STARTUP_TIMEOUT  8
+#  define OSC0_STARTUP_TIMEOUT  1
+# elif BOARD_OSC0_STARTUP_US <= 35
+#  define OSC0_STARTUP_VALUE    OSC_STARTUP_4
+#  define OSC0_STARTUP_TIMEOUT  5
+# elif BOARD_OSC0_STARTUP_US <= 70
+#  define OSC0_STARTUP_VALUE    OSC_STARTUP_8
+#  define OSC0_STARTUP_TIMEOUT  10
+# elif BOARD_OSC0_STARTUP_US <= 140
+#  define OSC0_STARTUP_VALUE    OSC_STARTUP_16
+#  define OSC0_STARTUP_TIMEOUT  20
+# elif BOARD_OSC0_STARTUP_US <= 280
+#  define OSC0_STARTUP_VALUE    OSC_STARTUP_32
+#  define OSC0_STARTUP_TIMEOUT  40
 # elif BOARD_OSC0_STARTUP_US <= 560
 #  define OSC0_STARTUP_VALUE    OSC_STARTUP_64
 #  define OSC0_STARTUP_TIMEOUT  80
 # elif BOARD_OSC0_STARTUP_US <= 1100
 #  define OSC0_STARTUP_VALUE    OSC_STARTUP_128
 #  define OSC0_STARTUP_TIMEOUT  160
+# elif BOARD_OSC0_STARTUP_US <= 2200
+#  define OSC0_STARTUP_VALUE    OSC_STARTUP_256
+#  define OSC0_STARTUP_TIMEOUT  320
+# elif BOARD_OSC0_STARTUP_US <= 4500
+#  define OSC0_STARTUP_VALUE    OSC_STARTUP_512
+#  define OSC0_STARTUP_TIMEOUT  640
+# elif BOARD_OSC0_STARTUP_US <= 9000
+#  define OSC0_STARTUP_VALUE    OSC_STARTUP_1024
+#  define OSC0_STARTUP_TIMEOUT  1280
 # elif BOARD_OSC0_STARTUP_US <= 18000
 #  define OSC0_STARTUP_VALUE    OSC_STARTUP_2048
 #  define OSC0_STARTUP_TIMEOUT  2560
@@ -202,6 +257,76 @@ extern "C" {
 #  define OSC0_STARTUP_VALUE     UNDEFINED
 #  define OSC0_STARTUP_TIMEOUT   UNDEFINED
 #  define OSC0_MODE_VALUE        UNDEFINED
+# endif
+#endif
+#if defined(BOARD_OSC1_STARTUP_US)
+# if BOARD_OSC1_STARTUP_US == 0
+#  define OSC1_STARTUP_VALUE    OSC_STARTUP_0
+#  define OSC1_STARTUP_TIMEOUT  1
+# elif BOARD_OSC1_STARTUP_US <= 35
+#  define OSC1_STARTUP_VALUE    OSC_STARTUP_4
+#  define OSC1_STARTUP_TIMEOUT  5
+# elif BOARD_OSC1_STARTUP_US <= 70
+#  define OSC1_STARTUP_VALUE    OSC_STARTUP_8
+#  define OSC1_STARTUP_TIMEOUT  10
+# elif BOARD_OSC1_STARTUP_US <= 140
+#  define OSC1_STARTUP_VALUE    OSC_STARTUP_16
+#  define OSC1_STARTUP_TIMEOUT  20
+# elif BOARD_OSC1_STARTUP_US <= 280
+#  define OSC1_STARTUP_VALUE    OSC_STARTUP_32
+#  define OSC1_STARTUP_TIMEOUT  40
+# elif BOARD_OSC1_STARTUP_US <= 560
+#  define OSC1_STARTUP_VALUE    OSC_STARTUP_64
+#  define OSC1_STARTUP_TIMEOUT  80
+# elif BOARD_OSC1_STARTUP_US <= 1100
+#  define OSC1_STARTUP_VALUE    OSC_STARTUP_128
+#  define OSC1_STARTUP_TIMEOUT  160
+# elif BOARD_OSC1_STARTUP_US <= 2200
+#  define OSC1_STARTUP_VALUE    OSC_STARTUP_256
+#  define OSC1_STARTUP_TIMEOUT  320
+# elif BOARD_OSC1_STARTUP_US <= 4500
+#  define OSC1_STARTUP_VALUE    OSC_STARTUP_512
+#  define OSC1_STARTUP_TIMEOUT  640
+# elif BOARD_OSC1_STARTUP_US <= 9000
+#  define OSC1_STARTUP_VALUE    OSC_STARTUP_1024
+#  define OSC1_STARTUP_TIMEOUT  1280
+# elif BOARD_OSC1_STARTUP_US <= 18000
+#  define OSC1_STARTUP_VALUE    OSC_STARTUP_2048
+#  define OSC1_STARTUP_TIMEOUT  2560
+# elif BOARD_OSC1_STARTUP_US <= 36000
+#  define OSC1_STARTUP_VALUE    OSC_STARTUP_4096
+#  define OSC1_STARTUP_TIMEOUT  5120
+# elif BOARD_OSC1_STARTUP_US <= 71000
+#  define OSC1_STARTUP_VALUE    OSC_STARTUP_8192
+#  define OSC1_STARTUP_TIMEOUT  10240
+# elif BOARD_OSC1_STARTUP_US <= 142000
+#  define OSC1_STARTUP_VALUE    OSC_STARTUP_16384
+#  define OSC1_STARTUP_TIMEOUT  20480
+# else
+#  error BOARD_OSC1_STARTUP_US is too high
+# endif
+# if BOARD_OSC1_IS_XTAL == true
+#  define OSC1_MODE_VALUE       OSC_MODE_XTAL
+#  if BOARD_OSC1_HZ < 900000
+#   define OSC1_GAIN_VALUE      AVR32_SCIF_OSCCTRL1_GAIN_G0
+#  elif BOARD_OSC1_HZ < 3000000
+#   define OSC1_GAIN_VALUE      AVR32_SCIF_OSCCTRL1_GAIN_G1
+#  elif BOARD_OSC1_HZ < 8000000
+#   define OSC1_GAIN_VALUE      AVR32_SCIF_OSCCTRL1_GAIN_G2
+#  else
+#   define OSC1_GAIN_VALUE      AVR32_SCIF_OSCCTRL1_GAIN_G3
+#  endif
+# else
+#  define OSC1_MODE_VALUE       OSC_MODE_EXTERNAL
+# endif
+#else
+# if defined(BOARD_OSC1_HZ)
+#  error BOARD_OSC1_STARTUP_US must be defined by the board code
+# endif
+# ifdef __DOXYGEN__
+#  define OSC1_STARTUP_VALUE     UNDEFINED
+#  define OSC1_STARTUP_TIMEOUT   UNDEFINED
+#  define OSC1_MODE_VALUE        UNDEFINED
 # endif
 #endif
 
@@ -260,6 +385,18 @@ extern "C" {
  * \brief OSC0 uses a crystal, not an external clock
  */
 /**
+ * \def BOARD_OSC1_HZ
+ * \brief Clock frequency of OSC1 in Hz
+ */
+/**
+ * \def BOARD_OSC1_STARTUP_US
+ * \brief Startup time of OSC1 in microseconds
+ */
+/**
+ * \def BOARD_OSC1_IS_XTAL
+ * \brief OSC1 uses a crystal, not an external clock
+ */
+/**
  * \def BOARD_OSC32_HZ
  * \brief Clock frequency of OSC32 in Hz
  */
@@ -271,15 +408,6 @@ extern "C" {
  * \def BOARD_OSC32_IS_XTAL
  * \brief OSC32 uses a crystal, not an external clock
  */
-/**
- * \def BOARD_OSC32_PINSEL
- * \brief If set to 1, use XIN32_2/XOUT32_2 pins for OSC32
- *
- * If not defined, the primary XIN32/XOUT32 pins are used.
- */
-#ifndef BOARD_OSC32_PINSEL
-# define BOARD_OSC32_PINSEL     0
-#endif
 
 /**
  * \name RC oscillator frequency limits
@@ -295,12 +423,8 @@ extern "C" {
 #define OSC_RCSYS_MIN_HZ        100000
 //! Maximum frequency of RCSYS in Hz
 #define OSC_RCSYS_MAX_HZ        120000
-//! Nominal frequency of RC32K in Hz
-#define OSC_RC32K_NOMINAL_HZ    32000
-//! Minimum frequency of RC32K in Hz
-#define OSC_RC32K_MIN_HZ        20000
-//! Maximum frequency of RC32K in Hz
-#define OSC_RC32K_MAX_HZ        44000
+//! Nominal frequency of RC8M in Hz
+#define OSC_RC8M_NOMINAL_HZ     8000000
 //! Nominal frequency of RC120M in Hz
 #define OSC_RC120M_NOMINAL_HZ   120000000
 //@}
@@ -313,12 +437,19 @@ extern "C" {
 
 extern void osc_priv_enable_osc0(void);
 extern void osc_priv_disable_osc0(void);
+extern bool osc_priv_osc0_is_ready(void);
+extern void osc_priv_enable_osc1(void);
+extern void osc_priv_disable_osc1(void);
+extern bool osc_priv_osc1_is_ready(void);
 extern void osc_priv_enable_osc32(void);
 extern void osc_priv_disable_osc32(void);
-extern void osc_priv_enable_rc32k(void);
-extern void osc_priv_disable_rc32k(void);
+extern bool osc_priv_osc32_is_ready(void);
+extern void osc_priv_enable_rc8m(void);
+extern void osc_priv_disable_rc8m(void);
+extern bool osc_priv_rc8m_is_ready(void);
 extern void osc_priv_enable_rc120m(void);
 extern void osc_priv_disable_rc120m(void);
+extern bool osc_priv_rc120m_is_ready(void);
 
 static inline void osc_enable(uint8_t id)
 {
@@ -329,14 +460,20 @@ static inline void osc_enable(uint8_t id)
 		break;
 #endif
 
+#ifdef BOARD_OSC1_HZ
+	case OSC_ID_OSC1:
+		osc_priv_enable_osc1();
+		break;
+#endif
+
 #ifdef BOARD_OSC32_HZ
 	case OSC_ID_OSC32:
 		osc_priv_enable_osc32();
 		break;
 #endif
 
-	case OSC_ID_RC32K:
-		osc_priv_enable_rc32k();
+	case OSC_ID_RC8M:
+		osc_priv_enable_rc8m();
 		break;
 
 	case OSC_ID_RC120M:
@@ -362,14 +499,20 @@ static inline void osc_disable(uint8_t id)
 		break;
 #endif
 
+#ifdef BOARD_OSC1_HZ
+	case OSC_ID_OSC1:
+		osc_priv_disable_osc1();
+		break;
+#endif
+
 #ifdef BOARD_OSC32_HZ
 	case OSC_ID_OSC32:
 		osc_priv_disable_osc32();
 		break;
 #endif
 
-	case OSC_ID_RC32K:
-		osc_priv_disable_rc32k();
+	case OSC_ID_RC8M:
+		osc_priv_disable_rc8m();
 		break;
 
 	case OSC_ID_RC120M:
@@ -391,24 +534,21 @@ static inline bool osc_is_ready(uint8_t id)
 	switch (id) {
 #ifdef BOARD_OSC0_HZ
 	case OSC_ID_OSC0:
-#if (UC3L3_L4 || UC3L0128 || UC3L0256)
-		return !!(AVR32_SCIF.pclksr & (1 << AVR32_SCIF_PCLKSR_OSC0RDY));
-#else
 		return !!(AVR32_SCIF.pclksr & (1 << AVR32_SCIF_OSC0RDY));
 #endif
+
+#ifdef BOARD_OSC1_HZ
+	case OSC_ID_OSC1:
+		return !!(AVR32_SCIF.pclksr & (1 << AVR32_SCIF_OSC1RDY));
 #endif
 
 #ifdef BOARD_OSC32_HZ
 	case OSC_ID_OSC32:
-#if (UC3L3_L4 || UC3L0128 || UC3L0256)
-		return !!(AVR32_SCIF.pclksr & (1 << AVR32_SCIF_PCLKSR_OSC32RDY));
-#else
 		return !!(AVR32_SCIF.pclksr & (1 << AVR32_SCIF_OSC32RDY));
 #endif
-#endif
 
-	case OSC_ID_RC32K:
-		return !!(AVR32_SCIF.rc32kcr & (1 << AVR32_SCIF_RC32KCR_EN));
+	case OSC_ID_RC8M:
+		return !!(AVR32_SCIF.pclksr & (1U << AVR32_SCIF_RCOSC8MRDY));
 
 	case OSC_ID_RC120M:
 		return !!(AVR32_SCIF.rc120mcr & (1 << AVR32_SCIF_RC120MCR_EN));
@@ -423,6 +563,10 @@ static inline bool osc_is_ready(uint8_t id)
 	}
 }
 
+/**
+ * \todo RC8M may run at either 8 MHz or 1 MHz. Currently, we assume
+ * it's always running at 8 MHz.
+ */
 static inline uint32_t osc_get_rate(uint8_t id)
 {
 	switch (id) {
@@ -431,13 +575,18 @@ static inline uint32_t osc_get_rate(uint8_t id)
 		return BOARD_OSC0_HZ;
 #endif
 
+#ifdef BOARD_OSC1_HZ
+	case OSC_ID_OSC1:
+		return BOARD_OSC1_HZ;
+#endif
+
 #ifdef BOARD_OSC32_HZ
 	case OSC_ID_OSC32:
 		return BOARD_OSC32_HZ;
 #endif
 
-	case OSC_ID_RC32K:
-		return OSC_RC32K_NOMINAL_HZ;
+	case OSC_ID_RC8M:
+		return OSC_RC8M_NOMINAL_HZ;
 
 	case OSC_ID_RC120M:
 		return OSC_RC120M_NOMINAL_HZ;

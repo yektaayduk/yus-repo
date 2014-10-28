@@ -12,6 +12,7 @@ extern "C"
 #include "bsp_clock.h"
 #include "bsp_uart.h"
 
+#if UC3L
 
 HardwareUart Serial0( 0 );
 HardwareUart Serial1( 1 );
@@ -62,6 +63,16 @@ static const gpio_map_t usart3_gpio =
 	{AVR32_USART3_TXD_0_0_PIN, AVR32_USART3_TXD_0_0_FUNCTION}  // PB00
 };
 
+#elif UC3C
+HardwareUart Serial0( 0 );
+HardwareUart Serial1( 1 );
+HardwareUart Serial2( 2 );
+HardwareUart Serial3( 3 );
+
+  #warning not yet supported
+
+#endif
+
 
 HardwareUart::HardwareUart( uint8_t portNum ):
 	m_portNum(portNum),
@@ -72,7 +83,7 @@ HardwareUart::HardwareUart( uint8_t portNum ):
 void HardwareUart::begin( uint32_t baud )
 {
 	usart_options_t m_options;
-	
+
 #if 1 // static constructor workaround
 	if(this == &Serial0)
 		m_portNum = 0;
@@ -83,7 +94,8 @@ void HardwareUart::begin( uint32_t baud )
 	else if(this == &Serial3)
 		m_portNum = 3;
 #endif
-	
+
+#if UC3L
 	// Assign GPIO to USART.
 	switch(m_portNum)
 	{
@@ -107,22 +119,25 @@ void HardwareUart::begin( uint32_t baud )
 		m_usart = NULL;
 		break;
 	}
-	
+#elif UC3C
+
+#endif
+
 	if(!m_usart) return;
-	
+
 	m_options.baudrate = baud;
 	m_options.charlength = 8;
 	m_options.paritytype = USART_NO_PARITY;
 	m_options.stopbits = USART_1_STOPBIT;
 	m_options.channelmode = USART_NORMAL_CHMODE;
-  
+
 	// Initialize USART in RS232 mode.
 	usart_init_rs232(m_usart, &m_options, sysclk_get_pba_hz());
 
-	
+
 	// Disable all interrupts.
 	Disable_global_interrupt();
-
+#if UC3L
 	switch(m_portNum)
 	{
 	case 0:
@@ -138,16 +153,18 @@ void HardwareUart::begin( uint32_t baud )
 		INTC_register_interrupt(&usart3_int_handler, AVR32_USART3_IRQ, AVR32_INTC_INT0);
 		break;
 	}
-	
+#elif UC3C
+
+#endif
 	// clear FIFO buffers
 	TxFifo.inptr = TxFifo.outptr = RxFifo.inptr = RxFifo.outptr = 0;
-	
+
 	// Enable USART Rx interrupt.
 	m_usart->ier = AVR32_USART_IER_RXRDY_MASK;
-	
+
 	// Enable all interrupts.
 	Enable_global_interrupt();
-	
+
 	delay_ms(50);
 	//print("m_portNum = %d\r\n", m_portNum);
 }
@@ -164,7 +181,7 @@ void HardwareUart::putc(uint8_t c)
 
 	// wait until buffer has an empty slot.
 	while (( (TxFifo.inptr+1) & UART_BUFF_MASK) == TxFifo.outptr) continue;
-	
+
 	//place character in buffer
 	TxFifo.buff[TxFifo.inptr] = c;
 	// increment in index
@@ -193,7 +210,7 @@ void HardwareUart::puts(const char *s)
 uint8_t HardwareUart::isrx()
 {
 	if(!m_usart) return 0;
-	
+
 	//return (m_usart->csr & AVR32_USART_CSR_RXRDY_MASK) != 0;
 	// checks if a character is present in the RX buffer
 	return (RxFifo.inptr != RxFifo.outptr);
@@ -227,9 +244,9 @@ void HardwareUart::flushTx()
 void HardwareUart::_isr()
 {
 	uint16_t temp;
-	
+
 	if(!m_usart) return;
-	
+
 	if(m_usart->csr & AVR32_USART_CSR_RXRDY_MASK)
 	{
 		// byte read and save to buffer
@@ -273,7 +290,7 @@ void HardwareUart::vprint (
 	unsigned int r, i, j, w, f;
 	unsigned long v;
 	char s[16], c, d, *p;
-	
+
 	for (;;) {
 		c = *fmt++;					/* Get a char */
 		if (!c) break;				/* End of format? */

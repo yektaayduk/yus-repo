@@ -44,12 +44,7 @@
 #define CHIP_GENCLK_H_INCLUDED
 
 #include <osc.h>
-#if ( UC3L0128 || UC3L0256 || UC3L3_L4 )
 #include <pll.h>
-#endif
-
-// dfll.h is not included to avoid a circular dependency.
-extern void dfll_enable_config_defaults(unsigned int dfll_id);
 
 /**
  * \weakgroup genclk_group
@@ -59,7 +54,7 @@ extern void dfll_enable_config_defaults(unsigned int dfll_id);
 //! \name Chip-specific generic clock definitions
 //@{
 
-#define GENCLK_DIV_MAX          256
+#define GENCLK_DIV_MAX	256
 
 #ifndef __ASSEMBLY__
 
@@ -69,19 +64,16 @@ extern void dfll_enable_config_defaults(unsigned int dfll_id);
 enum genclk_source {
 	GENCLK_SRC_RCSYS        = 0,    //!< System RC oscillator
 	GENCLK_SRC_OSC32K       = 1,    //!< 32 kHz oscillator
-	GENCLK_SRC_DFLL         = 2,    //!< DFLL
+	GENCLK_SRC_RC8M         = 2,    //!< 8 MHz RC oscillator
 	GENCLK_SRC_OSC0         = 3,    //!< Oscillator 0
-	GENCLK_SRC_RC120M       = 4,    //!< 120 MHz RC oscillator
-	GENCLK_SRC_CLK_CPU      = 5,    //!< CPU clock
-	GENCLK_SRC_CLK_HSB      = 6,    //!< High Speed Bus clock
-	GENCLK_SRC_CLK_PBA      = 7,    //!< Peripheral Bus A clock
-	GENCLK_SRC_CLK_PBB      = 8,    //!< Peripheral Bus B clock
-	GENCLK_SRC_RC32K        = 9,    //!< 32 kHz RC oscillator
-	GENCLK_SRC_CLK_1K       = 11,   //!< 1 kHz output from OSC32K
-
-#if ( UC3L0128 || UC3L0256 || UC3L3_L4 )
-	GENCLK_SRC_PLL0         = 12    //!< PLL0
-#endif
+	GENCLK_SRC_OSC1         = 4,    //!< Oscillator 1
+	GENCLK_SRC_PLL0         = 5,    //!< PLL 0
+	GENCLK_SRC_PLL1         = 6,    //!< PLL 1
+	GENCLK_SRC_CLK_CPU      = 7,    //!< CPU clock
+	GENCLK_SRC_CLK_HSB      = 8,    //!< High Speed Bus clock
+	GENCLK_SRC_CLK_PBA      = 9,    //!< Peripheral Bus A clock
+	GENCLK_SRC_CLK_PBB      = 10,   //!< Peripheral Bus B clock
+	GENCLK_SRC_CLK_PBC      = 11,   //!< Peripheral Bus C clock
 };
 
 //@}
@@ -149,38 +141,23 @@ static inline void genclk_enable_source(enum genclk_source src)
 	case GENCLK_SRC_CLK_HSB:
 	case GENCLK_SRC_CLK_PBA:
 	case GENCLK_SRC_CLK_PBB:
+	case GENCLK_SRC_CLK_PBC:
 		// Nothing to do
 		break;
 
-#ifdef BOARD_OSC32_HZ
 	case GENCLK_SRC_OSC32K:
-	case GENCLK_SRC_CLK_1K: // The 1K linked on OSC32K
 		if (!osc_is_ready(OSC_ID_OSC32)) {
 			osc_enable(OSC_ID_OSC32);
 			osc_wait_ready(OSC_ID_OSC32);
 		}
 		break;
-#endif
 
-	case GENCLK_SRC_RC120M:
-		if (!osc_is_ready(OSC_ID_RC120M)) {
-			osc_enable(OSC_ID_RC120M);
-			osc_wait_ready(OSC_ID_RC120M);
+	case GENCLK_SRC_RC8M:
+		if (!osc_is_ready(OSC_ID_RC8M)) {
+			osc_enable(OSC_ID_RC8M);
+			osc_wait_ready(OSC_ID_RC8M);
 		}
 		break;
-
-	case GENCLK_SRC_RC32K:
-		if (!osc_is_ready(OSC_ID_RC32K)) {
-			osc_enable(OSC_ID_RC32K);
-			osc_wait_ready(OSC_ID_RC32K);
-		}
-		break;
-
-#ifdef CONFIG_DFLL0_SOURCE
-	case GENCLK_SRC_DFLL:
-		dfll_enable_config_defaults(0);
-		break;
-#endif
 
 #ifdef BOARD_OSC0_HZ
 	case GENCLK_SRC_OSC0:
@@ -191,13 +168,27 @@ static inline void genclk_enable_source(enum genclk_source src)
 		break;
 #endif
 
-#if ( UC3L0128 || UC3L0256 || UC3L3_L4 )
-# ifdef CONFIG_PLL0_SOURCE
+#ifdef BOARD_OSC1_HZ
+	case GENCLK_SRC_OSC1:
+		if (!osc_is_ready(OSC_ID_OSC1)) {
+			osc_enable(OSC_ID_OSC1);
+			osc_wait_ready(OSC_ID_OSC1);
+		}
+		break;
+#endif
+
+#ifdef CONFIG_PLL0_SOURCE
 	case GENCLK_SRC_PLL0: {
 		pll_enable_config_defaults(0);
 		break;
 	}
-# endif
+#endif
+
+#ifdef CONFIG_PLL1_SOURCE
+	case GENCLK_SRC_PLL1: {
+		pll_enable_config_defaults(1);
+		break;
+	}
 #endif
 
 	default:

@@ -42,8 +42,7 @@
  *
  *****************************************************************************/
 
-#include "pm_uc3l.h"
-
+#include "pm_uc3c.h"
 
 #ifndef AVR32_PM_VERSION_RESETVALUE
   #error Cannot use this software module with the current device.
@@ -81,11 +80,13 @@ typedef union
   avr32_pm_pbbsel_t             PBBSEL;
 } u_avr32_pm_pbbsel_t;
 
+typedef union
+{
+  unsigned long                 pbcsel;
+  avr32_pm_pbcsel_t             PBCSEL;
+} u_avr32_pm_pbcsel_t;
+
 //! @}
-
-
-// Forward declarations
-static pm_divratio_t pm_find_divratio(unsigned long ref_freq_hz, unsigned long target_freq_hz);
 
 
 /**
@@ -94,8 +95,8 @@ static pm_divratio_t pm_find_divratio(unsigned long ref_freq_hz, unsigned long t
 
 long pm_set_mclk_source(pm_clk_src_t src)
 {
-  AVR32_ENTER_CRITICAL_REGION( );
   // Unlock the write-protected MCCTRL register
+  AVR32_ENTER_CRITICAL_REGION( );
   PM_UNLOCK(AVR32_PM_MCCTRL);
   AVR32_PM.mcctrl = src;
   AVR32_LEAVE_CRITICAL_REGION( );
@@ -103,7 +104,7 @@ long pm_set_mclk_source(pm_clk_src_t src)
   return PASS;
 }
 
-long pm_config_mainclk_safety(bool cfd, bool ocp, bool final)
+long pm_config_mainclk_safety(bool cfd, bool final)
 {
   u_avr32_pm_cfdctrl_t u_avr32_pm_cfdctrl = {AVR32_PM.cfdctrl};
 
@@ -111,14 +112,13 @@ long pm_config_mainclk_safety(bool cfd, bool ocp, bool final)
   if(AVR32_PM.cfdctrl & AVR32_PM_CFDCTRL_SFV_MASK)
     return -1;
 
+  // Unlock the write-protected CFDCTRL register
+  AVR32_ENTER_CRITICAL_REGION( );
   // Modify
   u_avr32_pm_cfdctrl.CFDCTRL.cfden = cfd;
-  u_avr32_pm_cfdctrl.CFDCTRL.ocpen = ocp;
   u_avr32_pm_cfdctrl.CFDCTRL.sfv = final;
-  AVR32_ENTER_CRITICAL_REGION( );
-  // Unlock the write-protected CFDCTRL register
-  PM_UNLOCK(AVR32_PM_CFDCTRL);
   // Write back
+  PM_UNLOCK(AVR32_PM_CFDCTRL);
   AVR32_PM.cfdctrl = u_avr32_pm_cfdctrl.cfdctrl;
   AVR32_LEAVE_CRITICAL_REGION( );
 
@@ -142,7 +142,8 @@ long pm_set_clk_domain_div(pm_clk_domain_t clock_domain, pm_divratio_t divratio)
 #endif
 
   // ckSEL must not be written while SR.CKRDY is 0.
-  while(!(AVR32_PM.sr & AVR32_PM_SR_CKRDY_MASK));
+  if(!(AVR32_PM.sr & AVR32_PM_SR_CKRDY_MASK))
+    return -1;
 
   // Modify
   u_avr32_pm_cpusel.CPUSEL.cpudiv= 1;
@@ -161,14 +162,15 @@ long pm_disable_clk_domain_div(pm_clk_domain_t clock_domain)
 {
   u_avr32_pm_cpusel_t u_avr32_pm_cpusel = {AVR32_PM.cpusel};
 
-//# Implementation note: the CPUSEL and PBASEL and PBBSEL registers all have the
+//# Implementation note: the CPUSEL and PBASEL and PBBSEL and PBCSEL registers all have the
 //# same structure.
 
 //# Implementation note: the ckSEL registers are contiguous and memory-mapped in
-//# that order: CPUSEL, HSBSEL, PBASEL, PBBSEL.
+//# that order: CPUSEL, HSBSEL, PBASEL, PBBSEL, PBCSEL.
 
   // ckSEL must not be written while SR.CKRDY is 0.
-  while(!(AVR32_PM.sr & AVR32_PM_SR_CKRDY_MASK));
+  if(!(AVR32_PM.sr & AVR32_PM_SR_CKRDY_MASK))
+    return -1;
 
   // Modify
   u_avr32_pm_cpusel.CPUSEL.cpudiv= DISABLE;
@@ -182,37 +184,6 @@ long pm_disable_clk_domain_div(pm_clk_domain_t clock_domain)
   return PASS;
 }
 
-void pm_set_all_cksel(unsigned long main_clock_f_hz, unsigned long cpu_f_hz,
-                      unsigned long pba_f_hz, unsigned long pbb_f_hz)
-{
-  pm_divratio_t div_ratio;
-
-
-  // Find the divratio to apply to reach the target cpu_f frequency.
-  div_ratio = pm_find_divratio(main_clock_f_hz, cpu_f_hz);
-  // Apply the division ratio for the CPU clock domain.
-  if(PM_CKSEL_DIVRATIO_ERROR == div_ratio)
-    pm_disable_clk_domain_div((pm_clk_domain_t)AVR32_PM_CLK_GRP_CPU);
-  else
-    pm_set_clk_domain_div((pm_clk_domain_t)AVR32_PM_CLK_GRP_CPU, div_ratio);
-
-  // Find the divratio to apply to reach the target pba_f frequency.
-  div_ratio = pm_find_divratio(main_clock_f_hz, pba_f_hz);
-  // Apply the division ratio for the PBA clock domain.
-  if(PM_CKSEL_DIVRATIO_ERROR == div_ratio)
-    pm_disable_clk_domain_div((pm_clk_domain_t)AVR32_PM_CLK_GRP_PBA);
-  else
-    pm_set_clk_domain_div((pm_clk_domain_t)AVR32_PM_CLK_GRP_PBA, div_ratio);
-
-  // Find the divratio to apply to reach the target pbb_f frequency.
-  div_ratio = pm_find_divratio(main_clock_f_hz, pbb_f_hz);
-  // Apply the division ratio for the PBB clock domain.
-  if(PM_CKSEL_DIVRATIO_ERROR == div_ratio)
-    pm_disable_clk_domain_div((pm_clk_domain_t)AVR32_PM_CLK_GRP_PBB);
-  else
-    pm_set_clk_domain_div((pm_clk_domain_t)AVR32_PM_CLK_GRP_PBB, div_ratio);
-}
-
 long pm_wait_for_clk_ready(void)
 {
   unsigned int timeout = PM_POLL_TIMEOUT;
@@ -224,29 +195,6 @@ long pm_wait_for_clk_ready(void)
   return PASS;
 }
 
-/*! \brief Compute the division ratio field of the PM CPU/PBxSEL registers to apply
- *         to get a target frequency from a main clock source frequency.
- *
- * \param ref_freq_hz The main clock source frequency (Hz)
- * \param target_freq_hz The target frequency (Hz)
- *
- * \return the division ratio CPUSEL
- *   \retval PM_CKSEL_DIVRATIO_ERROR  no div ratio to apply
- *   \retval the div ratio enum value
- */
-static pm_divratio_t pm_find_divratio(unsigned long ref_freq_hz, unsigned long target_freq_hz)
-{
-  int div_ratio;
-
-  div_ratio = ref_freq_hz/target_freq_hz;
-  if(div_ratio == 1)
-    return(PM_CKSEL_DIVRATIO_ERROR);
-  else
-  {
-    // div ratio field value so that rel_freq_hz = target_freq_hz*2pow(divratio+1)
-    return((pm_divratio_t)(ctz(div_ratio)-1));
-  }
-}
 
 
 /**
@@ -268,7 +216,7 @@ long pm_enable_module(unsigned long module)
   regvalue |= (1<<(module%32));
   AVR32_ENTER_CRITICAL_REGION( );
   // Unlock the write-protected ckMASK register
-  PM_UNLOCK(AVR32_PM_CPUMASK + domain*sizeof(unsigned long));
+  PM_UNLOCK(AVR32_PM_CPUMASK + domain*sizeof(avr32_pm_cpumask_t));
   // Write
   *regptr = regvalue;
   AVR32_LEAVE_CRITICAL_REGION( );
@@ -291,7 +239,7 @@ long pm_disable_module(unsigned long module)
   regvalue &= ~(1<<(module%32));
   AVR32_ENTER_CRITICAL_REGION( );
   // Unlock the write-protected ckMASK register
-  PM_UNLOCK(AVR32_PM_CPUMASK + domain*sizeof(unsigned long));
+  PM_UNLOCK(AVR32_PM_CPUMASK + domain*sizeof(avr32_pm_cpumask_t));
   // Write
   *regptr = regvalue;
   AVR32_LEAVE_CRITICAL_REGION( );
@@ -304,26 +252,25 @@ long pm_disable_module(unsigned long module)
 /**
  ** Sleep Functions
  **/
-// Implemented as inline in pm_uc3l.h
+// Implemented as inline in pm_uc3c.h
 
 
 
 /**
  ** Reset Functions
  **/
-// Implemented as inline in pm_uc3l.h
+// Implemented as inline in pm_uc3c.h
 
 
 
 /**
  ** Interrupt Functions
  **/
-// Implemented as inline in pm_uc3l.h
+// Implemented as inline in pm_uc3c.h
 
 
 
 /**
  ** Misc Functions
  **/
-// Implemented as inline in pm_uc3l.h
-
+// Implemented as inline in pm_uc3c.h

@@ -11,22 +11,36 @@ extern "C"
 #include <compiler.h>
 #include <power_clocks_lib.h>
 
-#include <acifb.h>
-#include <adcifb.h>
-#include <ast.h>
-#include <eic.h>
-#include <flashcdw.h>
-#include <freqm.h>
-#include <gpio.h>
-#include <intc.h>
-#include <pdca.h>
-#include <scif_uc3l.h>
-#include <spi.h>
-#include <tc.h>
-#include <twim.h>
-//#include <twis.h>
-#include <usart.h>
-#include <wdt.h>
+#if UC3L
+  #include <acifb.h>
+  #include <adcifb.h>
+  #include <ast.h>
+  #include <eic.h>
+  #include <freqm.h>
+  #include <gpio.h>
+  #include <intc.h>
+  #include <pdca.h>
+  #include <spi.h>
+  #include <tc.h>
+  #include <twim.h>
+  #include <usart.h>
+  #include <wdt.h>
+#elif UC3C
+  #include <acifa.h>
+  #include <adcifa.h>
+  #include <ast.h>
+  #include <eic.h>
+  #include <freqm.h>
+  #include <gpio.h>
+  #include <intc.h>
+  #include <pdca.h>
+  #include <spi.h>
+  #include <tc.h>
+  #include <twim.h>
+  #include <usart.h>
+#else
+  #error not supported!
+#endif
 
 #ifdef __cplusplus
 }

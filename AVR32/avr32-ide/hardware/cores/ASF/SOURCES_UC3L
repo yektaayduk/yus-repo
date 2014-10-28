@@ -19,7 +19,6 @@ avr32/drivers/scif/scif_uc3l.c
 avr32/drivers/spi/spi.c
 avr32/drivers/tc/tc.c
 avr32/drivers/twim/twim.c
-avr32/drivers/twis/twis.c
 avr32/drivers/usart/usart.c
 avr32/drivers/wdt/wdt4.c
 common/services/clock/uc3l/dfll.c
