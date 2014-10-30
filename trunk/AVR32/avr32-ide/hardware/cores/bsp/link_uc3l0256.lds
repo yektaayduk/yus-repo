@@ -69,6 +69,7 @@ PHDRS
   INTRAM_ALIGN PT_NULL;
   INTRAM_AT_FLASH PT_LOAD;
   INTRAM PT_NULL;
+  FLASH_NVRAM PT_LOAD;
   USERPAGE PT_LOAD;
 }
 
@@ -83,6 +84,9 @@ SECTIONS
 
   /* Use a default stack size if stack size was not defined. */
   __stack_size__ = DEFINED(__stack_size__) ? __stack_size__ : 4K;
+
+  /* Use a default flash NVRAM size if flash NVRAM size was not defined. */
+  __flash_nvram_size__ = DEFINED(__flash_nvram_size__) ? __flash_nvram_size__ : 4K;
 
   /* Read-only sections, merged into text segment: */
   PROVIDE (__executable_start = 0x80000000); . = 0x80000000;
@@ -271,6 +275,10 @@ SECTIONS
     . = __stack_size__;
     _estack = .;
   } >INTRAM AT>INTRAM :INTRAM
+  .flash_nvram   ORIGIN(FLASH) + LENGTH(FLASH) - __flash_nvram_size__ (NOLOAD):
+  {
+    *(.flash_nvram)
+  } >FLASH AT>FLASH :FLASH_NVRAM
   .userpage       : { *(.userpage .userpage.*) } >USERPAGE AT>USERPAGE :USERPAGE
   /DISCARD/ : { *(.note.GNU-stack) }
 }
