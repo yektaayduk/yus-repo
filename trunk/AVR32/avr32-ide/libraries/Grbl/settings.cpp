@@ -305,6 +305,12 @@ void Grbl::Settings::init() {
 }
 
 
+// Returns step pin mask according to Grbl internal axis indexing.
+uint8_t Grbl::Settings::get_step_pin_mask(uint8_t axis_idx)
+{
+  return 0;
+}
+
 // Returns direction pin mask according to Grbl internal axis indexing.
 uint8_t Grbl::Settings::get_direction_pin_mask(uint8_t axis_idx)
 {

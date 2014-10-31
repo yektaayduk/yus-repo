@@ -85,6 +85,6 @@ class AboutDialog(QtGui.QSplashScreen):
                 self.setMsg(msg)
             elif not self.fw_update.isRunning():
                 self.killTimer(self.fw_update_timer_id)
-        return QtGui.QSplashScreen.timerEvent(self, *args, **kwargs)
+        #return QtGui.QSplashScreen.timerEvent(self, *args, **kwargs)
 
 

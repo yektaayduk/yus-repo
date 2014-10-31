@@ -15,6 +15,7 @@
 #include "system.h"
 #include "gcode.h"
 #include "planner.h"
+#include "stepper.h"
 
 class Grbl
 {
@@ -146,6 +147,30 @@ public:
 		#ifdef REPORT_REALTIME_RATE
 		float get_realtime_rate();
 		#endif
+
+	private:
+		st_block_t st_block_buffer[SEGMENT_BUFFER_SIZE-1];
+		segment_t segment_buffer[SEGMENT_BUFFER_SIZE];
+		stepper_t st;
+
+		// Step segment ring buffer indices
+		volatile uint8_t segment_buffer_tail;
+		uint8_t segment_buffer_head;
+		uint8_t segment_next_head;
+
+		// Step and direction port invert masks.
+		uint8_t step_port_invert_mask;
+		uint8_t dir_port_invert_mask;
+
+		// Used to avoid ISR nesting of the "Stepper Driver Interrupt". Should never occur though.
+		volatile uint8_t busy;
+
+		// Pointers for the step segment being prepped from the planner buffer. Accessed only by the
+		// main program. Pointers may be planning segments or planner blocks ahead of what being executed.
+		plan_block_t *pl_block;     // Pointer to the planner block being prepped
+		st_block_t *st_prep_block;  // Pointer to the stepper block data being prepped
+
+		st_prep_t prep;
 	};
 
 	class System : public GrblChild
@@ -230,7 +255,7 @@ public:
 	class Probe : public GrblChild
 	{
 	public:
-		// Values that define the probing state machine.  
+		// Values that define the probing state machine.
 		#define PROBE_OFF     0 // No probing. (Must be zero.)
 		#define PROBE_ACTIVE  1 // Actively watching the input pin.
 		Probe(Grbl *grbl) : GrblChild(grbl) { }
@@ -343,7 +368,7 @@ public:
 		char line[LINE_BUFFER_SIZE]; // Line to be executed. Zero-terminated.
 		void execute_line(char *line);
 	};
-	
+
 	class MotionControl : public GrblChild
 	{
 	public:
@@ -357,18 +382,18 @@ public:
 		void line(float *target, float feed_rate, uint8_t invert_feed_rate);
 		#endif
 
-		// Execute an arc in offset mode format. position == current xyz, target == target xyz, 
+		// Execute an arc in offset mode format. position == current xyz, target == target xyz,
 		// offset == offset from current xyz, axis_XXX defines circle plane in tool space, axis_linear is
 		// the direction of helical travel, radius == circle radius, isclockwise boolean. Used
 		// for vector transformation direction.
 		#ifdef USE_LINE_NUMBERS
-		void arc(float *position, float *target, float *offset, float radius, float feed_rate, 
+		void arc(float *position, float *target, float *offset, float radius, float feed_rate,
 		  uint8_t invert_feed_rate, uint8_t axis_0, uint8_t axis_1, uint8_t axis_linear, int32_t line_number);
 		#else
 		void arc(float *position, float *target, float *offset, float radius, float feed_rate,
 		  uint8_t invert_feed_rate, uint8_t axis_0, uint8_t axis_1, uint8_t axis_linear);
 		#endif
-		  
+
 		// Dwell for a specific number of seconds
 		void dwell(float seconds);
 
